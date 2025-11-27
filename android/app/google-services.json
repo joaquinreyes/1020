@@ -1,0 +1,105 @@
+{
+  "project_info": {
+    "project_number": "808637490319",
+    "project_id": "frontendbooakdngo3",
+    "storage_bucket": "frontendbooakdngo3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:c3570258dcaa45037cbcfa",
+        "android_client_info": {
+          "package_name": "com.bookandgo.acepadel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:aadd03e2593a73247cbcfa",
+        "android_client_info": {
+          "package_name": "com.bookandgo.padel702"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:4f9a7e1ba5716aad7cbcfa",
+        "android_client_info": {
+          "package_name": "com.hopireland.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:cc12bbdcd91ed45a7cbcfa",
+        "android_client_info": {
+          "package_name": "com.padelfit.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:71a7daa29516439b7cbcfa",
+        "android_client_info": {
+          "package_name": "com.rivierapadel.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,8 @@
+app_identifier("com.hopireland.bookandgo") # The bundle identifier of your app
+# apple_id("joaquin.reyes.vasquez@gmail.com") # Your Apple Developer Portal username
+
+itc_team_id("124948726") # App Store Connect Team ID
+team_id("R52YSCRQ9B") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
