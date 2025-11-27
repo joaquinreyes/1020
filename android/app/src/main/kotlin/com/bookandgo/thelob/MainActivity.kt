@@ -1,4 +1,4 @@
-package com.1020.bookandgo
+package com.tentwenty.bookandgo
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterFragmentActivity

@@ -47,7 +47,45 @@
       "client_info": {
         "mobilesdk_app_id": "1:808637490319:android:4f9a7e1ba5716aad7cbcfa",
         "android_client_info": {
-          "package_name": "com.1020.bookandgo"
+          "package_name": "com.hopireland.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:c37620e63d5aed417cbcfa",
+        "android_client_info": {
+          "package_name": "com.loveall.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:b8e03f258a119e447cbcfa",
+        "android_client_info": {
+          "package_name": "com.orange.bookandgo"
         }
       },
       "oauth_client": [],
@@ -86,6 +124,63 @@
         "mobilesdk_app_id": "1:808637490319:android:71a7daa29516439b7cbcfa",
         "android_client_info": {
           "package_name": "com.rivierapadel.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:fee89c64a05053e27cbcfa",
+        "android_client_info": {
+          "package_name": "com.stackd.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:58efcb740b264b5b7cbcfa",
+        "android_client_info": {
+          "package_name": "com.tamora.bookandgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808637490319:android:d2ef8fb05f685f997cbcfa",
+        "android_client_info": {
+          "package_name": "com.tentwenty.bookandgo"
         }
       },
       "oauth_client": [],

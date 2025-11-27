@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.1020.bookandgo</string>
+	<string>com.tentwenty.bookandgo</string>
 	<key>PROJECT_ID</key>
 	<string>frontendbooakdngo3</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:808637490319:ios:51f944749bbe9a3c7cbcfa</string>
+	<string>1:808637490319:ios:b6bb0247566725067cbcfa</string>
 </dict>
 </plist>

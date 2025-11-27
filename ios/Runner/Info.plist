@@ -34,7 +34,7 @@
 				<key>CFBundleURLHost</key>
 				<string>share.bookandgo.app</string>
 				<key>CFBundleURLName</key>
-				<string>com.1020.bookandgo</string>
+				<string>com.tentwenty.bookandgo</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>https</string>

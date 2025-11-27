@@ -43,7 +43,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDZSHzjzdh1A8J_Ini5CEA0GIwJh0MOmjQ',
-    appId: '1:808637490319:android:4f9a7e1ba5716aad7cbcfa',
+    appId: '1:808637490319:android:d2ef8fb05f685f997cbcfa',
     messagingSenderId: '808637490319',
     projectId: 'frontendbooakdngo3',
     storageBucket: 'frontendbooakdngo3.firebasestorage.app',
@@ -51,11 +51,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBCJDvBaX9K0LOMpcHri0miwk5Q5rZ4tCY',
-    appId: '1:808637490319:ios:51f944749bbe9a3c7cbcfa',
+    appId: '1:808637490319:ios:b6bb0247566725067cbcfa',
     messagingSenderId: '808637490319',
     projectId: 'frontendbooakdngo3',
     storageBucket: 'frontendbooakdngo3.firebasestorage.app',
-    iosBundleId: 'com.1020.bookandgo',
+    iosBundleId: 'com.tentwenty.bookandgo',
   );
 
 }
