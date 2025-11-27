@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '808637490319',
     projectId: 'frontendbooakdngo3',
     storageBucket: 'frontendbooakdngo3.firebasestorage.app',
-    iosBundleId: 'com.hopireland.bookandgo',
+    iosBundleId: 'com.1020.bookandgo',
   );
 
 }

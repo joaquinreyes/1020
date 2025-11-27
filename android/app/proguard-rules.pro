@@ -5,7 +5,7 @@
 -dontwarn com.stripe.android.pushProvisioning.PushProvisioningEphemeralKeyProvider
 # Keep uni_links package
 -keep class io.flutter.plugins.** { *; }
--keep class com.hopireland.bookandgo.** { *; }
+-keep class com.1020.bookandgo.** { *; }
 
 
 # Keep components with intent filters declared in the manifest

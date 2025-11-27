@@ -1,4 +1,4 @@
-app_identifier("com.hopireland.bookandgo") # The bundle identifier of your app
+app_identifier("com.1020.bookandgo") # The bundle identifier of your app
 # apple_id("joaquin.reyes.vasquez@gmail.com") # Your Apple Developer Portal username
 
 itc_team_id("124948726") # App Store Connect Team ID
