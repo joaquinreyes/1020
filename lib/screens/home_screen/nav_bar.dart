@@ -50,7 +50,7 @@ class NavBarState extends ConsumerState<NavBar> {
         child: Row(
           children: [
             _item(
-              text: 'PLAY\n& MATCH'.trU(context),
+              text: 'PLAY_N_MATCH'.trU(context),
               index: 0,
               textHeight: 0.99,
               isSelected: pageIndex == 0,
@@ -111,7 +111,7 @@ class NavBarState extends ConsumerState<NavBar> {
           onTap();
         },
         child: Container(
-          // padding: EdgeInsets.symmetric(horizontal: 4.w),
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
           // height: 40.h,
           // width: 82.w,
           margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),

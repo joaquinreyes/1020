@@ -19,11 +19,14 @@ import 'package:hop/managers/fcm_manager.dart';
 import 'package:hop/managers/shared_pref_manager.dart';
 import 'package:hop/repository/club_repo.dart';
 import 'package:hop/routes/app_pages.dart';
+import 'package:hop/screens/app_provider.dart';
+import 'package:hop/utils/custom_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'globals/images.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 WidgetRef? globalRef;
 
@@ -94,6 +97,7 @@ class _HOPIrelandState extends ConsumerState<HOPIreland> {
     ref.watch(sharedPrefManagerProvider);
     final router = ref.watch(goRouterProvider);
     initializeDateFormatting();
+    final locale = ref.watch(languageValueProvider);
 
     return MediaQuery(
       data: MediaQuery.of(context)
@@ -102,9 +106,10 @@ class _HOPIrelandState extends ConsumerState<HOPIreland> {
         title: "10 - 20",
         routerConfig: router,
         debugShowCheckedModeBanner: false,
-        locale: const Locale('en'),
+        locale: locale,
         supportedLocales: const [
           Locale('en'),
+          Locale('ru'),
         ],
         localizationsDelegates: [
           FlutterI18nDelegate(
@@ -117,7 +122,21 @@ class _HOPIrelandState extends ConsumerState<HOPIreland> {
               myPrint(
                   "--- Missing Key: $key, languageCode: ${locale!.languageCode}");
             },
-          )
+          ),
+          FlutterI18nDelegate(
+            translationLoader: FileTranslationLoader(
+              fallbackFile: 'ru',
+              basePath: "assets/locales",
+              decodeStrategies: [JsonDecodeStrategy()],
+            ),
+            missingTranslationHandler: (key, locale) {
+              myPrint(
+                  "--- Missing Key ru : $key, \"$key\" : \"${key.replaceAll("_", " ").toLowerCase().capitalizeFirst}\" ,languageCode: ${locale!.languageCode}");
+            },
+          ),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
         theme: ThemeData(
           scaffoldBackgroundColor: AppColors.white,

@@ -226,19 +226,22 @@ class _DataBodyState extends ConsumerState<_DataBody> {
               SizedBox(height: 20.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (isJoined) ...[
-                        _leaveLesson(context),
-                        SizedBox(height: 10.h),
+                  Flexible(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (isJoined) ...[
+                          _leaveLesson(context),
+                          SizedBox(height: 10.h),
+                        ],
+                        if (!service.isPast) _addToCalendarButton(context),
                       ],
-                      if (!service.isPast) _addToCalendarButton(context),
-                    ],
+                    ),
                   ),
-                  const Spacer(),
-                  _shareMatchButton(context),
+                  4.horizontalSpace,
+                  Flexible(child: _shareMatchButton(context)),
                 ],
               ),
             ],

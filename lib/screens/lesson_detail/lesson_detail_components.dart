@@ -276,16 +276,21 @@ class _ConfirmationDialog extends StatelessWidget {
                 style: AppTextStyles.popupBodyTextStyle,
               ),
             SizedBox(height: 20.h),
-            MainButton(
-              isForPopup: true,
-              enabled: true,
-              label: _buttonText(context),
-              padding: EdgeInsets.zero,
-              // labelStyle: AppTextStyles.gothicLight().copyWith(fontSize: 18.sp, color: AppColors.mediumGreen),
-              // borderRadius: 12.r,
-              onTap: () {
-                Navigator.pop(context, true);
-              },
+            Flexible(
+              child: MainButton(
+                isForPopup: true,
+                enabled: true,
+                label: _buttonText(context),
+                applySize: false,
+                // padding: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 12.h),
+                // labelStyle: AppTextStyles.gothicLight().copyWith(fontSize: 18.sp, color: AppColors.mediumGreen),
+                // borderRadius: 12.r,
+                onTap: () {
+                  Navigator.pop(context, true);
+                },
+                child: Text(_buttonText(context),textAlign: TextAlign.start,style: AppTextStyles.sofiaSansMedium(fontSize: 25.sp,color: AppColors.brick,height: 1),),
+              ),
             ),
             // MainButton(
             //   isForPopup: true,

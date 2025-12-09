@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hop/app_styles/app_colors.dart';
 import 'package:hop/components/custom_dialog.dart';
+import 'package:hop/components/language_selector_auth.dart';
 import 'package:hop/components/main_button.dart';
 import 'package:hop/components/multi_style_text.dart';
 import 'package:hop/globals/utils.dart';
@@ -87,16 +88,19 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                         child: Column(
                           children: [
                             SizedBox(height: 19.h),
-                            Align(
-                              alignment: AlignmentDirectional.centerStart,
-                              child: InkWell(
-                                onTap: () => Navigator.pop(context),
-                                child: Image.asset(
-                                  AppImages.arrowBack.path,
-                                  height: 18.h,
-                                  color: AppColors.black,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Image.asset(
+                                    AppImages.arrowBack.path,
+                                    height: 18.h,
+                                    color: AppColors.black,
+                                  ),
                                 ),
-                              ),
+                                const LanguageSelectorAuth(),
+                              ],
                             ),
                             10.verticalSpace,
                             Text(

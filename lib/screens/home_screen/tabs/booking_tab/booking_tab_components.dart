@@ -525,17 +525,18 @@ class __AvailableTimeslotState extends ConsumerState<_AvailableTimeslot> {
                       ],
                     ),
                   ),
-                  const Spacer(),
+                  // const Spacer(),
                   MainButton(
                       color: AppColors.white,
                       showArrow: true,
                       applyShadow: true,
-                      height: 30.h,
+                      applySize: false,
+                      // height: 30.h,
                       width: 90.w,
                       arrowSize: 15.h,
-                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 7.h),
                       label: "BOOK".trU(context),
-                      labelStyle: AppTextStyles.sofiaSansMedium(fontSize: 19.sp),
+                      labelStyle: AppTextStyles.sofiaSansMedium(fontSize: 19.sp,height: 1),
                       // onTap: () async {
                       //   if (!Utils.checkUserLogin(ref)) {
                       //     ref.read(goRouterProvider).push(RouteNames.auth);
@@ -1069,12 +1070,13 @@ class __AvailableTimeslotLessonState
                       color: AppColors.white,
                       showArrow: true,
                       applyShadow: true,
-                      height: 30.h,
-                      width: 83.w,
+                      // height: 30.h,
+                      width: 90.w,
                       arrowSize: 15.h,
-                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      applySize: false,
+                      padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 7.h),
                       label: "BOOK".trU(context),
-                      labelStyle: AppTextStyles.sofiaSansMedium(fontSize: 19.sp,color: AppColors.black70,),
+                      labelStyle: AppTextStyles.sofiaSansMedium(fontSize: 19.sp,color: AppColors.black70,height: 1),
                       onTap: () async {
                         if (!Utils.checkUserLogin(ref)) {
                           ref.read(goRouterProvider).push(RouteNames.auth);

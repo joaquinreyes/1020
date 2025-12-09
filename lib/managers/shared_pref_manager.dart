@@ -16,6 +16,7 @@ class SharedPrefManager {
   static const String sportsName = "${prefix}_sport_name";
   static const String isSkip = "${prefix}_skip";
   static const String profilePictureDialogShown = "${prefix}_profile_dialog_shown";
+  static const String language = "${prefix}_locale";
 
   SharedPreferences prefs;
   SharedPrefManager(this.prefs);
@@ -54,6 +55,13 @@ class SharedPrefManager {
 
   bool hasProfilePictureDialogShown() {
     return prefs.getBool(profilePictureDialogShown) ?? false;
+  }
+
+  setLanguage(String value)async{
+    await prefs.setString(language,value);
+  }
+  String? getLanguage(){
+    return prefs.getString(language);
   }
 
   clearUser() async {

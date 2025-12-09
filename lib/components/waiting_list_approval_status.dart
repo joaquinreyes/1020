@@ -213,26 +213,28 @@ class _WaitingListApprovalStatusState
                   onTap: () => _showConfirmationDialog("accept"),
                 ),
               ] else
-                MainButton(
-                  label: player.isApproved || player.isAccepted
-                      ? "PAY_MY_SHARE".trU(context)
-                      : "WITHDRAW_FROM_THE_MATCH".trU(context),
-                  color: AppColors.blue,
-                  labelStyle: AppTextStyles.sofiaSansMedium(
-                    fontSize: 16.sp,
-                    color: AppColors.white,
+                Flexible(
+                  child: MainButton(
+                    label: player.isApproved || player.isAccepted
+                        ? "PAY_MY_SHARE".trU(context)
+                        : "WITHDRAW_FROM_THE_MATCH".trU(context),
+                    color: AppColors.blue,
+                    labelStyle: AppTextStyles.sofiaSansMedium(
+                      fontSize: 16.sp,
+                      color: AppColors.white,
+                    ),
+                    applySize: false,
+                    applyShadow: true,
+                    borderRadius: 8.r,
+                    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 6.h),
+                    onTap: () {
+                      if (player.isApproved || player.isAccepted) {
+                        widget.onJoin(player.customer!.id!);
+                      } else {
+                        widget.onWithdraw(player.id!);
+                      }
+                    },
                   ),
-                  applySize: false,
-                  applyShadow: true,
-                  borderRadius: 8.r,
-                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 6.h),
-                  onTap: () {
-                    if (player.isApproved || player.isAccepted) {
-                      widget.onJoin(player.customer!.id!);
-                    } else {
-                      widget.onWithdraw(player.id!);
-                    }
-                  },
                 )
             ],
           ),

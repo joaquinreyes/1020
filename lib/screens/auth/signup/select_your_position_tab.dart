@@ -65,7 +65,7 @@ class _SelectYourPositionState extends State<_SelectYourPosition> {
                     Expanded(
                       child: _imageOptionTile(
                         side: PlayingSide.left,
-                        label: "Left Side",
+                        label: "${"LEFT".tr(context)} ${"SIDE".tr(context)}"??"Left Side",
                         imagePath: AppImages.leftSide.path, // replace with your image path
                       ),
                     ),
@@ -73,7 +73,7 @@ class _SelectYourPositionState extends State<_SelectYourPosition> {
                     Expanded(
                       child: _imageOptionTile(
                         side: PlayingSide.right,
-                        label: "Right Side",
+                        label: "${"RIGHT".tr(context)} ${"SIDE".tr(context)}"??"Right Side",
                         imagePath: AppImages.rightSide.path,
                       ),
                     ),
@@ -181,9 +181,11 @@ class _SelectYourPositionState extends State<_SelectYourPosition> {
                 children: [
                   SelectedTag(isSelected: selected),
                   15.horizontalSpace,
-                  Text(
-                    label,
-                    style: selected ? AppTextStyles.manropeSemiBold(fontSize: 16.sp,color: AppColors.white,) : AppTextStyles.manropeMedium(fontSize: 16.sp,),
+                  Flexible(
+                    child: Text(
+                      label,
+                      style: selected ? AppTextStyles.manropeSemiBold(fontSize: 16.sp,color: AppColors.white,) : AppTextStyles.manropeMedium(fontSize: 16.sp,),
+                    ),
                   ),
                 ],
               ),

@@ -93,3 +93,18 @@ class SportList extends _$SportList {
 
   List<ClubLocationSports> get sport => state;
 }
+
+@Riverpod(keepAlive: true)
+class LanguageValue extends _$LanguageValueIndex {
+  @override
+  Locale build() {
+    return Locale( ref.read(sharedPrefManagerProvider).getLanguage() ?? "en");
+  }
+
+  set setLanguage(String value) {
+    ref.read(sharedPrefManagerProvider).setLanguage(value);
+    state = Locale(value);
+  }
+
+  Locale get language => state;
+}

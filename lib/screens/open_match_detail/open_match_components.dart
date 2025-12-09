@@ -147,9 +147,11 @@ class _InfoCard extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 15.w),
-                child: _organizer(context, service.organizer, ref),
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.w),
+                  child: _organizer(context, service.organizer, ref),
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

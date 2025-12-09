@@ -61,6 +61,7 @@ class SecondaryImageButton extends StatelessWidget {
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.asset(
             image,
@@ -71,15 +72,17 @@ class SecondaryImageButton extends StatelessWidget {
                 : iconColor ?? AppColors.black,
           ),
           SizedBox(width: spacing),
-          Text(
-            label,
-            style: labelStyle != null
-                ? labelStyle
-                : AppTextStyles.manropeMedium(
-                    fontSize: fontSize,
-                    color: isForPopup
-                        ? textColor ?? AppColors.white
-                        : textColor ?? AppColors.black),
+          Flexible(
+            child: Text(
+              label,
+              style: labelStyle != null
+                  ? labelStyle
+                  : AppTextStyles.manropeMedium(
+                      fontSize: fontSize,
+                      color: isForPopup
+                          ? textColor ?? AppColors.white
+                          : textColor ?? AppColors.black),
+            ),
           ),
         ],
       ),

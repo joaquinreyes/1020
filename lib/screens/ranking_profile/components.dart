@@ -263,24 +263,27 @@ class _RankingLogicDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomDialog(
-      color: AppColors.white,
-      closeIconColor: AppColors.blue,
-      child: Column(
-        children: [
-          Text(
-            "RANKING_LOGIC".trU(context),
-            style: AppTextStyles.popupHeaderTextStyle
-                .copyWith(color: AppColors.blue),
-          ),
-          SizedBox(height: 5.h),
-          Text(
-            "RANKING_LOGIC_DESC".tr(context),
-            style: AppTextStyles.popupBodyTextStyle
-                .copyWith(color: AppColors.blue),
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      child: CustomDialog(
+        color: AppColors.white,
+        closeIconColor: AppColors.blue,
+        child: Column(
+          children: [
+            Text(
+              "RANKING_LOGIC".trU(context),
+              style: AppTextStyles.popupHeaderTextStyle
+                  .copyWith(color: AppColors.blue),
+            ),
+            SizedBox(height: 5.h),
+            Text(
+              "RANKING_LOGIC_DESC".tr(context),
+              style: AppTextStyles.popupBodyTextStyle
+                  .copyWith(color: AppColors.blue),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

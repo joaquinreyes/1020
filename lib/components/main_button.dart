@@ -125,10 +125,15 @@ class MainButton extends StatelessWidget {
         if (isForPopup) ...[
           _popupLabel,
         ] else ...[
-          Text(
-            label ?? '',
-            textAlign: TextAlign.center,
-            style: _labelTextStyle,
+          Flexible(
+            child: Text(
+              label ?? '',
+              textAlign: TextAlign.center,
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: _labelTextStyle,
+            ),
           ),
           5.horizontalSpace,
         ],
@@ -148,6 +153,7 @@ class MainButton extends StatelessWidget {
     return Text(
       label ?? '',
       textAlign: TextAlign.center,
+      softWrap: true,
       style: _labelTextStyleForPopup,
     );
     // }
@@ -159,12 +165,16 @@ class MainButton extends StatelessWidget {
           AppTextStyles.sofiaSansMedium(
             color: AppColors.white,
             fontSize: 25.sp,
+          ).copyWith(
+            overflow: TextOverflow.ellipsis
           );
     } else {
       return labelStyle ??
           AppTextStyles.sofiaSansMedium(
             color: AppColors.white,
             fontSize: 23.sp,
+          ).copyWith(
+              overflow: TextOverflow.ellipsis
           );
     }
   }

@@ -120,53 +120,58 @@ class _CourtBookedDialogState extends ConsumerState<CourtBookedDialog> {
           if (widget.isOpenMatch) _openMatch(),
           25.verticalSpace,
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SecondaryImageButton(
-                label: 'ADD_TO_CALENDAR'.tr(context),
-                fontSize: 13.sp,
-                // labelStyle: AppTextStyles.qanelasLight(
-                //     fontSize: 13.sp, color: AppColors.white),
-                image: AppImages.calendar.path,
-                // padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                // borderRadius: widget.borderRadius ?? 0.r,
-                onTap: () {
-                  final sportName = kSportName;
-                  String title = widget.isOpenMatch
-                      ? "$sportName Match"
-                      : "Booking @ ${widget.court.values.first} - ${widget.bookings.location?.locationName?.capitalizeFirst ?? ''}";
-                  DateTime startTime = widget.bookingTime;
-                  DateTime endTime = widget.bookingTime.add(Duration(minutes: widget.bookings.duration!));
-                  ref.watch(addToCalendarProvider(
-                    title: title,
-                    startDate: startTime,
-                    endDate: endTime,
-                  ));
-                },
-                isForPopup: true,
+              Flexible(
+                child: SecondaryImageButton(
+                  label: 'ADD_TO_CALENDAR'.tr(context),
+                  fontSize: 13.sp,
+                  // labelStyle: AppTextStyles.qanelasLight(
+                  //     fontSize: 13.sp, color: AppColors.white),
+                  image: AppImages.calendar.path,
+                  // padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                  // borderRadius: widget.borderRadius ?? 0.r,
+                  onTap: () {
+                    final sportName = kSportName;
+                    String title = widget.isOpenMatch
+                        ? "$sportName Match"
+                        : "Booking @ ${widget.court.values.first} - ${widget.bookings.location?.locationName?.capitalizeFirst ?? ''}";
+                    DateTime startTime = widget.bookingTime;
+                    DateTime endTime = widget.bookingTime.add(Duration(minutes: widget.bookings.duration!));
+                    ref.watch(addToCalendarProvider(
+                      title: title,
+                      startDate: startTime,
+                      endDate: endTime,
+                    ));
+                  },
+                  isForPopup: true,
+                ),
               ),
-              const Spacer(),
-              SecondaryImageButton(
-                label: "SEE_MY_MATCHES".tr(context),
-                fontSize: 13.sp,
-                // labelStyle: AppTextStyles.qanelasLight(
-                //     fontSize: 13.sp, color: AppColors.white),
-                image: AppImages.tennisBall.path,
-                imageHeight: 13.h,
-                imageWidth: 13.h,
-                isForPopup: true,
-                // padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-                // borderRadius: widget.borderRadius ?? 10.r,
-                onTap: () {
-                  Future(() {
-                    ref.read(pageControllerProvider).animateToPage(
-                          2,
-                          duration: kAnimationDuration,
-                          curve: Curves.linear,
-                        );
-                    ref.read(pageIndexProvider.notifier).index = 2;
-                  });
-                  Navigator.pop(context);
-                },
+              4.horizontalSpace,
+              Flexible(
+                child: SecondaryImageButton(
+                  label: "SEE_MY_MATCHES".tr(context),
+                  fontSize: 13.sp,
+                  // labelStyle: AppTextStyles.qanelasLight(
+                  //     fontSize: 13.sp, color: AppColors.white),
+                  image: AppImages.tennisBall.path,
+                  imageHeight: 13.h,
+                  imageWidth: 13.h,
+                  isForPopup: true,
+                  // padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                  // borderRadius: widget.borderRadius ?? 10.r,
+                  onTap: () {
+                    Future(() {
+                      ref.read(pageControllerProvider).animateToPage(
+                            2,
+                            duration: kAnimationDuration,
+                            curve: Curves.linear,
+                          );
+                      ref.read(pageIndexProvider.notifier).index = 2;
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ],
           ),
@@ -338,46 +343,51 @@ class _CourtLessonBookedDialogState extends ConsumerState<CourtLessonBookedDialo
           ),
           SizedBox(height: 20.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SecondaryImageButton(
-                label: 'ADD_TO_CALENDAR'.tr(context),
-                isForPopup: true,
-                image: AppImages.calendar.path,
-                labelStyle: AppTextStyles.manropeLight(fontSize: 13.sp, color: AppColors.white),
-                borderRadius: 100.r,
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-                onTap: () {
-                  String title = "Booking @ ${widget.title} - ${widget.locationName.capitalizeFirst}";
-                  DateTime startTime = widget.bookingTime;
-                  DateTime endTime = widget.bookingTime.add(Duration(minutes: widget.lessonTime));
-                  ref.watch(addToCalendarProvider(
-                    title: title,
-                    startDate: startTime,
-                    endDate: endTime,
-                  ));
-                },
+              Flexible(
+                child: SecondaryImageButton(
+                  label: 'ADD_TO_CALENDAR'.tr(context),
+                  isForPopup: true,
+                  image: AppImages.calendar.path,
+                  labelStyle: AppTextStyles.manropeLight(fontSize: 13.sp, color: AppColors.white),
+                  borderRadius: 100.r,
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                  onTap: () {
+                    String title = "Booking @ ${widget.title} - ${widget.locationName.capitalizeFirst}";
+                    DateTime startTime = widget.bookingTime;
+                    DateTime endTime = widget.bookingTime.add(Duration(minutes: widget.lessonTime));
+                    ref.watch(addToCalendarProvider(
+                      title: title,
+                      startDate: startTime,
+                      endDate: endTime,
+                    ));
+                  },
+                ),
               ),
-              const Spacer(),
-              SecondaryImageButton(
-                label: "SEE_MY_BOOKINGS".tr(context),
-                isForPopup: true,
-                image: AppImages.tennisBall.path,
-                imageHeight: 13.h,
-                imageWidth: 13.h,
-                labelStyle: AppTextStyles.manropeLight(fontSize: 13.sp, color: AppColors.white),
-                borderRadius: 100.r,
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-                onTap: () {
-                  Future(() {
-                    ref.read(pageControllerProvider).animateToPage(
-                          2,
-                          duration: kAnimationDuration,
-                          curve: Curves.linear,
-                        );
-                    ref.read(pageIndexProvider.notifier).index = 2;
-                  });
-                  Navigator.pop(context);
-                },
+              4.horizontalSpace,
+              Flexible(
+                child: SecondaryImageButton(
+                  label: "SEE_MY_BOOKINGS".tr(context),
+                  isForPopup: true,
+                  image: AppImages.tennisBall.path,
+                  imageHeight: 13.h,
+                  imageWidth: 13.h,
+                  labelStyle: AppTextStyles.manropeLight(fontSize: 13.sp, color: AppColors.white),
+                  borderRadius: 100.r,
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                  onTap: () {
+                    Future(() {
+                      ref.read(pageControllerProvider).animateToPage(
+                            2,
+                            duration: kAnimationDuration,
+                            curve: Curves.linear,
+                          );
+                      ref.read(pageIndexProvider.notifier).index = 2;
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ],
           ),

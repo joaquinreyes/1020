@@ -125,63 +125,69 @@ class _LessonDateItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                serviceBooking?.bookingDate.format("EEE dd MMM") ??
-                    "",
-                style: AppTextStyles.manropeSemiBold(
-                    fontSize: 15.sp,),
-              ),
-              SizedBox(height: 2.h),
-              Padding(
-                padding: EdgeInsets.only(left: 10.w),
-                child: Text(
-                  "${serviceBooking?.bookingStartTime.format("h:mm")} - ${serviceBooking?.bookingEndTime.format("h:mm a").toLowerCase()}",
-                  style: AppTextStyles.manropeMedium(fontSize: 15.sp),
+          Flexible(flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  serviceBooking?.bookingDate.format("EEE dd MMM") ??
+                      "",
+                  style: AppTextStyles.manropeSemiBold(
+                      fontSize: 15.sp,),
                 ),
-              ),
-            ],
+                SizedBox(height: 2.h),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.w),
+                  child: Text(
+                    "${serviceBooking?.bookingStartTime.format("h:mm")} - ${serviceBooking?.bookingEndTime.format("h:mm a").toLowerCase()}",
+                    style: AppTextStyles.manropeMedium(fontSize: 15.sp),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                Utils.eventLessonStatusText(
-                  context: context,
-                  playersCount: serviceBooking?.players?.length ?? 0,
-                  maxCapacity: maximumCapacity,
-                  minCapacity: minimumCapacity,
-                ).toUpperCase(),
-                style: AppTextStyles.sofiaSansMedium(fontSize: 16.sp,),
-              ),
-              // SizedBox(height: 4.h),
-              Container(
-                padding: EdgeInsets.only(top: 4.h, left: 10.w, right: 10.w,bottom: 4.h),
-                decoration: BoxDecoration(
-                  color: AppColors.blue,
-                  borderRadius: BorderRadius.circular(100.r),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  Utils.eventLessonStatusText(
+                    context: context,
+                    playersCount: serviceBooking?.players?.length ?? 0,
+                    maxCapacity: maximumCapacity,
+                    minCapacity: minimumCapacity,
+                  ).toUpperCase(),
+                  style: AppTextStyles.sofiaSansMedium(fontSize: 16.sp,),
                 ),
-                child: Text(
-                  "${serviceBooking?.players?.length.toString() ?? "0"}/$maximumCapacity",
-                  style: AppTextStyles.manropeSemiBold(fontSize: 13.sp,color: AppColors.white),
+                // SizedBox(height: 4.h),
+                Container(
+                  padding: EdgeInsets.only(top: 4.h, left: 10.w, right: 10.w,bottom: 4.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.blue,
+                    borderRadius: BorderRadius.circular(100.r),
+                  ),
+                  child: Text(
+                    "${serviceBooking?.players?.length.toString() ?? "0"}/$maximumCapacity",
+                    style: AppTextStyles.manropeSemiBold(fontSize: 13.sp,color: AppColors.white),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          MainButton(
-            color: AppColors.white,
-            showArrow: true,
-            applyShadow: isEnabled,
-            enabled: isEnabled,
-            height: 35.h,
-            arrowSize: 12.h,
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            applySize: false,
-            label: "BOOK".trU(context),
-            labelStyle: AppTextStyles.sofiaSansMedium(fontSize: 19.sp,color: AppColors.black70),
-            onTap: onTap,
+          Flexible(
+            child: MainButton(
+              color: AppColors.white,
+              showArrow: true,
+              applyShadow: isEnabled,
+              enabled: isEnabled,
+              // height: 35.h,
+              arrowSize: 12.h,
+              padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 7.h),
+              applySize: false,
+              label: "BOOK".trU(context),
+              labelStyle: AppTextStyles.sofiaSansMedium(fontSize: 19.sp,color: AppColors.black70,height: 1),
+              onTap: onTap,
+            ),
           ),
         ],
       ),

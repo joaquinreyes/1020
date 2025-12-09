@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hop/app_styles/app_colors.dart';
 import 'package:hop/app_styles/app_text_styles.dart';
 import 'package:hop/components/custom_textfield.dart';
+import 'package:hop/components/language_selector_auth.dart';
 import 'package:hop/components/main_button.dart';
 import 'package:hop/components/multi_style_text.dart';
 import 'package:hop/components/selected_tag.dart';
@@ -137,16 +138,24 @@ class __SignupFlowState extends ConsumerState<_SignupFlow> {
             child: Column(
               children: [
                 19.verticalSpace,
-                Container(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
-                  alignment: AlignmentDirectional.centerStart,
-                  child: InkWell(
-                    onTap: _onBack,
-                    child: Image.asset(
-                      AppImages.arrowBack.path,
-                      height: 18.h,
-                      color: AppColors.black,
-                    ),
+                  child: Row(
+                    children: [
+                      Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: InkWell(
+                          onTap: _onBack,
+                          child: Image.asset(
+                            AppImages.arrowBack.path,
+                            height: 18.h,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      const LanguageSelectorAuth(),
+                    ],
                   ),
                 ),
                 10.verticalSpace,

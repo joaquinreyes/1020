@@ -65,7 +65,7 @@
   "BOTH_SIDES_EXPLANATION": "You are comfortable playing on either side of the court.",
   "PLAY": "Play",
   "MATCH": "Match",
-  "PLAY_N_MATCH": "Play & Match",
+  "PLAY_N_MATCH": "Play \n& Match",
   "BOOK_COURT": "Book Court",
   "BOOK": "Book",
   "COURT": "Court",
@@ -318,6 +318,7 @@
   "TOKEN": "Token",
   "UPDATE_PASSWORD": "Update Password",
   "CONFIRM_EMAIL": "Confirm Email",
+  "CONFIRM": "Confirm",
   "PASSWORD_UPDATED_SUCCESS": "You have successfully updated your password",
   "ENTER_NEW_PASSWORD": "Enter new password",
   "RELEASE_OF_LIABILITY": "Release of Liability",
@@ -538,5 +539,6 @@
   "ADD_YOUR_PROFILE_PICTURE": "Add your Profile Picture",
   "SO_EVERYONE_KNOWS_WHO_TO_CHEER_FOR": "So everyone knows who to cheer for",
   "CHOOSE_IMAGE_SOURCE": "Choose Image Source",
-  "THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS" : "This will give others an idea about your skills"
+  "THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS" : "This will give others an idea about your skills",
+  "WHATS_YOUR_PREFERRED_POSITION": "Whats your preferred position"
 }

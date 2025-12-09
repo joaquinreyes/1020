@@ -12,6 +12,7 @@ import 'package:hop/CustomDatePicker/src/datetime_picker_theme.dart'
 import 'package:hop/CustomDatePicker/src/i18n_model.dart';
 import 'package:hop/app_styles/app_colors.dart';
 import 'package:hop/app_styles/app_text_styles.dart';
+import 'package:hop/utils/custom_extensions.dart';
 
 typedef DateChangedCallback(DateTime time);
 typedef DateCancelledCallback();
@@ -484,7 +485,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
                 }
               },
               child: Text(
-                'Confirm'.toUpperCase(),
+                "CONFIRM".trU(context),
                 style: AppTextStyles.sofiaSansMedium(
                     color: AppColors.brick, fontSize: 25.sp),
               ),

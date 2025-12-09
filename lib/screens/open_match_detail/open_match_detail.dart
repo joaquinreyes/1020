@@ -357,20 +357,23 @@ class _DataBodyState extends ConsumerState<_DataBody> {
       bool isJoined, BuildContext context, ServiceDetail service) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (isJoined) ...[
-              _leaveOpenMatch(context),
-              SizedBox(height: 10.h),
+        Flexible(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isJoined) ...[
+                _leaveOpenMatch(context),
+                SizedBox(height: 10.h),
+              ],
+              if (!service.isPast) _addToCalendarButton(context, service),
             ],
-            if (!service.isPast) _addToCalendarButton(context, service),
-          ],
+          ),
         ),
-        const Spacer(),
-        _shareMatchButton(context),
+        4.horizontalSpace,
+        Flexible(child: _shareMatchButton(context)),
       ],
     );
   }

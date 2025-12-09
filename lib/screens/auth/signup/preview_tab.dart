@@ -225,17 +225,22 @@ class _PreviewTabState extends State<_PreviewTab> {
   Widget _infoRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.manropeSemiBold(
-            fontSize: 16.sp,
+        Flexible(
+          child: Text(
+            label,
+            style: AppTextStyles.manropeSemiBold(
+              fontSize: 16.sp,
+            ),
           ),
         ),
-        Text(
-          value,
-          style: AppTextStyles.manropeMedium(
-            fontSize: 15.sp,
+        Flexible(
+          child: Text(
+            value,
+            style: AppTextStyles.manropeMedium(
+              fontSize: 15.sp,
+            ),
           ),
         ),
       ],

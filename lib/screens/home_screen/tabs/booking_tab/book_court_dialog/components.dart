@@ -207,15 +207,17 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
           borderRadius: BorderRadius.circular(100.r),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              text,
-              style: AppTextStyles.manropeSemiBold(
-                fontSize: 13.sp,
-                color: isSelected ? AppColors.brick : AppColors.white,
+            Flexible(
+              child: Text(
+                text,
+                style: AppTextStyles.manropeSemiBold(
+                  fontSize: 13.sp,
+                  color: isSelected ? AppColors.brick : AppColors.white,
+                ),
               ),
             ),
-            const Spacer(),
             SelectedTag(isSelected: isSelected,selectedColor: AppColors.yellow,unSelectedColor: AppColors.white25,unSelectedBorderColor: AppColors.white,selectedBorderColor: AppColors.black25,)
           ],
         ),
