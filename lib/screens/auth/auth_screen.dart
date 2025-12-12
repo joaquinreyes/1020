@@ -95,50 +95,55 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       padding: EdgeInsets.only(right: 87.w),
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                ref.read(goRouterProvider).push(RouteNames.sign_in);
-                              },
-                              child: Container(
-                                height: 40.h,
-                                padding: EdgeInsets.symmetric(horizontal: 38.w,vertical: 2.h),
-                                decoration: BoxDecoration(
-                                  color: AppColors.white,
-                                  border: Border.all(color: AppColors.white,width: 3.w),
-                                  borderRadius: BorderRadius.circular(100.r),
-                                ),
-                                child: Text("SIGN_IN".trU(context),
-                                  style: AppTextStyles.sofiaSansMedium(
-                                    fontSize: 25.sp,
-                                    color: AppColors.brick,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                ref.read(goRouterProvider).push(RouteNames.sign_up);
-                              },
-                              child: Container(
-                                height: 40.h,
-                                padding: EdgeInsets.symmetric(horizontal: 33.w,vertical: 2.h),
-                                decoration: BoxDecoration(
-                                  color: AppColors.white25,
-                                  border: Border.all(color: AppColors.white,width: 1.5.w),
-                                  borderRadius: BorderRadius.circular(100.r),
-                                ),
-                                child: Text("REGISTER".trU(context),
-                                  style: AppTextStyles.sofiaSansMedium(
-                                    fontSize: 23.sp,
+                        child: IntrinsicWidth(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  ref.read(goRouterProvider).push(RouteNames.sign_in);
+                                },
+                                child: Container(
+                                  height: 40.h,
+                                  padding: EdgeInsets.symmetric(horizontal: 33.w,vertical: 2.h),
+                                  decoration: BoxDecoration(
                                     color: AppColors.white,
-                                    height: 1.3,
+                                    border: Border.all(color: AppColors.white,width: 3.w),
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text("SIGN_IN".trU(context),
+                                    style: AppTextStyles.sofiaSansMedium(
+                                      fontSize: 25.sp,
+                                      color: AppColors.brick,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              InkWell(
+                                onTap: () {
+                                  ref.read(goRouterProvider).push(RouteNames.sign_up);
+                                },
+                                child: Container(
+                                  height: 40.h,
+                                  padding: EdgeInsets.symmetric(horizontal: 33.w,vertical: 2.h),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white25,
+                                    border: Border.all(color: AppColors.white,width: 1.5.w),
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text("REGISTER".trU(context),
+                                    style: AppTextStyles.sofiaSansMedium(
+                                      fontSize: 23.sp,
+                                      color: AppColors.white,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

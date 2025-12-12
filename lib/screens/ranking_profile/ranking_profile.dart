@@ -208,53 +208,6 @@ class _RankingProfileState extends ConsumerState<RankingProfile> {
                             fontSize: 15.sp,
                           ),
                         ),
-                      if (isMe)
-                      14.verticalSpace,
-                      if (isMe)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "WALLET".tr(context),
-                              style: AppTextStyles.manropeSemiBold(fontSize: 15.sp),
-                            ),
-                            SizedBox(width: 4.w),
-                            paymentDetails.when(
-                                data: (data) {
-                                  if (data.isNotEmpty) {
-                                    return Text(
-                                      Utils.formatPrice2(
-                                              data.first.balance, currency)
-                                          .toUpperCase(),
-                                      style: AppTextStyles.manropeMedium(
-                                        fontSize: 15.sp,
-                                      ),
-                                    );
-                                  }
-
-                                  return Text(
-                                    Utils.formatPrice2(0, currency)
-                                        .toUpperCase(),
-                                    style: AppTextStyles.manropeMedium(
-                                      fontSize: 15.sp,
-                                    ),
-                                  );
-                                },
-                                error: (error, stackTrace) => Text(
-                                      Utils.formatPrice2(0, currency),
-                                      style: AppTextStyles.manropeMedium(
-                                        fontSize: 15.sp,
-                                      ),
-                                    ),
-                                loading: () => const Center(
-                                      child: CupertinoActivityIndicator(
-                                        radius: 10,
-                                      ),
-                                    ))
-                          ],
-                        ),
                     ],
                   ),
                 ),

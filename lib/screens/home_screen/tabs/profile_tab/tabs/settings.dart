@@ -28,6 +28,7 @@ import '../../../../../components/secondary_text.dart';
 import '../../../../../globals/constants.dart';
 import '../../../../../models/transaction_model.dart';
 import '../../../../auth/signin/signin_screen.dart';
+import '../../../../../components/language_selector_auth.dart';
 
 part 'settings_edit_profile.dart';
 part 'providers.dart';
@@ -93,6 +94,19 @@ class _UpComingBookingsState extends ConsumerState<Settings> {
           _CustomFields(
             user: user,
           ),
+        SizedBox(height: 20.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'LANGUAGE'.tr(context),
+              style: AppTextStyles.manropeSemiBold(
+                fontSize: 16.sp,
+              ),
+            ),
+            const LanguageSelectorAuth(),
+          ],
+        ),
         // Column(
         //   crossAxisAlignment: CrossAxisAlignment.start,
         //   mainAxisAlignment: MainAxisAlignment.start,

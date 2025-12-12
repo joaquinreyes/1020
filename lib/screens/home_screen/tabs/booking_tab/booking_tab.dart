@@ -816,7 +816,11 @@ class _LessonState extends ConsumerState<LessonsList> {
       skipLoadingOnRefresh: false,
       data: (data) {
         if (data.data?.availableSlots?.isEmpty ?? true) {
-          return SecondaryText(text: "NO_LESSONS_FOUND".tr(context));
+          return SecondaryText(
+            text: "NO_LESSONS_FOUND".tr(context),
+            imagePath: 'assets/images/screens_icons/no coaching_balls_icon.png',
+            imageSize: 250,
+          );
         }
         final lessonVariants = ref.watch(_lessonVariantList);
         LessonVariants? lessonVariant = ref.watch(_selectedCoachLessonDuration);
@@ -886,7 +890,11 @@ class _LessonState extends ConsumerState<LessonsList> {
                           return _coachCard(cardData, data);
                         },
                       )
-                : SecondaryText(text: "NO_LESSONS_FOUND".tr(context))
+                : SecondaryText(
+                    text: "NO_LESSONS_FOUND".tr(context),
+                    imagePath: 'assets/images/screens_icons/no coaching_balls_icon.png',
+                    imageSize: 250,
+                  )
           ],
         );
 

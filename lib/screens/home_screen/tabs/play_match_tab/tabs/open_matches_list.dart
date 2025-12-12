@@ -71,7 +71,11 @@ class _OpenMatchesState extends ConsumerState<OpenMatchesList> {
       child: openMatches.when(
         data: (data) {
           if (data.isEmpty) {
-            return SecondaryText(text: "NO_OPEN_MATCHES_FOUND".tr(context));
+            return SecondaryText(
+              text: "NO_OPEN_MATCHES_FOUND".tr(context),
+              imagePath: 'assets/images/screens_icons/no_openmatches_icon.png',
+              imageSize: 200,
+            );
           }
           // final dateList = _getDateList(data);
           final dateList = data.dateList;
@@ -86,7 +90,11 @@ class _OpenMatchesState extends ConsumerState<OpenMatchesList> {
         },
         error: (error, stackTrace) {
           log("PlayTabsParentWidget :: ${error} :: $stackTrace");
-          return SecondaryText(text: error.toString());
+          return SecondaryText(
+            text: "NO_OPEN_MATCHES_FOUND".tr(context),
+            imagePath: 'assets/images/screens_icons/no_openmatches_icon.png',
+            imageSize: 200,
+          );
         },
       ),
     );

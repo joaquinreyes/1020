@@ -21,6 +21,7 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'dart:math' as math;
 import 'package:image/image.dart' as img;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 import '../components/terms_and_condition.dart';
 import '../managers/user_manager.dart';
 import '../models/base_classes/booking_player_base.dart';
@@ -519,19 +520,26 @@ $link
       level = "($level)";
     }
     // Fixed partner or Single signup
+    final fixedPartner = "SHARE_FIXED_PARTNER".tr(context);
+    final singleSignup = "SHARE_SINGLE_SIGNUP".tr(context);
     String title =
-        "${(service.service?.isDoubleEvent ?? false) ? "Fixed Partner" : "Single Signup"} ${service.service?.event?.eventName} $level";
+        "${(service.service?.isDoubleEvent ?? false) ? fixedPartner : singleSignup} ${service.service?.event?.eventName} $level";
     // Sat. 26 October at 02:30 PM
     final date = service.formattedDateStartEndTimeForShare;
     String location = service.service?.location?.locationName ?? "";
     final maxSLots = service.getMaximumCapacity;
     String info = service.service?.additionalService ?? "";
+    final infoLabel = "SHARE_INFO".tr(context);
     if (info.isNotEmpty) {
-      info = "•⁠  ⁠Info:\n$info\n";
+      info = "•⁠  ⁠$infoLabel:\n$info\n";
     }
     int availableSlots;
     int currentParticipants;
     String playerNamesString;
+    final availableSlotText = "SHARE_AVAILABLE_SLOT".tr(context);
+    final reservedText = "SHARE_RESERVED".tr(context);
+    final availableText = "SHARE_AVAILABLE".tr(context);
+
     if (service.service?.isDoubleEvent ?? false) {
       final totalTeams = maxSLots ~/ 2;
       final playersL = service.players ?? [];
@@ -552,16 +560,16 @@ $link
 
       List<String> playerNames = players.map((e) {
         if (e == null) {
-          return "Available Slot";
+          return availableSlotText;
         } else {
           return (e.reserved ?? false)
-              ? "Reserved"
+              ? reservedText
               : "${e.getCustomerName}${!(service.isWellnessSport ?? true) ? " ${e.customer?.level("padel")} ${getRankLabel(e.customer?.levelD("padel") ?? 0)}" : ""}";
         }
       }).toList();
 
       currentParticipants =
-          playerNames.where((name) => name != "Available Slot").length;
+          playerNames.where((name) => name != availableSlotText).length;
       availableSlots = maxSLots - currentParticipants;
 
       List<String> playerNames2 = [];
@@ -569,13 +577,13 @@ $link
         if (i + 1 < playerNames.length) {
           playerNames2.add("${playerNames[i]} + ${playerNames[i + 1]}");
         } else {
-          playerNames2.add("${playerNames[i]} + Available Slot");
+          playerNames2.add("${playerNames[i]} + $availableSlotText");
         }
       }
 
       if (playerNames2.length < totalTeams) {
         playerNames2.addAll(List.generate(totalTeams - playerNames2.length,
-            (index) => "Available Slot + Available Slot"));
+            (index) => "$availableSlotText + $availableSlotText"));
       }
 
       playerNames2.asMap().forEach((index, element) {
@@ -586,7 +594,7 @@ $link
     } else {
       final playerNames = service.players?.map((e) {
             return (e.reserved ?? false)
-                ? "Reserved"
+                ? reservedText
                 : "${e.getCustomerName}${!(service.isWellnessSport ?? true) ? " ${e.customer?.level("padel")} ${getRankLabel(e.customer?.levelD("padel") ?? 0)}" : ""}";
           }).toList() ??
           [];
@@ -595,7 +603,7 @@ $link
 
       if (playerNames.length < maxSLots) {
         playerNames.addAll(List.generate(
-            maxSLots - playerNames.length, (index) => "Available"));
+            maxSLots - playerNames.length, (index) => availableText));
       }
       // add counting to player names
       playerNames.asMap().forEach((index, element) {
@@ -606,12 +614,23 @@ $link
     final link = isLesson
         ? DynamicLinkHandler.instance.getLessonUrl(service.id!)
         : DynamicLinkHandler.instance.getEventURL(service.id!);
+    final spotsAvailable = "SHARE_SPOTS_AVAILABLE".tr(context);
+    final currentParticipantsLabel = "SHARE_CURRENT_PARTICIPANTS".tr(context);
+    final clickToJoin = "SHARE_CLICK_TO_JOIN".tr(context);
     final text = """
-  *${title.toUpperCase()}*\n📅 $date\n📍 $location\n• ${availableSlots > 0 ? availableSlots : 0} Spots Available\n• $currentParticipants Current Participants
-  $info\n$playerNamesString\n\nClick to Join 👇🏼\n$link
-  """;
+*${title.toUpperCase()}*
+📅 $date
+📍 $location
+• ${availableSlots > 0 ? availableSlots : 0} $spotsAvailable
+• $currentParticipants $currentParticipantsLabel
+$info
+$playerNamesString
 
-    Utils.openWhatsapp(context: context, message: text);
+$clickToJoin 👇🏼
+$link
+""";
+
+    Share.share(text);
   }
 
   static void closeKeyboard() {

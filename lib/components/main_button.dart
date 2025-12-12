@@ -123,7 +123,7 @@ class MainButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (isForPopup) ...[
-          _popupLabel,
+          Flexible(child: _popupLabel),
         ] else ...[
           Flexible(
             child: Text(
@@ -150,11 +150,14 @@ class MainButton extends StatelessWidget {
     //     color: AppColors.white,
     //   );
     // } else {
-    return Text(
-      label ?? '',
-      textAlign: TextAlign.center,
-      softWrap: true,
-      style: _labelTextStyleForPopup,
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Text(
+        label ?? '',
+        textAlign: TextAlign.center,
+        softWrap: true,
+        style: _labelTextStyleForPopup,
+      ),
     );
     // }
   }

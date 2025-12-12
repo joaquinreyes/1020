@@ -44,7 +44,7 @@ class _LevelAssessmentTab extends ConsumerState<LevelAssessmentTab> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "${widget.levelQuesiton.question}".toUpperCase(),
+                translateQuestionnaireText(context, widget.levelQuesiton.question ?? "").toUpperCase(),
                 style: AppTextStyles.sofiaSansMedium(fontSize: 26.sp,),
               ),
             ),
@@ -122,7 +122,7 @@ class _LevelAssessmentTab extends ConsumerState<LevelAssessmentTab> {
             SizedBox(width: 15.w),
             Expanded(
               child: Text(
-                option.text ?? "",
+                translateQuestionnaireText(context, option.text ?? ""),
                 softWrap: true,
                 style: selected
                     ? AppTextStyles.manropeSemiBold(fontSize: 16.sp,color: AppColors.white,)

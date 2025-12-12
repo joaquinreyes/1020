@@ -133,7 +133,7 @@ class _SelectYourPositionState extends State<_SelectYourPosition> {
             Expanded(
               child: Text(
                 textAlign: TextAlign.center,
-                side.userFacingString,
+                "BOTH".tr(context),
                 style: selected ? AppTextStyles.manropeSemiBold(fontSize: 16.sp,color: AppColors.white,) : AppTextStyles.manropeMedium(fontSize: 16.sp,),
               ),
             ),

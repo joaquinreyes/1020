@@ -82,6 +82,11 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
               //   isNumber: true,
               // ),
               _editCustomFields(),
+              SizedBox(height: 15.h),
+              _buildField(
+                "LANGUAGE".tr(context),
+                const LanguageSelectorAuth(),
+              ),
               SizedBox(height: 20.h),
               MainButton(
                 label: "SAVE".trU(context),

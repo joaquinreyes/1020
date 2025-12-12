@@ -306,7 +306,7 @@ class _DataBodyState extends ConsumerState<_DataBody> {
       //   fontSize: 13.sp,
       // ),
       // padding: EdgeInsets.only(right: 3.w, top: 4.h, bottom: 4.h, left: 3.w),
-      image: AppImages.whatsaapIcon.path,
+      image: AppImages.telegramIcon.path,
       imageHeight: 14.h,
       imageWidth: 14.h,
       // borderRadius: 8.r,

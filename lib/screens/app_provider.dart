@@ -5,6 +5,7 @@ import 'package:hop/managers/shared_pref_manager.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hop/models/club_locations.dart';
+import 'package:intl/intl.dart';
 part 'app_provider.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -98,11 +99,14 @@ class SportList extends _$SportList {
 class LanguageValue extends _$LanguageValueIndex {
   @override
   Locale build() {
-    return Locale( ref.read(sharedPrefManagerProvider).getLanguage() ?? "en");
+    final lang = ref.read(sharedPrefManagerProvider).getLanguage() ?? "en";
+    Intl.defaultLocale = lang;
+    return Locale(lang);
   }
 
   set setLanguage(String value) {
     ref.read(sharedPrefManagerProvider).setLanguage(value);
+    Intl.defaultLocale = value;
     state = Locale(value);
   }
 

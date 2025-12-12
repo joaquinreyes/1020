@@ -24,6 +24,7 @@ enum AppImages {
   crossIcon("$kAssets/cross-icon.png"),
   backArrow("$kAssets/back-arrow.png"),
   whatsaapIcon("$kAssets/whatsaap-icon.png"),
+  telegramIcon("$kAssets/telegram.png"),
   shareIcon("$kAssets/share_icon.png"),
   levelAssessment("$kAssets/level_assessment.png"),
 

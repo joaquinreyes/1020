@@ -76,19 +76,6 @@ class _DateSelectorWidgetState extends ConsumerState<_DateSelectorWidget> {
 
     Color color = isSelected ? AppColors.blue : AppColors.black5;
 
-    final selectedIndex = ref.watch(_selectedTabIndex);
-    final isCourtActive = selectedIndex == 0;
-
-    if (isCourtActive && index > 6) {
-      if (membership?.haveActiveHOPMembership != null) {
-        color = isSelected ? AppColors.blue : AppColors.blue50;
-      } else {
-        color = isSelected
-            ? AppColors.blue
-            : AppColors.blue.withOpacity(0.12);
-      }
-    }
-
     return Padding(
       padding: EdgeInsets.only(right: 8.w),
       child: InkWell(
@@ -218,7 +205,7 @@ class _Duration extends ConsumerWidget {
                   isServiceSelected ? AppColors.blue : Colors.transparent,),
           alignment: Alignment.center,
           child: Text(
-            "$duration min",
+            "$duration ${"MIN".tr(context)}",
             textAlign: TextAlign.center,
             style: isServiceSelected
                 ? AppTextStyles.manropeSemiBold(

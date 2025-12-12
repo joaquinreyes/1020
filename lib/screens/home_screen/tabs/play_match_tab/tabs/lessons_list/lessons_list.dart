@@ -13,6 +13,7 @@ import 'package:hop/components/service_detail_components.dart/level_restriction_
 import 'package:hop/components/main_button.dart';
 import 'package:hop/components/secondary_text.dart';
 import 'package:hop/globals/constants.dart';
+import 'package:hop/globals/images.dart';
 import 'package:hop/globals/utils.dart';
 import 'package:hop/models/lesson_models.dart';
 import 'package:hop/repository/payment_repo.dart';
@@ -68,7 +69,11 @@ class _LessonState extends ConsumerState<LessonsList> {
       child: lessons.when(
         data: (data) {
           if (data.isEmpty) {
-            return SecondaryText(text: "NO_LESSONS_FOUND".tr(context));
+            return SecondaryText(
+              text: "NO_LESSONS_FOUND".tr(context),
+              imagePath: 'assets/images/screens_icons/towel_lesson_screen.png',
+              imageSize: 200,
+            );
           }
           return ListView.builder(
             itemCount: data.length,
@@ -85,7 +90,11 @@ class _LessonState extends ConsumerState<LessonsList> {
           );
         },
         loading: () => const Center(child: CupertinoActivityIndicator()),
-        error: (error, _) => SecondaryText(text: error.toString()),
+        error: (error, _) => SecondaryText(
+          text: "NO_LESSONS_FOUND".tr(context),
+          imagePath: 'assets/images/screens_icons/towel_lesson_screen.png',
+          imageSize: 200,
+        ),
       ),
     );
   }

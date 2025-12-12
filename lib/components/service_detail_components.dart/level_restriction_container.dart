@@ -18,16 +18,20 @@ class LevelRestrictionContainer extends StatelessWidget {
     if (levelRestriction == null || levelRestriction!.isEmpty) {
       return const SizedBox();
     }
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
-      decoration: BoxDecoration(
-        color: AppColors.white55,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [kBoxShadow],
-      ),
-      child: Text(
-        "${"LEVEL".tr(context)} $levelRestriction",
-        style: AppTextStyles.manropeSemiBold(fontSize: 13.sp),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [kBoxShadow],
+        ),
+        child: Text(
+          "${"LEVEL".tr(context)} $levelRestriction",
+          style: AppTextStyles.manropeSemiBold(fontSize: 13.sp),
+        ),
       ),
     );
   }

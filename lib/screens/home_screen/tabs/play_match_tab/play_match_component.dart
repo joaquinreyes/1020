@@ -293,7 +293,7 @@ class FilterRow extends ConsumerWidget {
                       }
                       return _buildFilterItem(
                         label: _buildLocationLabel(
-                            selectedLocation, allLocations.value ?? []),
+                            context, selectedLocation, allLocations.value ?? []),
                         onTap: () {
                           final Widget widget =
                               _buildLocationSelector(ref, context, list);
@@ -691,15 +691,15 @@ class FilterRow extends ConsumerWidget {
   }
 
   String _buildLocationLabel(
-      List<int> selectedIds, List<ClubLocationData> allLocations) {
+      BuildContext context, List<int> selectedIds, List<ClubLocationData> allLocations) {
     if (selectedIds.isEmpty || selectedIds.contains(kAllLocation.id)) {
-      return 'All locations';
+      return 'ALL_LOCATIONS'.tr(context);
     } else if (selectedIds.length == 1) {
       final selectedLocation =
           allLocations.firstWhere((loc) => loc.id == selectedIds.first);
-      return selectedLocation.locationName?.capitalizeFirst ?? 'Location';
+      return selectedLocation.locationName?.capitalizeFirst ?? 'LOCATION'.tr(context);
     } else {
-      return 'Multiple Locations';
+      return 'MULTIPLE_LOCATIONS'.tr(context);
     }
   }
 }
