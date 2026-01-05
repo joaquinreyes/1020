@@ -31,7 +31,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         backgroundColor: Colors.transparent,
         body: Center(
           child: Container(
-            width: double.infinity,
+            // width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AppImages.authBackground.path),
