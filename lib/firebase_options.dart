@@ -34,7 +34,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyD-PmQOZM8YFV61R8eWzGg3vNGWrIV82Ew',
-    appId: '1:808637490319:web:3d93741f0fdcd17c7cbcfa',
+    appId: '1:808637490319:web:7217c900f6fe8f957cbcfa',
     messagingSenderId: '808637490319',
     projectId: 'frontendbooakdngo3',
     authDomain: 'frontendbooakdngo3.firebaseapp.com',

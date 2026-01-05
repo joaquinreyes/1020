@@ -32,7 +32,7 @@ class WebHeader extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
               child: Image.asset(
-                AppImages.webHeader.path,
+                AppImages.registerImage.path,
                 width: 440.w,
                 height: 70.h,
               ),

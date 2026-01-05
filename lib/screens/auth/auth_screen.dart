@@ -35,7 +35,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AppImages.authBackground.path),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
             child: Padding(
