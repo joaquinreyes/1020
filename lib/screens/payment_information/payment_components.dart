@@ -156,10 +156,51 @@ class _PaymentButtonState extends ConsumerState<_PaymentButton> {
 
     if (!mounted) return;
 
-    if (data is (int?, double?)) {
-      final (int? id, double? amount) = data;
-      if (id != null || amount != null) {
-        Navigator.pop(context, (id, amount));
+    final (id, redirectURL) = data;
+    if (redirectURL != null && id == null && mounted) {
+      await _midtranProcess(redirectURL);
+    }
+    if (id != null && redirectURL == null && mounted) {
+      Navigator.pop(context, (id, null));
+    }
+  }
+
+  Future<void> _midtranProcess(dynamic data) async {
+    String redirectURL = data["confirmationURL"] ?? "";
+    String transactionId = data["transaction_id"] ?? "";
+
+    MidtransHelper midtransHelper = MidtransMobilePaymentHelper();
+
+    Map<String, dynamic>? params = await midtransHelper.handleRedirectURL(
+      url: redirectURL,
+      context: context,
+      ref: ref,
+    );
+    if (params != null && mounted) {
+      try {
+        final provider = fetchServiceIDWithTransactionIDProvider(
+            orderID: transactionId,
+            statusCode: 200.toString(),
+            transactionStatus: 'succeeded');
+        if (!mounted) {
+          return;
+        }
+        final int? id = await Utils.showLoadingDialog(context, provider, ref);
+        if (id != null && mounted) {
+          Navigator.pop(context, (id, null));
+        }
+      } catch (e) {
+        if (!mounted) {
+          return;
+        }
+        await Utils.showMessageDialog(context, e.toString());
+      }
+    } else {
+      if (mounted) {
+        Utils.showMessageDialog(
+          context,
+          "PAYMENT_FAILED_OR_CANCELED".tr(context),
+        );
       }
     }
   }
@@ -383,43 +424,18 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
       prefix: prefix,
       imagePath: AppImages.walletIcon.path,
       onTap: () => _selectPaymentMethod(paymentMethod, mdr: mdr),
-      showDelete: isSelected,
-      onDelete: isSelected
-          ? () {
-              _deletePaymentMethod(paymentMethod);
-            }
-          : null,
+      showDelete: false,
+      onDelete: null,
     );
   }
 
   Widget _buildPaymentMethodItem(AppPaymentMethods paymentMethod, {Widget? prefix}) {
-    bool isStripeMethod = paymentMethod.methodType == kStripeMethod;
-    // if (paymentMethod.methodType == kPayLaterMethod) {
-    //   return Container();
-    // }
     final selectedPaymentMethod = ref.watch(_selectedPaymentMethod);
     final selectedRedeemMethod = ref.watch(_selectedRedeem);
     final isRedeemSelected = selectedRedeemMethod != null;
 
-    if (paymentMethod.methodType == kApplePayMethod) {
-      return _applePay(
-        paymentMethod,
-        selectedPaymentMethod?.methodType == paymentMethod.methodType,
-      );
-    }
-    if (paymentMethod.methodType == kGooglePayMethod) {
-      return _googlePay(
-        paymentMethod,
-        selectedPaymentMethod?.methodType == paymentMethod.methodType,
-      );
-    }
     String title = _getPaymentMethodTitle(paymentMethod, isRedeemSelected);
-    bool isSelected = false;
-    if (isStripeMethod) {
-      isSelected = selectedPaymentMethod?.stripePaymentMethodID == paymentMethod.stripePaymentMethodID;
-    } else {
-      isSelected = selectedPaymentMethod?.id == paymentMethod.id;
-    }
+    bool isSelected = selectedPaymentMethod?.id == paymentMethod.id;
     bool isRedeemAvailable = _isRedeemAvailable(paymentMethod);
 
     if (isRedeemAvailable) {
@@ -439,111 +455,10 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
       title: title,
       isSelected: isSelected,
       prefix: prefix,
-      imagePath: isStripeMethod ? AppImages.creditCard2.path : AppImages.walletIcon.path,
+      imagePath: AppImages.walletIcon.path,
       onTap: () => _selectPaymentMethod(paymentMethod),
-      showDelete: isStripeMethod,
-      onDelete: isStripeMethod
-          ? () {
-              _deletePaymentMethod(paymentMethod);
-            }
-          : null,
-    );
-  }
-
-  Widget _applePay(AppPaymentMethods paymentMethod, bool isSelected) {
-    if (kIsWeb) {
-      return Container();
-    }
-    final bool isIOS = Platform.isIOS;
-    if (!isIOS) {
-      return SizedBox();
-    }
-    return InkWell(
-      onTap: () {
-        _selectPaymentMethod(paymentMethod);
-      },
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: 10.h),
-        padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.w),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.white : AppColors.white25,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x11000000),
-              blurRadius: 4,
-              offset: Offset(0, 4),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              AppImages.applePay.path,
-              height: 25.h,
-              width: 57.h,
-              color: isSelected ? AppColors.black : AppColors.white,
-              fit: BoxFit.contain,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _googlePay(AppPaymentMethods paymentMethod, bool isSelected) {
-    if (kIsWeb) {
-      return SizedBox();
-    }
-    final bool isAndroid = Platform.isAndroid;
-    if (!isAndroid) {
-      return SizedBox();
-    }
-    return InkWell(
-      onTap: () {
-        _selectPaymentMethod(paymentMethod);
-      },
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: 10.h),
-        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.yellow50 : AppColors.white25,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x11000000),
-              blurRadius: 4,
-              offset: Offset(0, 4),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset(
-              AppImages.google.path,
-              height: 26.h,
-              width: 26.h,
-              fit: BoxFit.contain,
-            ),
-            SizedBox(width: 4.w),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
-              child: Text(
-                'PAY'.tr(context),
-                style: isSelected
-                    ? AppTextStyles.manropeLight().copyWith(fontSize: 16.sp)
-                    : AppTextStyles.manropeMedium().copyWith(color: AppColors.white, fontSize: 17.sp),
-              ),
-            ),
-          ],
-        ),
-      ),
+      showDelete: false,
+      onDelete: null,
     );
   }
 
@@ -562,18 +477,6 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
   void _selectPaymentMethod(AppPaymentMethods paymentMethod, {MDRRates? mdr}) {
     ref.read(_selectedPaymentMethod.notifier).state = paymentMethod;
     ref.read(_selectedMDR.notifier).state = mdr;
-  }
-
-  Future<void> _deletePaymentMethod(AppPaymentMethods paymentMethod) async {
-    final id = paymentMethod.stripePaymentMethodID;
-    ref.read(_selectedPaymentMethod.notifier).state = null;
-    if (id != null) {
-      final isDelete = await Utils.showLoadingDialog(context, deletePaymentMethodProvider(id), ref);
-      if (isDelete != null && isDelete) {
-        ref.invalidate(
-            fetchAllPaymentMethodsProvider(widget.locationID, widget.serviceID ?? 0, widget.requestType, widget.startDate, widget.duration,courtId: widget.courtId,variantId: widget.variantId,isOpenMatch: widget.isOpenMatch));
-      }
-    }
   }
 
   Widget _buildPaymentMethodOption(
@@ -613,9 +516,6 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
   }
 
   String _getPaymentMethodTitle(AppPaymentMethods paymentMethod, bool isRedeemSelected) {
-    if (paymentMethod.methodType == kStripeMethod) {
-      return "${paymentMethod.brand?.capitalizeFirst} ${paymentMethod.last4}";
-    }
     if (paymentMethod.methodType == kWalletMethod) {
       final walletBalance = paymentMethod.walletBalance ?? 0.0;
       return widget.price > walletBalance

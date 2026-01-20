@@ -354,7 +354,7 @@ class _FetchPaymentDetailsProviderElement
 }
 
 String _$fetchAllPaymentMethodsHash() =>
-    r'3598941dd7f3a5a235e570f02a16b0bf44a5b8ce';
+    r'83fc33c8bad3f6149029d3ecde232bafac505a6f';
 
 /// See also [fetchAllPaymentMethods].
 @ProviderFor(fetchAllPaymentMethods)
@@ -668,7 +668,7 @@ class _FetchAllPaymentMethodsProviderElement
       (origin as FetchAllPaymentMethodsProvider).isOpenMatch;
 }
 
-String _$paymentProcessHash() => r'ec470890d66bb669205957fdefb3a132d3945b28';
+String _$paymentProcessHash() => r'c8ed191d5781e6cd56b2c1b94ed4b2aa53d64b3d';
 
 /// See also [paymentProcess].
 @ProviderFor(paymentProcess)
@@ -744,7 +744,7 @@ class PaymentProcessFamily extends Family {
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
   Override overrideWith(
-      FutureOr<(int, double?)> Function(PaymentProcessRef ref) create) {
+      FutureOr<(int?, dynamic)> Function(PaymentProcessRef ref) create) {
     return _$PaymentProcessFamilyOverride(this, create);
   }
 }
@@ -752,7 +752,7 @@ class PaymentProcessFamily extends Family {
 class _$PaymentProcessFamilyOverride implements FamilyOverride {
   _$PaymentProcessFamilyOverride(this.overriddenFamily, this.create);
 
-  final FutureOr<(int, double?)> Function(PaymentProcessRef ref) create;
+  final FutureOr<(int?, dynamic)> Function(PaymentProcessRef ref) create;
 
   @override
   final PaymentProcessFamily overriddenFamily;
@@ -766,7 +766,8 @@ class _$PaymentProcessFamilyOverride implements FamilyOverride {
 }
 
 /// See also [paymentProcess].
-class PaymentProcessProvider extends AutoDisposeFutureProvider<(int, double?)> {
+class PaymentProcessProvider
+    extends AutoDisposeFutureProvider<(int?, dynamic)> {
   /// See also [paymentProcess].
   PaymentProcessProvider({
     required PaymentProcessRequestType requestType,
@@ -851,7 +852,7 @@ class PaymentProcessProvider extends AutoDisposeFutureProvider<(int, double?)> {
 
   @override
   Override overrideWith(
-    FutureOr<(int, double?)> Function(PaymentProcessRef ref) create,
+    FutureOr<(int?, dynamic)> Function(PaymentProcessRef ref) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -907,12 +908,12 @@ class PaymentProcessProvider extends AutoDisposeFutureProvider<(int, double?)> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<(int, double?)> createElement() {
+  AutoDisposeFutureProviderElement<(int?, dynamic)> createElement() {
     return _PaymentProcessProviderElement(this);
   }
 
   PaymentProcessProvider _copyWith(
-    FutureOr<(int, double?)> Function(PaymentProcessRef ref) create,
+    FutureOr<(int?, dynamic)> Function(PaymentProcessRef ref) create,
   ) {
     return PaymentProcessProvider._internal(
       (ref) => create(ref as PaymentProcessRef),
@@ -970,7 +971,7 @@ class PaymentProcessProvider extends AutoDisposeFutureProvider<(int, double?)> {
   }
 }
 
-mixin PaymentProcessRef on AutoDisposeFutureProviderRef<(int, double?)> {
+mixin PaymentProcessRef on AutoDisposeFutureProviderRef<(int?, dynamic)> {
   /// The parameter `requestType` of this provider.
   PaymentProcessRequestType get requestType;
 
@@ -1006,7 +1007,7 @@ mixin PaymentProcessRef on AutoDisposeFutureProviderRef<(int, double?)> {
 }
 
 class _PaymentProcessProviderElement
-    extends AutoDisposeFutureProviderElement<(int, double?)>
+    extends AutoDisposeFutureProviderElement<(int?, dynamic)>
     with PaymentProcessRef {
   _PaymentProcessProviderElement(super.provider);
 
@@ -1538,6 +1539,228 @@ class _MultiBookingPaymentProcessProviderElement
       (origin as MultiBookingPaymentProcessProvider).isJoiningApproval;
   @override
   int? get couponID => (origin as MultiBookingPaymentProcessProvider).couponID;
+}
+
+String _$fetchServiceIDWithTransactionIDHash() =>
+    r'abb5f6f684bb9c29e31179ebfda97775bf248dec';
+
+/// See also [fetchServiceIDWithTransactionID].
+@ProviderFor(fetchServiceIDWithTransactionID)
+const fetchServiceIDWithTransactionIDProvider =
+    FetchServiceIDWithTransactionIDFamily();
+
+/// See also [fetchServiceIDWithTransactionID].
+class FetchServiceIDWithTransactionIDFamily extends Family {
+  /// See also [fetchServiceIDWithTransactionID].
+  const FetchServiceIDWithTransactionIDFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchServiceIDWithTransactionIDProvider';
+
+  /// See also [fetchServiceIDWithTransactionID].
+  FetchServiceIDWithTransactionIDProvider call({
+    required String orderID,
+    required String statusCode,
+    required String transactionStatus,
+  }) {
+    return FetchServiceIDWithTransactionIDProvider(
+      orderID: orderID,
+      statusCode: statusCode,
+      transactionStatus: transactionStatus,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  FetchServiceIDWithTransactionIDProvider getProviderOverride(
+    covariant FetchServiceIDWithTransactionIDProvider provider,
+  ) {
+    return call(
+      orderID: provider.orderID,
+      statusCode: provider.statusCode,
+      transactionStatus: provider.transactionStatus,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(
+      FutureOr<int> Function(FetchServiceIDWithTransactionIDRef ref) create) {
+    return _$FetchServiceIDWithTransactionIDFamilyOverride(this, create);
+  }
+}
+
+class _$FetchServiceIDWithTransactionIDFamilyOverride
+    implements FamilyOverride {
+  _$FetchServiceIDWithTransactionIDFamilyOverride(
+      this.overriddenFamily, this.create);
+
+  final FutureOr<int> Function(FetchServiceIDWithTransactionIDRef ref) create;
+
+  @override
+  final FetchServiceIDWithTransactionIDFamily overriddenFamily;
+
+  @override
+  FetchServiceIDWithTransactionIDProvider getProviderOverride(
+    covariant FetchServiceIDWithTransactionIDProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// See also [fetchServiceIDWithTransactionID].
+class FetchServiceIDWithTransactionIDProvider
+    extends AutoDisposeFutureProvider<int> {
+  /// See also [fetchServiceIDWithTransactionID].
+  FetchServiceIDWithTransactionIDProvider({
+    required String orderID,
+    required String statusCode,
+    required String transactionStatus,
+  }) : this._internal(
+          (ref) => fetchServiceIDWithTransactionID(
+            ref as FetchServiceIDWithTransactionIDRef,
+            orderID: orderID,
+            statusCode: statusCode,
+            transactionStatus: transactionStatus,
+          ),
+          from: fetchServiceIDWithTransactionIDProvider,
+          name: r'fetchServiceIDWithTransactionIDProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchServiceIDWithTransactionIDHash,
+          dependencies: FetchServiceIDWithTransactionIDFamily._dependencies,
+          allTransitiveDependencies:
+              FetchServiceIDWithTransactionIDFamily._allTransitiveDependencies,
+          orderID: orderID,
+          statusCode: statusCode,
+          transactionStatus: transactionStatus,
+        );
+
+  FetchServiceIDWithTransactionIDProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.orderID,
+    required this.statusCode,
+    required this.transactionStatus,
+  }) : super.internal();
+
+  final String orderID;
+  final String statusCode;
+  final String transactionStatus;
+
+  @override
+  Override overrideWith(
+    FutureOr<int> Function(FetchServiceIDWithTransactionIDRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchServiceIDWithTransactionIDProvider._internal(
+        (ref) => create(ref as FetchServiceIDWithTransactionIDRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        orderID: orderID,
+        statusCode: statusCode,
+        transactionStatus: transactionStatus,
+      ),
+    );
+  }
+
+  @override
+  ({
+    String orderID,
+    String statusCode,
+    String transactionStatus,
+  }) get argument {
+    return (
+      orderID: orderID,
+      statusCode: statusCode,
+      transactionStatus: transactionStatus,
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<int> createElement() {
+    return _FetchServiceIDWithTransactionIDProviderElement(this);
+  }
+
+  FetchServiceIDWithTransactionIDProvider _copyWith(
+    FutureOr<int> Function(FetchServiceIDWithTransactionIDRef ref) create,
+  ) {
+    return FetchServiceIDWithTransactionIDProvider._internal(
+      (ref) => create(ref as FetchServiceIDWithTransactionIDRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      orderID: orderID,
+      statusCode: statusCode,
+      transactionStatus: transactionStatus,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchServiceIDWithTransactionIDProvider &&
+        other.orderID == orderID &&
+        other.statusCode == statusCode &&
+        other.transactionStatus == transactionStatus;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, orderID.hashCode);
+    hash = _SystemHash.combine(hash, statusCode.hashCode);
+    hash = _SystemHash.combine(hash, transactionStatus.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin FetchServiceIDWithTransactionIDRef on AutoDisposeFutureProviderRef<int> {
+  /// The parameter `orderID` of this provider.
+  String get orderID;
+
+  /// The parameter `statusCode` of this provider.
+  String get statusCode;
+
+  /// The parameter `transactionStatus` of this provider.
+  String get transactionStatus;
+}
+
+class _FetchServiceIDWithTransactionIDProviderElement
+    extends AutoDisposeFutureProviderElement<int>
+    with FetchServiceIDWithTransactionIDRef {
+  _FetchServiceIDWithTransactionIDProviderElement(super.provider);
+
+  @override
+  String get orderID =>
+      (origin as FetchServiceIDWithTransactionIDProvider).orderID;
+  @override
+  String get statusCode =>
+      (origin as FetchServiceIDWithTransactionIDProvider).statusCode;
+  @override
+  String get transactionStatus =>
+      (origin as FetchServiceIDWithTransactionIDProvider).transactionStatus;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

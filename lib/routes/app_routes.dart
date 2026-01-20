@@ -15,4 +15,5 @@ class RouteNames {
   static const notifications = '/notifications';
   static const showImage = '/show_image';
   static const rankingProfile = '/ranking_profile';
+  static const midTranWebView = '/mid_tran_web_view';
 }

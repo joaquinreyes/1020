@@ -96,7 +96,7 @@ class SportList extends _$SportList {
 }
 
 @Riverpod(keepAlive: true)
-class LanguageValue extends _$LanguageValueIndex {
+class LanguageValue extends _$LanguageValue {
   @override
   Locale build() {
     final lang = ref.read(sharedPrefManagerProvider).getLanguage() ?? "en";

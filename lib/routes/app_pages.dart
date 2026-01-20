@@ -14,6 +14,7 @@ import 'package:hop/screens/lesson_detail/lesoon_detail.dart';
 import 'package:hop/screens/notification_screen/notification_screen.dart';
 import 'package:hop/screens/open_match_detail/open_match_detail.dart';
 import 'package:hop/screens/splash_screen/splash_screen.dart';
+import 'package:hop/screens/payment_information/midtran_webview.dart';
 import '../screens/chat/chat_screen.dart';
 import '../screens/full_screen_image/full_screen_image_screen.dart';
 import '../screens/private_chat/private_chat_list_screen.dart';
@@ -165,6 +166,14 @@ class AppPages {
               otherUserAvatar: params?['otherUserAvatar'],
             ),
           );
+        },
+      ),
+      GoRoute(
+        path: "${RouteNames.midTranWebView}/:url",
+        name: "mid_tran_web_view",
+        pageBuilder: (context, state) {
+          final url = Uri.decodeComponent(state.pathParameters['url'] ?? '');
+          return _buildPage(MidtranWebview(url: url));
         },
       ),
     ],

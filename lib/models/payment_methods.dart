@@ -6,11 +6,9 @@ import '../app_styles/app_colors.dart';
 import '../app_styles/app_text_styles.dart';
 
 const String kWalletMethod = "wallet";
-const String kPayLaterMethod = "cash";
-const String kStripeMethod = "stripe";
-const String kApplePayMethod = "apple pay";
-const String kGooglePayMethod = "google pay";
+const String kPayLaterMethod = "pay later";
 const String kMembershipMethod = "membership";
+const String kCashMethod = "cash";
 
 class PaymentDetails {
   List<Wallets>? wallets;
@@ -65,12 +63,15 @@ class PaymentDetails {
     }
 
     for (var i = 0; i < (paymentMethods?.length ?? 0); i++) {
-      final paymentMethodType = paymentMethods![i].methodName;
+      // Skip cash method
+      if (paymentMethods![i].methodName == kCashMethod) {
+        continue;
+      }
       final appPayment = AppPaymentMethods(
         id: paymentMethods![i].id,
-        methodType: paymentMethodType,
-        methodTypeText: paymentMethods![i].methodName ?? "",
-        walletBalance: 0.0,
+        methodTypeText: paymentMethods![i].methodName,
+        methodType: paymentMethods![i].methodName,
+        walletBalance: null,
       );
       appPaymentMethods!.add(appPayment);
     }
@@ -142,11 +143,6 @@ class AppPaymentMethods {
   String? methodTypeText;
   double? walletBalance;
   double? amountToPay;
-
-  //Stripe Related
-  String? stripePaymentMethodID;
-  String? brand;
-  String? last4;
   int? membershipId;
 
   AppPaymentMethods({
@@ -154,11 +150,8 @@ class AppPaymentMethods {
     this.methodType,
     this.walletBalance,
     this.methodTypeText,
-    this.amountToPay,
-    this.stripePaymentMethodID,
-    this.brand,
     this.membershipId,
-    this.last4,
+    this.amountToPay,
   });
 
   Map<String, dynamic> toJsonForProcess() {
@@ -166,9 +159,6 @@ class AppPaymentMethods {
     data['method_id'] = id;
     data['method_type'] = methodType;
     data["amount"] = amountToPay;
-    if (methodType == kStripeMethod) {
-      data["stripe_method_id"] = stripePaymentMethodID;
-    }
     if (methodType == kMembershipMethod) {
       data["customer_membership_id"] = membershipId;
     }

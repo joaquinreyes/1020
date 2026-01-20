@@ -1,15 +1,11 @@
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hop/globals/api_endpoints.dart';
 import 'package:hop/managers/api_manager.dart';
 import 'package:hop/managers/user_manager.dart';
 import 'package:hop/models/coupon_model.dart';
 import 'package:hop/models/payment_methods.dart';
-import 'package:hop/models/stripe_payment_method.dart';
 import 'package:hop/utils/custom_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hop/repository/stripe_repo.dart';
 
 import '../globals/constants.dart';
 import '../models/multi_booking_model.dart';
@@ -65,7 +61,7 @@ class PaymentRepo {
       DateTime? startDate,
       bool isOpenMatch,
       int? duration,
-      {int? courtId,int? variantId}) async {
+      {int? courtId, int? variantId}) async {
     try {
       final token = ref.read(userManagerProvider).user?.accessToken ?? "";
       final Map<String, dynamic> queryParams = {
@@ -94,13 +90,13 @@ class PaymentRepo {
       }
 
       final response = await ref.read(apiManagerProvider).get(
-        ref,
-        isV2Version: true,
-        ApiEndPoint.paymentDetails,
-        token: token,
-        queryParams: queryParams,
-        pathParams: [locationID.toString()],
-      );
+            ref,
+            isV2Version: true,
+            ApiEndPoint.paymentDetails,
+            token: token,
+            queryParams: queryParams,
+            pathParams: [locationID.toString()],
+          );
       return PaymentDetails.fromJson(response['data']);
     } catch (e) {
       if (e is Map<String, dynamic>) {
@@ -110,7 +106,7 @@ class PaymentRepo {
     }
   }
 
-  Future<(int, double?)> paymentProcess(
+  Future<(int?, dynamic)> paymentProcess(
     Ref ref, {
     required PaymentProcessRequestType requestType,
     bool? payLater,
@@ -125,25 +121,6 @@ class PaymentRepo {
     int? couponID,
   }) async {
     try {
-      final bool isStripePayment =
-          paymentMethod?.any((method) => method.methodType == kStripeMethod) ??
-              false;
-      final bool isNativePayment = paymentMethod?.any((method) =>
-              method.methodType == kApplePayMethod ||
-              method.methodType == kGooglePayMethod) ??
-          false;
-
-      // Check for Native Payment availability
-      if (isNativePayment) {
-        final isNativeAvailable =
-            await ref.read(isNativeAvailableProvider.future);
-        if (!isNativeAvailable) {
-          throw Platform.isIOS
-              ? "PLEASE_SETUP_APPLE_PAY"
-              : "PLEASE_SETUP_GOOGLE_PAY";
-        }
-      }
-
       final token = ref.read(userManagerProvider).user?.accessToken;
       final Map<String, dynamic> data = {
         'total_amount': totalAmount,
@@ -169,7 +146,7 @@ class PaymentRepo {
         if (requestType != PaymentProcessRequestType.courtBooking) ...{
           'request_type': requestType.value,
           'service_booking_id': serviceID,
-          'pending_payment' : pendingPayment,
+          'pending_payment': pendingPayment,
           if (isJoiningApproval) 'joninning_approval': isJoiningApproval,
         }
       };
@@ -192,176 +169,65 @@ class PaymentRepo {
                 isV2Version: bookingToOpenMatch ? false : true,
               );
 
-      if (isStripePayment) {
-        return await _handleStripePayment(
-            ref, response, false, paymentMethod, purchaseMembership) as (
-          int,
-          double?
-        );
-      } else if (isNativePayment) {
-        final amount = paymentMethod!
-            .firstWhere(
-              (element) =>
-                  element.methodType == kApplePayMethod ||
-                  element.methodType == kGooglePayMethod,
-            )
-            .amountToPay;
-        return await _handleNativePayment(
-            ref,
-            response,
-            amount ?? totalAmount ?? 0.0,
-            false,
-            purchaseMembership) as (int, double?);
-      } else {
+      // For pay later, wallet, or membership payments - return service booking ID directly
+      if (payLater == true ||
+          paymentMethod?.last.methodType == kWalletMethod ||
+          paymentMethod?.last.methodType == kMembershipMethod) {
         if (bookingToOpenMatch) {
           return (0, null);
         }
-        ;
-        return _extractServiceBookingID(response);
+        final id =
+            response['data']['service']['serviceBookings'][0]['id'] as int;
+        return (id, null);
+      } else {
+        // For gateway payments - return the gateway URL data
+        final data = response['data']['gatewayUrl'];
+        return (null, data);
       }
     } catch (e) {
-      _handlePaymentError(e);
+      if (e is Map<String, dynamic>) {
+        throw e['message'];
+      }
       rethrow;
     }
   }
 
-// Helper method to handle Stripe payment
-  Future<(dynamic, double?)> _handleStripePayment(
-      Ref ref,
-      dynamic response,
-      bool isCart,
-      List<AppPaymentMethods>? paymentMethod,
-      bool isMembership) async {
-    try {
-      await Future.delayed(const Duration(seconds: 2));
-      final rdata = isCart ?  response['data'] : response['data']['gatewayUrl'];
-      String status = (rdata['status'] ?? "").toLowerCase();
-      final clientSecret = rdata['clientSecret'].toString();
-      final transactionID = rdata['transaction_id'].toString();
-
-      while (status == "requires_action") {
-        String stripePaymentMethodId = "";
-
-        if ((paymentMethod ?? []).isNotEmpty) {
-          stripePaymentMethodId =
-              paymentMethod!.first.stripePaymentMethodID ?? "";
-        }
-
-        final PaymentIntent? paymentIntent = await ref.read(
-            stripeRequireActionProvider(clientSecret, stripePaymentMethodId)
-                .future);
-        status = paymentIntent?.toJson()['status'].toString().toLowerCase() ??
-            "unknown";
-      }
-
-      while (status == "requires_payment_method") {
-        await ref.read(stripePaymentMethodProvider(clientSecret).future);
-        status = "succeeded";
-      }
-
-      if (status == "succeeded") {
-        myPrint("chargeID: $transactionID");
-        return _fetchServiceIDFromChargeID(ref,
-            chargeID: transactionID,
-            isCart: isCart,
-            isMembership: isMembership);
-      }
-      throw "SOMETHING_WENT_WRONG";
-    } catch (e) {
-      if (e is StripeError) {
-        throw e.message;
-      }
-      throw e.toString();
-    }
-  }
-
-// Helper method to handle Native payment
-  Future<(dynamic, double?)> _handleNativePayment(Ref ref, dynamic response,
-      double totalAmount, bool isCart, bool isMembership) async {
-    final rdata = response['data']['gatewayUrl'];
-    final clientSecret = rdata['clientSecret'].toString();
-    final transactionID = rdata['transaction_id'].toString();
-
-    final PaymentIntent? paymentIntent = await ref.read(
-      startNativePayProvider(
-        clientSec: clientSecret,
-        amount: totalAmount.toString(),
-      ).future,
-    );
-
-    if (paymentIntent == null) {
-      throw "SOMETHING_WENT_WRONG";
-    }
-
-    return _fetchServiceIDFromChargeID(ref,
-        chargeID: transactionID, isCart: isCart, isMembership: isMembership);
-  }
-
-// Helper method to extract service booking ID
-  (int, double?) _extractServiceBookingID(dynamic response) {
-    final int id = response['data']['service']['serviceBookings'][0]['id'];
-    double? amount;
-    if (response['data']['service']['serviceBookings'][0]["players"] is List) {
-      amount = response['data']['service']['serviceBookings'][0]["players"]
-          .fold(
-              0,
-              (previousValue, element) =>
-                  (double.parse((previousValue ?? 0).toString())) +
-                  (element["paid_price"] ?? 0));
-    }
-    return (id, amount);
-  }
-
-// Error handling helper
-  void _handlePaymentError(dynamic error) {
-    if (error is StripeException) {
-      throw error.error.localizedMessage ?? "SOMETHING_WENT_WRONG";
-    }
-    if (error is Map<String, dynamic>) {
-      throw error['message'];
-    }
-  }
-
-  Future<(dynamic, double?)> _fetchServiceIDFromChargeID(Ref ref,
-      {required String chargeID,
-      required bool isCart,
-      required bool isMembership}) async {
+  Future<int> fetchServiceIDWithTransactionID(
+    Ref ref, {
+    required String orderID,
+    required String statusCode,
+    required String transactionStatus,
+  }) async {
     final token = ref.read(userManagerProvider).user?.accessToken;
     if (token == null) {
       throw Exception('No access token available');
     }
+
     // Compute deadline 15 seconds from now.
     final deadline = DateTime.now().add(const Duration(seconds: 17));
     // Initial wait
     await Future.delayed(const Duration(seconds: 4));
-    final query = {
-      'order_id': chargeID,
-      'status_code': 200,
-      'transaction_status': 'succeeded'
-    };
-    if (isCart) {
-      query["request_type"] = "CART";
-    }
-
-    if (isMembership) {
-      return (0, null);
-      // query["request_type"] = "MEMBERSHIP";
-    }
 
     // Polling loop
     while (DateTime.now().isBefore(deadline)) {
       try {
         final response = await ref.read(apiManagerProvider).get(
-              ref,
-              ApiEndPoint.transaction,
-              token: token,
-              queryParams: query,
-            );
+          ref,
+          ApiEndPoint.transaction,
+          token: token,
+          queryParams: {
+            'order_id': orderID,
+            'status_code': statusCode,
+            'transaction_status': transactionStatus,
+          },
+        );
 
-        final dynamic value = isCart
-            ? response['data']
-            : (response['data']['service']['id'] ?? 0);
-        return (value, null);
+        // If we got a valid service ID, return it
+        final serviceId = response['data']?['service']?['id'];
+        if (serviceId is int) {
+          return serviceId;
+        }
+
         // Otherwise, wait before retrying
       } catch (e) {
         // If the API itself returns an error payload, propagate it
@@ -372,9 +238,11 @@ class PaymentRepo {
         }
         // rethrow;
       }
+
       // Wait 2 seconds between polls
       await Future.delayed(const Duration(seconds: 3));
     }
+
     // If we reach here, we've timed out
     throw "Transaction not found";
   }
@@ -397,7 +265,8 @@ class PaymentRepo {
     }
   }
 
-  Future<(List<MultipleBookings>?, String?)> multiBookingPaymentProcess(Ref ref,
+  Future<(List<MultipleBookings>?, String?)> multiBookingPaymentProcess(
+      Ref ref,
       {required PaymentProcessRequestType requestType,
       bool? payLater,
       AppPaymentMethods? paymentMethod,
@@ -413,7 +282,7 @@ class PaymentRepo {
       if (payLater == true && paymentMethod != null) {
         throw 'Can not use pay later with other payment methods';
       }
-      final bool isStripePayment = (paymentMethod?.methodType == kStripeMethod);
+
       if (payLater == true) {
         data['pay_on_arrival'] = true;
       } else if (paymentMethod != null) {
@@ -438,17 +307,8 @@ class PaymentRepo {
             token: token,
             queryParams: queryParams,
           );
-      if (isStripePayment) {
-        final temp = await _handleStripePayment(
-            ref, response, true, [paymentMethod!], false);
-        final (value, amount) = temp;
-        List<MultipleBookings> list = [];
-        if (value != null && value is List) {
-          value.map((e) => list.add(MultipleBookings.fromJson(e))).toList();
-        }
-        return (list, null);
-      } else if (payLater == true ||
-          paymentMethod?.methodType == kWalletMethod) {
+
+      if (payLater == true || paymentMethod?.methodType == kWalletMethod) {
         List<MultipleBookings> list = [];
         if (response['data'] != null && response['data'] is List) {
           response['data']
@@ -481,10 +341,11 @@ Future<PaymentDetails> fetchPaymentDetails(
     bool isOpenMatch,
     DateTime? startDate,
     int? duration,
-    {int? courtId,int? variantId}) {
+    {int? courtId,
+    int? variantId}) {
   return ref.read(paymentRepoProvider).fetchPaymentDetails(
       locationID, ref, type, id, startDate, isOpenMatch, duration,
-      courtId: courtId,variantId: variantId);
+      courtId: courtId, variantId: variantId);
 }
 
 @riverpod
@@ -493,50 +354,24 @@ Future<PaymentDetails> fetchAllPaymentMethods(
     int locationID,
     int serviceID,
     PaymentDetailsRequestType type,
-
     DateTime? startDate,
-    int? duration,{int? courtId,int? variantId,required bool isOpenMatch}) async {
-  final future = await Future.wait([
-    ref.refresh(fetchPaymentDetailsProvider(
-            locationID, type, serviceID, isOpenMatch, startDate, duration,courtId: courtId,variantId:variantId)
-        .future),
-    ref.refresh(fetchStripPaymentMethodsProvider.future),
-  ]);
-
-  final paymentMethods = future[0] as PaymentDetails;
-  final stripePaymentMethods = future[1] as List<StripePaymentMethod>;
-
-  final List<AppPaymentMethods> appPaymentMethods =
-      paymentMethods.appPaymentMethods ?? [];
-  final stripeIDIndex = appPaymentMethods.indexWhere((element) =>
-      element.methodType?.toLowerCase() == kStripeMethod.toLowerCase());
-
-  if (stripeIDIndex == -1) {
-    return PaymentDetails(
-        appPaymentMethods: appPaymentMethods,
-        userMemberships: paymentMethods.userMemberships);
-  }
-
-  final stripeID = appPaymentMethods[stripeIDIndex].id;
-  for (final paymentMethod in stripePaymentMethods) {
-    paymentMethods.appPaymentMethods?.add(AppPaymentMethods(
-      id: stripeID,
-      methodType: kStripeMethod,
-      stripePaymentMethodID: paymentMethod.id,
-      last4: paymentMethod.card?.last4 ?? "",
-      brand: paymentMethod.card?.brand ?? "",
-    ));
-  }
-
-  appPaymentMethods.removeAt(stripeIDIndex);
+    int? duration,
+    {int? courtId,
+    int? variantId,
+    required bool isOpenMatch}) async {
+  final paymentMethods = await ref
+      .refresh(fetchPaymentDetailsProvider(
+              locationID, type, serviceID, isOpenMatch, startDate, duration,
+              courtId: courtId, variantId: variantId)
+          .future);
 
   return PaymentDetails(
-      appPaymentMethods: appPaymentMethods,
+      appPaymentMethods: paymentMethods.appPaymentMethods,
       userMemberships: paymentMethods.userMemberships);
 }
 
 @riverpod
-Future<(int, double?)> paymentProcess(
+Future<(int?, dynamic)> paymentProcess(
   PaymentProcessRef ref, {
   required PaymentProcessRequestType requestType,
   bool? payLater,
@@ -592,4 +427,16 @@ Future<(List<MultipleBookings>?, String?)> multiBookingPaymentProcess(
       paymentMethod: paymentMethod,
       isJoiningApproval: isJoiningApproval,
       couponID: couponID);
+}
+
+@riverpod
+Future<int> fetchServiceIDWithTransactionID(
+    FetchServiceIDWithTransactionIDRef ref,
+    {required String orderID,
+    required String statusCode,
+    required String transactionStatus}) {
+  return ref.read(paymentRepoProvider).fetchServiceIDWithTransactionID(ref,
+      orderID: orderID,
+      statusCode: statusCode,
+      transactionStatus: transactionStatus);
 }

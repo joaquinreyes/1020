@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:hop/components/custom_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +15,14 @@ import 'package:hop/globals/utils.dart';
 import 'package:hop/models/coupon_model.dart';
 import 'package:hop/models/payment_methods.dart';
 import 'package:hop/repository/payment_repo.dart';
-import 'package:hop/repository/stripe_repo.dart';
 import 'package:hop/utils/custom_extensions.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:hop/screens/payment_information/midtrans_helper/midtrans_helper.dart';
 
 import '../../globals/constants.dart';
 import '../../models/court_price_model.dart';
 import '../../repository/booking_repo.dart';
 import '../../routes/app_pages.dart';
 import '../home_screen/tabs/booking_tab/book_court_dialog/book_court_dialog.dart';
-
-part 'add_card.dart';
 
 part 'payment_components.dart';
 
@@ -313,46 +308,6 @@ class __PaymentInformationState extends ConsumerState<PaymentInformation> {
           isJoiningApproval: widget.isJoiningApproval,
         )
       ],
-    );
-  }
-
-  Widget _buildAddCardWidget() {
-    return InkWell(
-      onTap: () async {
-        final bool? added = await showDialog(
-          context: context,
-          builder: (context) {
-            return _AddCard();
-          },
-        );
-        if (added == true) {
-          ref.invalidate(fetchAllPaymentMethodsProvider(widget.locationID, widget.serviceID ?? 0, widget.type, widget.startDate, widget.duration,courtId: widget.courtId,variantId: widget.variantId,isOpenMatch: widget.isOpenMatch));
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.only(top: 15.h, bottom: 10.h),
-        decoration: BoxDecoration(
-          color: AppColors.white25,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              AppImages.creditCardIcon.path,
-              height: 67.h,
-              width: 67.h,
-              color: AppColors.white,
-            ),
-            SizedBox(height: 15.h),
-            Text(
-              "ADD_CREDIT_DEBIT_CARD".tr(context),
-              style: AppTextStyles.manropeMedium(fontSize: 15.sp,color: AppColors.white),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

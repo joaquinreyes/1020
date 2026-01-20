@@ -20,7 +20,7 @@ const kWhatsAppContact = "+353870356077";
 const int kMinimumLimit = 8;
 const int kPageLimit = 30;
 const int kUserSearchPageSize = 30;
-const kDeepLinkUrl = 'https://share.bookandgo.app/hop';
+const kDeepLinkUrl = 'https://share.bookandgo.app/1020';
 
 // const currency = "RM";
 const currency = "RUB";
@@ -39,13 +39,7 @@ const kMaxLevel = 10;
 
 const kWhatsAppLink = "https://api.whatsapp.com/send";
 
-const sendUsMessageUrl = "https://line.me/R/ti/p/@427tckwu";
-
 String kFormatForAPI = "yyyy-MM-dd";
-
-String kStripDevKey =
-    "pk_live_51SCh4PROOlv4UXRHdxRlYHCo4iLpuD9UZwHiPwY2AOlVJ7rurKakW5XEmTwdQbNU6UNRCsG0EX3D6c82UzWnJuOf00PW3Wt9C4";
-// "pk_test_51SCh4PROOlv4UXRHPltsjAQR6duYemRjKZCchlrechHOnIYhnPTiCXITf2KeTlU7mlmPRlWviJSbPF0zh9ZNkwu300XKK8axoT";
 
 final kComponentWidthConstraint = BoxConstraints(maxWidth: 450.w);
 const kAnimationDuration = Duration(milliseconds: 250);
@@ -203,10 +197,10 @@ final Map<double, String> rankMap = {
 String getRankLabel(double level) {
   return "";
   // Get all keys <= input level
-  final lowerKeys = rankMap.keys.where((k) => k <= level);
-  if (lowerKeys.isEmpty) return 'Unknown';
+  // final lowerKeys = rankMap.keys.where((k) => k <= level);
+  // if (lowerKeys.isEmpty) return 'Unknown';
 
   // Find the highest among the valid lower keys
-  final closestKey = lowerKeys.reduce((a, b) => a > b ? a : b);
-  return rankMap[closestKey] ?? 'Unknown';
+  // final closestKey = lowerKeys.reduce((a, b) => a > b ? a : b);
+  // return rankMap[closestKey] ?? 'Unknown';
 }

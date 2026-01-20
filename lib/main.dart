@@ -9,7 +9,6 @@ import 'package:flutter_i18n/loaders/decoders/json_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutterwebapp_reload_detector/flutterwebapp_reload_detector.dart';
 import 'package:hop/app_styles/app_colors.dart';
 import 'package:hop/firebase_options.dart';
@@ -37,9 +36,6 @@ Future<void> main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      Stripe.publishableKey = kStripDevKey;
-      Stripe.merchantIdentifier = "merchant.com.houseofpadelireland";
-      await Stripe.instance.applySettings();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       tz.initializeTimeZones();
       if (!kIsWeb) {
