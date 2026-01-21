@@ -71,8 +71,9 @@ class _LessonState extends ConsumerState<LessonsList> {
           if (data.isEmpty) {
             return SecondaryText(
               text: "NO_LESSONS_FOUND".tr(context),
-              imagePath: 'assets/images/screens_icons/towel_lesson_screen.png',
-              imageSize: 200,
+              subtitle: "NO_LESSONS_FOUND_SUBTITLE".tr(context),
+              imagePath: 'assets/images/illustrations/shared/whistle.png',
+              imageSize: 130,
             );
           }
           return ListView.builder(
@@ -92,8 +93,9 @@ class _LessonState extends ConsumerState<LessonsList> {
         loading: () => const Center(child: CupertinoActivityIndicator()),
         error: (error, _) => SecondaryText(
           text: "NO_LESSONS_FOUND".tr(context),
-          imagePath: 'assets/images/screens_icons/towel_lesson_screen.png',
-          imageSize: 200,
+          subtitle: "NO_LESSONS_FOUND_SUBTITLE".tr(context),
+          imagePath: 'assets/images/illustrations/shared/whistle.png',
+          imageSize: 130,
         ),
       ),
     );

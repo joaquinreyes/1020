@@ -101,6 +101,7 @@ flutter:
     - assets/
     - assets/images/.
     - assets/images/screens_icons/.
+    - assets/images/illustrations/shared/.
     - assets/locales/.
   fonts:
     - family: SofiaSansExtraCondensed

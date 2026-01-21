@@ -1334,7 +1334,27 @@ class _CoachSelection extends ConsumerWidget {
     return fetchAllCoaches.when(
       data: (data) {
         if (data.isEmpty) {
-          return SecondaryText(text: "NO_COACH_FOUND".tr(context));
+          return Container(
+            height: 60.h,
+            margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: AppColors.black5,
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(
+                color: AppColors.black70.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                "NO_COACH_FOUND".tr(context),
+                style: AppTextStyles.manropeMedium(
+                  fontSize: 14.sp,
+                  color: AppColors.black70,
+                ),
+              ),
+            ),
+          );
         }
         return Container(
           height: (width / height) > 0.6 ? 110.h : 71.h,
@@ -1486,8 +1506,10 @@ class _FilterRow extends ConsumerWidget {
                 children: [
                   Expanded(
                       child: _buildFilterItem(
-                    label: (selectedLocation.locationName ?? 'All Locations')
-                        .capitalizeFirst,
+                    label: selectedLocation.locationName == 'All Locations'
+                        ? 'ALL_LOCATIONS'.tr(context)
+                        : (selectedLocation.locationName ?? 'ALL_LOCATIONS'.tr(context))
+                            .capitalizeFirst,
                     onTap: () {
                       final Widget widget =
                           _buildLocationSelector(ref, context, list);
@@ -1610,8 +1632,9 @@ class _FilterRow extends ConsumerWidget {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 5.h),
                           child: OptionTile(
-                            option:
-                                (location.locationName ?? "").capitalizeFirst,
+                            option: location.locationName == 'All Locations'
+                                ? 'ALL_LOCATIONS'.tr(context)
+                                : (location.locationName ?? "").capitalizeFirst,
                             enabled: true,
                             selected: location.id ==
                                 ref.read(_selectedLessonsLocationProvider).id,

@@ -17,6 +17,7 @@ import 'package:hop/models/payment_methods.dart';
 import 'package:hop/repository/payment_repo.dart';
 import 'package:hop/utils/custom_extensions.dart';
 import 'package:hop/screens/payment_information/midtrans_helper/midtrans_helper.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 
 import '../../globals/constants.dart';
 import '../../models/court_price_model.dart';
@@ -110,10 +111,17 @@ class __PaymentInformationState extends ConsumerState<PaymentInformation> {
     final paymentDetails =
         ref.watch(fetchAllPaymentMethodsProvider(widget.locationID, widget.serviceID ?? 0, widget.type, widget.startDate, widget.duration,courtId: widget.courtId,variantId: widget.variantId,isOpenMatch: widget.isOpenMatch));
     final appliedCoupon = ref.watch(_appliedCoupon);
+    final isInvalidCoupon = ref.watch(_invalidCoupon);
     final cancellationHour = widget.courtPriceModel?.cancellationPolicy?.cancellationTimeInHours;
-    return CustomDialog(
-      maxHeight: MediaQuery.of(context).size.height * 0.85,
-      onTapCloseIcon: () async {
+
+    return ModernPaymentSheet(
+      title: "PAYMENT_INFORMATION".tr(context),
+      subtitle: cancellationHour != null
+          ? (cancellationHour == 0
+              ? "YOU_WILL_NOT_GET_REFUND_ON_THIS_BOOKING".tr(context)
+              : "CANCELLATION_POLICY_HOURS".tr(context, params: {"HOUR": cancellationHour.toString()}))
+          : "PAYMENT_INFORMATION_TEXT".tr(context),
+      onClose: () async {
         final confirmationDialog = await showDialog(
           context: context,
           builder: (context) {
@@ -128,140 +136,81 @@ class __PaymentInformationState extends ConsumerState<PaymentInformation> {
           Navigator.pop(context);
         }
       },
-      child: Flexible(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // SizedBox(height: 5.h),
-            Text(
-              "PAYMENT_INFORMATION".trU(context),
-              style: AppTextStyles.popupHeaderTextStyle,
-            ),
-            SizedBox(height: 5.h),
-            cancellationHour != null
-                ? Text(
-                    cancellationHour == 0
-                        ? "YOU_WILL_NOT_GET_REFUND_ON_THIS_BOOKING".tr(context)
-                        : "CANCELLATION_POLICY_HOURS".tr(context, params: {"HOUR": cancellationHour.toString()}),
-                    style: AppTextStyles.popupBodyTextStyle,
-                    textAlign: TextAlign.center,
-                  )
-                : Text(
-                    "PAYMENT_INFORMATION_TEXT".tr(context),
-                    style: AppTextStyles.popupBodyTextStyle,
-                    textAlign: TextAlign.center,
-                  ),
-
-            if (widget.allowCoupon)
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20.h),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                      Expanded(
-                        child: Text(
-                          "DO_YOU_HAVE_A_DISCOUNT_COUPON".trU(context),
-                          style: AppTextStyles.sofiaSansMedium(fontSize: 21.sp,color: AppColors.white,),
-                        ),
-                      ),
-                      Text(
-                        " ${"OPTIONAL".tr(context).toLowerCase()}",
-                        style: AppTextStyles.manropeMedium(
-                          fontSize: 15.sp,
-                          color: AppColors.white,
-                        ),
-                      )
-                    ]),
-                  ),
-                  SizedBox(height: 5.h),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white25,
-                      borderRadius: BorderRadius.circular(100.r),
+            // Coupon Section
+            if (widget.allowCoupon) ...[
+              ModernCouponSection(
+                controller: _couponController,
+                isApplied: appliedCoupon != null && _couponController.text == appliedCoupon.coupon,
+                isInvalid: isInvalidCoupon,
+                onChanged: (value) {
+                  setState(() {});
+                  ref.read(_appliedCoupon.notifier).state = null;
+                  ref.read(_invalidCoupon.notifier).state = false;
+                  ref.read(totalMultiBookingAmount.notifier).state = calculateAmountPayable(ref, widget.price);
+                },
+                onApply: () async {
+                  if (_couponController.text.isEmpty) return;
+                  final done = await Utils.showLoadingDialog(
+                    context,
+                    verifyCouponProvider(
+                      coupon: _couponController.text,
+                      price: widget.price,
                     ),
-                    child: SecondaryTextField(
-                      hintText: "ENTER_COUPON_HERE".tr(context),
-                      controller: _couponController,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                      onChanged: (value) {
-                        setState(() {});
-                        ref.read(_appliedCoupon.notifier).state = null;
-                        ref.read(_invalidCoupon.notifier).state = false;
-                        ref.read(totalMultiBookingAmount.notifier).state = calculateAmountPayable(ref, widget.price);
-                      },
-                      hintTextStyle: AppTextStyles.manropeLight(
-                          color: AppColors.white55, fontSize: 13.sp),
-                      style: AppTextStyles.manropeMedium()
-                          .copyWith(color: AppColors.white, fontSize: 13.sp),
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (appliedCoupon == null || _couponController.text != appliedCoupon.coupon) ...[
-                            _CouponApplyButton(
-                              price: widget.price,
-                              couponController: _couponController,
-                            ),
-                          ] else ...[
-                            Image.asset(
-                              AppImages.checkMark.path,
-                              width: 16.h,
-                              height: 16.h,
-                              color: AppColors.yellow,
-                            ),
-                          ],
-                          SizedBox(width: 4.w),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                    ref,
+                  );
+                  if (done is CouponModel) {
+                    done.coupon = _couponController.text;
+                    ref.read(_appliedCoupon.notifier).state = done;
+                    ref.read(_invalidCoupon.notifier).state = false;
+                  } else {
+                    ref.read(_invalidCoupon.notifier).state = true;
+                  }
+                  ref.read(totalMultiBookingAmount.notifier).state = calculateAmountPayable(ref, widget.price);
+                },
               ),
-            SizedBox(height: 10.h),
-            _AmountPayable(
-              originalAmount: widget.price,
-            ),
-            20.verticalSpace,
-            // Align(
-            //   alignment: Alignment.centerLeft,
-            //   child: Text(
-            //     "${"Add_PAYMENT_METHOD".trU(context)}",
-            //     style: AppTextStyles.sofiaSansMedium(fontSize: 21.sp,color: AppColors.white,),
-            //     textAlign: TextAlign.start,
-            //   ),
-            // ),
-            // 5.verticalSpace,
-            // _buildAddCardWidget(),
-            // SizedBox(height: 20.h),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "${"SELECT_PAYMENT_METHOD".trU(context)}",
-                  style: AppTextStyles.sofiaSansMedium(fontSize: 21.sp,color: AppColors.white),
-                  textAlign: TextAlign.start,
-                )),
-            15.verticalSpace,
+              SizedBox(height: 12.h),
+            ],
+
+            // Amount Display
+            _ModernAmountPayableWidget(originalAmount: widget.price),
+
+            // Payment Methods Section
+            ModernSectionHeader(title: "SELECT_PAYMENT_METHOD".tr(context)),
+
             paymentDetails.when(
               skipLoadingOnRefresh: false,
               data: (data) {
-                // return Container();
-                return Flexible(child: _body(data));
+                return _body(data);
               },
               error: (error, stackTrace) {
                 myPrint("Error: $error");
                 myPrint("Stack Trace: $stackTrace");
-                return SecondaryText(
-                  text: error.toString(),
-                  color: AppColors.white,
+                return Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Text(
+                    error.toString(),
+                    style: TextStyle(
+                      color: PaymentSheetColors.destructive,
+                      fontSize: 14.sp,
+                    ),
+                  ),
                 );
               },
-              loading: () => Center(
-                child: CupertinoActivityIndicator(color: AppColors.black25),
+              loading: () => Padding(
+                padding: EdgeInsets.all(32.w),
+                child: Center(
+                  child: CupertinoActivityIndicator(color: PaymentSheetColors.accent),
+                ),
               ),
             ),
+
+            SizedBox(height: 8.h),
           ],
         ),
       ),

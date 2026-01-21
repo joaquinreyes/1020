@@ -99,7 +99,7 @@ class SportList extends _$SportList {
 class LanguageValue extends _$LanguageValue {
   @override
   Locale build() {
-    final lang = ref.read(sharedPrefManagerProvider).getLanguage() ?? "en";
+    final lang = ref.read(sharedPrefManagerProvider).getLanguage() ?? "ru";
     Intl.defaultLocale = lang;
     return Locale(lang);
   }

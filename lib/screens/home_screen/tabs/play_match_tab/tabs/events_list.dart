@@ -63,8 +63,9 @@ class _EventListState extends ConsumerState<EventsList> {
           if (data.isEmpty) {
             return SecondaryText(
               text: "NO_EVENTS_FOUND".tr(context),
-              imagePath: 'assets/images/screens_icons/no_events_found_icon.png',
-              imageSize: 250,
+              subtitle: "NO_EVENTS_FOUND_SUBTITLE".tr(context),
+              imagePath: 'assets/images/trophy.png',
+              imageSize: 130,
             );
           }
           final dateList = data.dateList;
@@ -77,8 +78,9 @@ class _EventListState extends ConsumerState<EventsList> {
         loading: () => const Center(child: CupertinoActivityIndicator()),
         error: (error, _) => SecondaryText(
           text: "NO_EVENTS_FOUND".tr(context),
-          imagePath: 'assets/images/screens_icons/no_events_found_icon.png',
-          imageSize: 250,
+          subtitle: "NO_EVENTS_FOUND_SUBTITLE".tr(context),
+          imagePath: 'assets/images/trophy.png',
+          imageSize: 130,
         ),
       ),
     );

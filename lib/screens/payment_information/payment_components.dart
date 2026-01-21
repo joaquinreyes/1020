@@ -1,5 +1,30 @@
 part of 'payment_information.dart';
 
+/// Modern iOS-style Amount Payable Widget
+class _ModernAmountPayableWidget extends ConsumerWidget {
+  const _ModernAmountPayableWidget({
+    required this.originalAmount,
+  });
+
+  final double originalAmount;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mdr = ref.watch(_selectedMDR);
+    double payableAmount = ref.watch(totalMultiBookingAmount);
+
+    if (mdr != null) {
+      payableAmount += Utils.calculateMDR(payableAmount, mdr);
+    }
+
+    return ModernAmountDisplay(
+      amount: payableAmount,
+      originalAmount: originalAmount > payableAmount ? originalAmount : null,
+      label: "AMOUNT_PAYABLE".tr(context),
+    );
+  }
+}
+
 class _AmountPayable extends ConsumerWidget {
   _AmountPayable({
     required this.originalAmount,
@@ -354,19 +379,47 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
 
     if (isEmpty) {
       return Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h), child: SecondaryText(text: "NO_PAYMENT_METHOD_FOUND".trU(context), color: AppColors.white));
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+        child: Container(
+          padding: EdgeInsets.all(20.w),
+          decoration: BoxDecoration(
+            color: PaymentSheetColors.cardBackground,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: PaymentSheetColors.divider, width: 0.5),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                color: PaymentSheetColors.secondaryText,
+                size: 24.sp,
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Text(
+                  "NO_PAYMENT_METHOD_FOUND".tr(context),
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: PaymentSheetColors.secondaryText,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
-    return Column(
+    return ModernPaymentMethodsList(
       children: [
         if (widget.allowMembership)
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.paymentDetails.userMemberships?.length ?? 0,
-            itemBuilder: (context, index) {
+          ...List.generate(
+            widget.paymentDetails.userMemberships?.length ?? 0,
+            (index) {
               final userMembership = widget.paymentDetails.userMemberships?[index];
               if (userMembership == null) {
-                return SizedBox();
+                return const SizedBox();
               }
               final paymentMethod = AppPaymentMethods(
                 id: userMembership.membership?.id,
@@ -376,19 +429,17 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
               );
               final selectedPaymentMethod = ref.watch(_selectedPaymentMethod);
               bool isSelected = selectedPaymentMethod?.id == paymentMethod.id;
-              return _buildPaymentOption(paymentMethod, isSelected: isSelected, prefix: userMembership.usesLeftString(context, isSelected));
+              return _buildModernPaymentOption(paymentMethod, isSelected: isSelected, prefix: userMembership.usesLeftString(context, isSelected));
             },
           ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: (widget.paymentDetails.appPaymentMethods ?? []).length,
-          itemBuilder: (context, index) {
+        ...List.generate(
+          (widget.paymentDetails.appPaymentMethods ?? []).length,
+          (index) {
             final paymentMethod = (widget.paymentDetails.appPaymentMethods ?? [])[index];
             if (paymentMethod.methodType == kPayLaterMethod && !widget.allowPayLater) {
-              return SizedBox(); // Hide "Pay Later"
+              return const SizedBox(); // Hide "Pay Later"
             }
-            return _buildPaymentMethodItem(paymentMethod);
+            return _buildModernPaymentMethodItem(paymentMethod);
           },
         ),
       ],
@@ -477,6 +528,92 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
   void _selectPaymentMethod(AppPaymentMethods paymentMethod, {MDRRates? mdr}) {
     ref.read(_selectedPaymentMethod.notifier).state = paymentMethod;
     ref.read(_selectedMDR.notifier).state = mdr;
+  }
+
+  // Modern payment method builders
+  Widget _buildModernPaymentOption(AppPaymentMethods paymentMethod, {MDRRates? mdr, required Widget? prefix, required bool isSelected}) {
+    final selectedRedeemMethod = ref.watch(_selectedRedeem);
+    final isRedeemSelected = selectedRedeemMethod != null;
+
+    String title = _getPaymentMethodTitle(paymentMethod, isRedeemSelected);
+    bool isRedeemAvailable = _isRedeemAvailable(paymentMethod);
+
+    if (isRedeemAvailable) {
+      if (widget.isMultiBooking) {
+        return const SizedBox();
+      }
+      return _buildModernRedeemOption(
+        title: title,
+        isSelected: isRedeemSelected,
+        onTap: () => _toggleRedeemSelection(isRedeemSelected, paymentMethod),
+      );
+    }
+
+    if (paymentMethod.methodType == kPayLaterMethod && isRedeemSelected) {
+      return const SizedBox();
+    }
+
+    return ModernPaymentMethodCard(
+      title: title.capitalizeFirst,
+      isSelected: isSelected,
+      iconPath: AppImages.walletIcon.path,
+      prefix: prefix,
+      onTap: () => _selectPaymentMethod(paymentMethod, mdr: mdr),
+    );
+  }
+
+  Widget _buildModernPaymentMethodItem(AppPaymentMethods paymentMethod, {Widget? prefix}) {
+    final selectedPaymentMethod = ref.watch(_selectedPaymentMethod);
+    final selectedRedeemMethod = ref.watch(_selectedRedeem);
+    final isRedeemSelected = selectedRedeemMethod != null;
+
+    String title = _getPaymentMethodTitle(paymentMethod, isRedeemSelected);
+    bool isSelected = selectedPaymentMethod?.id == paymentMethod.id;
+    bool isRedeemAvailable = _isRedeemAvailable(paymentMethod);
+
+    if (isRedeemAvailable) {
+      return _buildModernRedeemOption(
+        title: title,
+        isSelected: isRedeemSelected,
+        onTap: () => _toggleRedeemSelection(isRedeemSelected, paymentMethod),
+      );
+    }
+
+    if (paymentMethod.methodType == kPayLaterMethod && isRedeemSelected) {
+      return const SizedBox();
+    }
+
+    IconData? icon;
+    if (paymentMethod.methodType == kPayLaterMethod) {
+      icon = Icons.schedule_outlined;
+    } else if (paymentMethod.methodType == kWalletMethod) {
+      icon = Icons.account_balance_wallet_outlined;
+    }
+
+    return ModernPaymentMethodCard(
+      title: title.capitalizeFirst,
+      isSelected: isSelected,
+      icon: icon,
+      iconPath: icon == null ? AppImages.walletIcon.path : null,
+      prefix: prefix,
+      onTap: () => _selectPaymentMethod(paymentMethod),
+    );
+  }
+
+  Widget _buildModernRedeemOption({
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return ModernPaymentMethodCard(
+      title: title.capitalizeFirst,
+      subtitle: "USE_CREDITS".tr(context),
+      isSelected: isSelected,
+      icon: Icons.account_balance_wallet_outlined,
+      showToggle: true,
+      isToggled: isSelected,
+      onTap: onTap,
+    );
   }
 
   Widget _buildPaymentMethodOption(

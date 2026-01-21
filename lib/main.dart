@@ -110,7 +110,7 @@ class _HOPIrelandState extends ConsumerState<HOPIreland> {
         localizationsDelegates: [
           FlutterI18nDelegate(
             translationLoader: FileTranslationLoader(
-              fallbackFile: 'en',
+              fallbackFile: 'ru',
               basePath: "assets/locales",
               decodeStrategies: [JsonDecodeStrategy()],
             ),

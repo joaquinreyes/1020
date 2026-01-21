@@ -10,35 +10,52 @@ class SecondaryText extends StatelessWidget {
     this.color,
     this.imagePath,
     this.imageSize,
+    this.subtitle,
   });
   final String text;
   final Color? color;
   final String? imagePath;
   final double? imageSize;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (imagePath != null) ...[
-            Image.asset(
-              imagePath!,
-              height: imageSize ?? 60.h,
-              width: imageSize ?? 60.w,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (imagePath != null) ...[
+              Image.asset(
+                imagePath!,
+                height: imageSize ?? 120.h,
+                width: imageSize ?? 120.w,
+              ),
+              SizedBox(height: 24.h),
+            ],
+            Text(
+              text,
+              style: AppTextStyles.sofiaSansMedium(
+                fontSize: 22.sp,
+                color: color ?? AppColors.black,
+              ),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8.h),
+            if (subtitle != null) ...[
+              SizedBox(height: 12.h),
+              Text(
+                subtitle!,
+                style: AppTextStyles.manropeMedium(
+                  fontSize: 14.sp,
+                  color: AppColors.black70,
+                  height: 1.4,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ],
-          Text(
-            text,
-            style: AppTextStyles.manropeMedium(
-              fontSize: 13.sp,
-              color: color ?? AppColors.black,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }
