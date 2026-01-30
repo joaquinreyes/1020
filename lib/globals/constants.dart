@@ -13,7 +13,7 @@ const allowShowPadelMembershipInProfile = true;
 const kAllowPlayerRanking = true;
 
 const kAppName = '10 - 20';
-const kSportName = "padel"; //sport
+const kSportName = "Падел"; //sport
 const kPadelName = "padel"; //sport
 const kPickleBallName = "pickleball"; //sport
 const kWhatsAppContact = "+353870356077";

@@ -71,6 +71,7 @@ class RegisterModel {
       data['prefered_sport'] = preferredSport;
     }else{
       data['quiz_answers'] = levelAnswers.map((e) => e ?? 0).toList();
+      data['prefered_sport'] = preferredSport;
     }
     data['custom_fields'] = customFields;
     return data;
