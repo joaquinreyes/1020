@@ -9,6 +9,7 @@ class CustomDialog extends StatelessWidget {
       required this.child,
       this.height,
       this.color = AppColors.brick,
+      this.borderRadius,
       EdgeInsets? contentPadding,
       this.showCloseIcon = true,
       this.closeIconColor,
@@ -23,6 +24,7 @@ class CustomDialog extends StatelessWidget {
   final Widget child;
   final double? height;
   final Color color;
+  final BorderRadius? borderRadius;
   final EdgeInsets _contentPadding;
   final EdgeInsets? closeIconPadding;
   final bool showCloseIcon;
@@ -47,7 +49,7 @@ class CustomDialog extends StatelessWidget {
             padding: _contentPadding,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(5.r),
+              borderRadius: borderRadius ?? BorderRadius.circular(5.r),
             ),
             child: SingleChildScrollView(
               physics: physics ?? BouncingScrollPhysics(),

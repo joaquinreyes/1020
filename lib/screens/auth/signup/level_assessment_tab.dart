@@ -7,12 +7,18 @@ class LevelAssessmentTab extends ConsumerStatefulWidget {
         required this.isLastQuestion,
         required this.levelQuesiton,
         required this.registerModel,
-        required this.onProceed});
+        required this.onProceed,
+        this.isForPopup = false,
+        this.isOpenMatchFlow = false,
+        this.totalQuestions});
   final int index;
   final bool isLastQuestion;
   final RegisterModel registerModel;
   final Function() onProceed;
   final LevelQuestion levelQuesiton;
+  final bool isForPopup;
+  final bool isOpenMatchFlow;
+  final int? totalQuestions;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LevelAssessmentTab();
 }
@@ -27,38 +33,95 @@ class _LevelAssessmentTab extends ConsumerState<LevelAssessmentTab> {
 
   @override
   Widget build(BuildContext context) {
+    final isPopup = widget.isForPopup;
+    final isOpenMatchPopup = isPopup && widget.isOpenMatchFlow;
+    final questionText =
+        translateQuestionnaireText(context, widget.levelQuesiton.question ?? "");
+    final popupTitleKey =
+        isOpenMatchPopup ? 'OPEN_MATCH_ASSESSMENT_TITLE' : 'LEVEL_ASSESSMENT';
+    final popupSubtitleKey = isOpenMatchPopup
+        ? 'OPEN_MATCH_ASSESSMENT_SUBTITLE'
+        : 'THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS';
     return SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 30.w),
+        margin: EdgeInsets.symmetric(horizontal: isPopup ? 0.w : 30.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'REGISTER'.trU(context),
-              style: AppTextStyles.sofiaSansMedium(
-                color: AppColors.black,
-                fontSize: 40.sp,
+            if (!isPopup) ...[
+              Text(
+                'REGISTER'.trU(context),
+                style: AppTextStyles.sofiaSansMedium(
+                  color: AppColors.black,
+                  fontSize: 40.sp,
+                ),
               ),
-            ),
-            33.verticalSpace,
+              33.verticalSpace,
+            ] else ...[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  popupTitleKey.trU(context),
+                  style: AppTextStyles.sofiaSansMedium(
+                    color: AppColors.black,
+                    fontSize: 26.sp,
+                  ),
+                ),
+              ),
+              8.verticalSpace,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  popupSubtitleKey.tr(context),
+                  style: AppTextStyles.manropeMedium(
+                    fontSize: 15.sp,
+                    color: AppColors.black70,
+                  ),
+                ),
+              ),
+              14.verticalSpace,
+              if (widget.totalQuestions != null) ...[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'OPEN_MATCH_ASSESSMENT_PROGRESS'.tr(
+                      context,
+                      params: {
+                        "CURRENT": "${widget.index + 1}",
+                        "TOTAL": "${widget.totalQuestions}",
+                      },
+                    ),
+                    style: AppTextStyles.manropeMedium(
+                      fontSize: 13.sp,
+                      color: AppColors.black70,
+                    ),
+                  ),
+                ),
+                10.verticalSpace,
+              ],
+            ],
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                translateQuestionnaireText(context, widget.levelQuesiton.question ?? "").toUpperCase(),
-                style: AppTextStyles.sofiaSansMedium(fontSize: 26.sp,),
-              ),
-            ),
-            8.verticalSpace,
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS'.tr(context),
-                style: AppTextStyles.manropeMedium(
-                  fontSize: 16.sp,
+                isPopup ? questionText : questionText.toUpperCase(),
+                style: AppTextStyles.sofiaSansMedium(
+                  fontSize: isPopup ? 24.sp : 26.sp,
                 ),
               ),
             ),
-            SizedBox(height: 32.h),
+            if (!isPopup) ...[
+              8.verticalSpace,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS'.tr(context),
+                  style: AppTextStyles.manropeMedium(
+                    fontSize: 16.sp,
+                  ),
+                ),
+              ),
+            ],
+            SizedBox(height: isPopup ? 24.h : 32.h),
             GridView.builder(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
@@ -76,11 +139,14 @@ class _LevelAssessmentTab extends ConsumerState<LevelAssessmentTab> {
             ),
             SizedBox(height: 37.h),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: isPopup ? Alignment.center : Alignment.centerRight,
               child: SizedBox(
-                width: 154.50.w,
+                width: isPopup ? double.infinity : 154.50.w,
                 child: MainButton(
                   enabled: _canProceed,
+                  isForPopup: isPopup,
+                  applySize: !isPopup,
+                  height: isPopup ? 56.h : null,
                   label: widget.isLastQuestion
                       ? "FINISH".trU(context)
                       : 'NEXT'.trU(context),

@@ -3,7 +3,7 @@ class Questions {
     "questions": [
       {
         "id": "q1",
-        "text": "How long have you been playing pickleball?",
+        "text": "How long have you been playing padel?",
         "options": [
           {"text": "Less than 6 months", "value": 1},
           {"text": "6 months to 1 year", "value": 2.5},
@@ -14,7 +14,7 @@ class Questions {
       },
       {
         "id": "q2",
-        "text": "How often do you play pickleball?",
+        "text": "How often do you play padel?",
         "options": [
           {"text": "Less than once a month", "value": 1},
           {"text": "1-3 times a month", "value": 3},

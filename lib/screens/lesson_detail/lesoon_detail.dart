@@ -26,6 +26,7 @@ import 'package:hop/repository/payment_repo.dart';
 import 'package:hop/repository/play_repo.dart';
 import 'package:hop/routes/app_pages.dart';
 import 'package:hop/screens/payment_information/payment_information.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 import 'package:hop/screens/responsive_widgets/home_responsive_widget.dart';
 import 'package:hop/utils/custom_extensions.dart';
 import 'package:hop/widgets/background_view.dart';
@@ -353,20 +354,18 @@ class _DataBodyState extends ConsumerState<_DataBody> {
         return;
       }
 
-      final data = await showDialog(
+      final data = await showPaymentSheet(
         context: context,
-        builder: (context) {
-          return PaymentInformation(
-              title: "PAY_MY_SHARE".trU(context),
-              type: PaymentDetailsRequestType.join,
-              locationID: service.service!.location!.id!,
-              price: price,
-              courtId: service.courtId,
-              requestType: PaymentProcessRequestType.join,
-              serviceID: service.id!,
-              duration: service.duration2,
-              startDate: service.bookingStartTime);
-        },
+        child: PaymentInformation(
+            title: "PAY_MY_SHARE".trU(context),
+            type: PaymentDetailsRequestType.join,
+            locationID: service.service!.location!.id!,
+            price: price,
+            courtId: service.courtId,
+            requestType: PaymentProcessRequestType.join,
+            serviceID: service.id!,
+            duration: service.duration2,
+            startDate: service.bookingStartTime),
       );
       if (data != null) {
         final (int? paymentDone, double? amount) = data;

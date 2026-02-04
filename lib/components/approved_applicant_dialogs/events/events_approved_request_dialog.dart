@@ -16,6 +16,7 @@ import 'package:hop/models/service_detail_model.dart';
 import 'package:hop/repository/booking_repo.dart';
 import 'package:hop/repository/payment_repo.dart';
 import 'package:hop/screens/payment_information/payment_information.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 import 'package:hop/utils/custom_extensions.dart';
 
 class EventApprovedRequestDialog extends ConsumerStatefulWidget {
@@ -116,20 +117,18 @@ class _ApprovedRequestDialogState
         dateTime: DateTime.now());
     await Utils.showLoadingDialog(context, provider, ref);
 
-    final data = await showDialog(
+    final data = await showPaymentSheet(
       context: context,
-      builder: (context) {
-        return PaymentInformation(
-            type: PaymentDetailsRequestType.join,
-            locationID: locationID,
-            requestType: PaymentProcessRequestType.join,
-            price: price,
-            courtId: service.courtId,
-            serviceID: serviceID,
-            isJoiningApproval: true,
-            duration: service.duration2,
-            startDate: service.bookingStartTime);
-      },
+      child: PaymentInformation(
+          type: PaymentDetailsRequestType.join,
+          locationID: locationID,
+          requestType: PaymentProcessRequestType.join,
+          price: price,
+          courtId: service.courtId,
+          serviceID: serviceID,
+          isJoiningApproval: true,
+          duration: service.duration2,
+          startDate: service.bookingStartTime),
     );
 
     var (int? postPaymentServiceID, double? amount) = (null, null);

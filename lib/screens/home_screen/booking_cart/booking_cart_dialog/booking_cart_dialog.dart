@@ -15,6 +15,7 @@ import '../../../../components/secondary_text.dart';
 import '../../../../globals/utils.dart';
 import '../../../../repository/payment_repo.dart';
 import '../../../payment_information/payment_information.dart';
+import '../../../payment_information/modern_payment_sheet.dart';
 import '../cart_booked_dialog.dart';
 
 part 'components.dart';
@@ -120,20 +121,18 @@ class _BookCourtDialogState extends ConsumerState<BookingCartDialog> {
   _payCourt(List<MultipleBookings> data) async {
     double price = data.fold(0.0, (sum, item) => sum + (item.totalPrice ?? 0));
 
-    List<MultipleBookings>? multiBookingList = await showDialog(
+    List<MultipleBookings>? multiBookingList = await showPaymentSheet(
       context: context,
-      builder: (context) {
-        return PaymentInformation(
-            serviceID: data.first.bookingId,
-            type: PaymentDetailsRequestType.booking,
-            isMultiBooking: true,
-            allowCoupon: false,
-            locationID: data.first.locationId ?? 0,
-            requestType: PaymentProcessRequestType.courtBooking,
-            price: price,
-            duration: null,
-            startDate: null);
-      },
+      child: PaymentInformation(
+          serviceID: data.first.bookingId,
+          type: PaymentDetailsRequestType.booking,
+          isMultiBooking: true,
+          allowCoupon: false,
+          locationID: data.first.locationId ?? 0,
+          requestType: PaymentProcessRequestType.courtBooking,
+          price: price,
+          duration: null,
+          startDate: null),
     );
     ref.invalidate(fetchBookingCartListProvider);
 

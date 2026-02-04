@@ -137,21 +137,9 @@ class _PaymentButtonState extends ConsumerState<_PaymentButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MainButton(
+    return ModernPrimaryButton(
       enabled: isButtonEnabled,
-      label: widget.title?.toUpperCase() ?? "PROCEED_WITH_PAYMENT".tr(context).toUpperCase(),
-      // child: Text(
-      //   widget.title?.capitalWord(context, isButtonEnabled) ?? "PROCEED_WITH_PAYMENT".tr(context).capitalWord(context, isButtonEnabled),
-      //   style: isButtonEnabled
-      //       ? AppTextStyles.sofiaSansMedium(
-      //           fontSize: 18.sp,
-      //           color: AppColors.black2,
-      //         )
-      //       : AppTextStyles.sofiaSansMedium(fontSize: 18.sp, color: AppColors.white),
-      // ),
-      isForPopup: true,
-      // color: AppColors.rosewood,
-      // labelColor: isButtonEnabled ? AppColors.white: AppColors.baseGreen,
+      label: widget.title ?? "PROCEED_WITH_PAYMENT".tr(context),
       onTap: () {
         if (widget.isMultiBooking) {
           _onPayMultiBookingTap();
@@ -159,7 +147,6 @@ class _PaymentButtonState extends ConsumerState<_PaymentButton> {
           _onPayTap();
         }
       },
-      // labelStyle: AppTextStyles.manropeLight().copyWith(fontSize: 18.sp, color: isButtonEnabled ? AppColors.yellow : AppColors.white),
     );
   }
 
@@ -542,8 +529,10 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
       if (widget.isMultiBooking) {
         return const SizedBox();
       }
+      final walletBalance = paymentMethod.walletBalance ?? 0.0;
       return _buildModernRedeemOption(
-        title: title,
+        title: "CREDITS".tr(context),
+        subtitle: Utils.formatPrice(walletBalance),
         isSelected: isRedeemSelected,
         onTap: () => _toggleRedeemSelection(isRedeemSelected, paymentMethod),
       );
@@ -572,8 +561,10 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
     bool isRedeemAvailable = _isRedeemAvailable(paymentMethod);
 
     if (isRedeemAvailable) {
+      final walletBalance = paymentMethod.walletBalance ?? 0.0;
       return _buildModernRedeemOption(
-        title: title,
+        title: "CREDITS".tr(context),
+        subtitle: Utils.formatPrice(walletBalance),
         isSelected: isRedeemSelected,
         onTap: () => _toggleRedeemSelection(isRedeemSelected, paymentMethod),
       );
@@ -583,18 +574,26 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
       return const SizedBox();
     }
 
-    IconData? icon;
+    IconData icon;
+    final methodLower = (paymentMethod.methodType ?? "").toLowerCase();
+
     if (paymentMethod.methodType == kPayLaterMethod) {
       icon = Icons.schedule_outlined;
     } else if (paymentMethod.methodType == kWalletMethod) {
       icon = Icons.account_balance_wallet_outlined;
+    } else if (methodLower.contains("cash") || methodLower.contains("наличн")) {
+      icon = Icons.payments_outlined;
+    } else if (methodLower.contains("online") || methodLower.contains("card") || methodLower.contains("карт")) {
+      icon = Icons.credit_card_outlined;
+      title = "ONLINE_PAYMENT".tr(context);
+    } else {
+      icon = Icons.credit_card_outlined;
     }
 
     return ModernPaymentMethodCard(
       title: title.capitalizeFirst,
       isSelected: isSelected,
       icon: icon,
-      iconPath: icon == null ? AppImages.walletIcon.path : null,
       prefix: prefix,
       onTap: () => _selectPaymentMethod(paymentMethod),
     );
@@ -602,12 +601,13 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
 
   Widget _buildModernRedeemOption({
     required String title,
+    required String subtitle,
     required bool isSelected,
     required VoidCallback onTap,
   }) {
     return ModernPaymentMethodCard(
       title: title.capitalizeFirst,
-      subtitle: "USE_CREDITS".tr(context),
+      subtitle: subtitle,
       isSelected: isSelected,
       icon: Icons.account_balance_wallet_outlined,
       showToggle: true,
@@ -661,7 +661,16 @@ class __WalletState extends ConsumerState<_PaymentMethods> {
     } else if (paymentMethod.methodType == kPayLaterMethod) {
       return "PAY_LATER".tr(context);
     } else {
-      return paymentMethod.methodTypeText ?? "";
+      final title = paymentMethod.methodTypeText ?? "";
+      final methodLower = title.toLowerCase();
+      final typeLower = (paymentMethod.methodType ?? "").toLowerCase();
+      if (methodLower.contains("cash") ||
+          methodLower.contains("наличн") ||
+          typeLower.contains("cash") ||
+          typeLower.contains("наличн")) {
+        return "PAYMENT_BY_CARD".tr(context);
+      }
+      return title;
     }
   }
 

@@ -32,6 +32,7 @@ import '../../../../repository/play_repo.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../payment_information/payment_information.dart';
+import '../../../payment_information/modern_payment_sheet.dart';
 import '../play_match_tab/play_match_tab.dart';
 import '../play_match_tab/tabs/events_list.dart';
 
@@ -447,23 +448,21 @@ class _WellnessTabState extends ConsumerState<WellnessTab> {
                                 return;
                               }
 
-                              final data = await showDialog(
+                              final data = await showPaymentSheet(
                                 context: context,
-                                builder: (context) {
-                                  return PaymentInformation(
-                                    type: PaymentDetailsRequestType.membership,
-                                    locationID: e.locationId,
-                                    allowCoupon: false,
-                                    allowMembership: false,
-                                    allowWallet: false,
-                                    purchaseMembership: true,
-                                    price: e.price ?? 0,
-                                    requestType: PaymentProcessRequestType.membership,
-                                    serviceID: e.id ?? 0,
-                                    startDate: null,
-                                    duration: null,
-                                  );
-                                },
+                                child: PaymentInformation(
+                                  type: PaymentDetailsRequestType.membership,
+                                  locationID: e.locationId,
+                                  allowCoupon: false,
+                                  allowMembership: false,
+                                  allowWallet: false,
+                                  purchaseMembership: true,
+                                  price: e.price ?? 0,
+                                  requestType: PaymentProcessRequestType.membership,
+                                  serviceID: e.id ?? 0,
+                                  startDate: null,
+                                  duration: null,
+                                ),
                               );
                               var (int? paymentDone, double? amount) =
                                   (null, null);

@@ -9,6 +9,7 @@ const String kWalletMethod = "wallet";
 const String kPayLaterMethod = "pay later";
 const String kMembershipMethod = "membership";
 const String kCashMethod = "cash";
+const String kOnlineMethod = "online";
 
 class PaymentDetails {
   List<Wallets>? wallets;

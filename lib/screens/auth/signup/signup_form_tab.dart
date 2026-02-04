@@ -237,8 +237,7 @@ class _SignUpFormTabState extends ConsumerState<_SignUpFormTab> {
                             textInputAction: TextInputAction.done,
                             validator: (value) {
                               if ((value?.length ?? 0) < 6) {
-                                return "PASSWORD_MUST_BE_AT_LEAST_6_CHARACTERS"
-                                    .tr(context);
+                                return "PASSWORD_MUST_BE_".tr(context);
                               }
                               return null;
                             },

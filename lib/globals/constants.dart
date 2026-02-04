@@ -6,7 +6,7 @@ import 'package:hop/box_shadow/flutter_inset_box_shadow.dart' as inset;
 import '../app_styles/app_colors.dart';
 import '../screens/app_provider.dart';
 
-const allowPadelQuestionInRegistration = true;
+const allowPadelQuestionInRegistration = false;
 const allowOpenMatch = true;
 const allowAddToCart = false;
 const allowShowPadelMembershipInProfile = true;

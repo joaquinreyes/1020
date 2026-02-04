@@ -656,7 +656,8 @@ $link
   Future<bool> checkForLevelAssessment(
       {required WidgetRef ref,
       required BuildContext context,
-      required String? sportsName}) async {
+      required String? sportsName,
+      bool isOpenMatchFlow = false}) async {
     // return true;
     // final checkTermsAndCondition =
     //     ref.read(userProvider)?.user?.termsAndCondition ?? false;
@@ -707,7 +708,10 @@ $link
         barrierDismissible: false,
         context: context,
         builder: (context) {
-          return QuizQuestions(sportsName: sportsName ?? "padel");
+          return QuizQuestions(
+            sportsName: sportsName ?? "padel",
+            isOpenMatchFlow: isOpenMatchFlow,
+          );
         },
       );
       if (data is bool) {

@@ -23,6 +23,7 @@ import '../../../../../../models/user_membership.dart';
 import '../../../../../../repository/booking_repo.dart';
 import '../../../../../../repository/payment_repo.dart';
 import '../../../../../payment_information/payment_information.dart';
+import '../../../../../payment_information/modern_payment_sheet.dart';
 
 part 'membership_tab_component.dart';
 

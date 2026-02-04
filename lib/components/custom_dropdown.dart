@@ -15,6 +15,8 @@ class CustomDropDown<T> extends StatefulWidget {
     this.onExpansionChanged,
     this.iconColor = AppColors.white,
     this.borderRadius,
+    this.backgroundColor,
+    this.textColor,
     Key? key,
   }) : super(key: key);
   final double? height;
@@ -25,6 +27,8 @@ class CustomDropDown<T> extends StatefulWidget {
   final List<T> items;
   final Color iconColor;
   final BorderRadius? borderRadius;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   @override
   State<CustomDropDown<T>> createState() => CustomDropDownState<T>();
@@ -67,7 +71,7 @@ class CustomDropDownState<T> extends State<CustomDropDown<T>> {
               horizontal: 12.w,
             ),
             decoration: BoxDecoration(
-              color: AppColors.white25,
+              color: widget.backgroundColor ?? AppColors.white25,
               borderRadius: widget.borderRadius ?? BorderRadius.circular(8.r),
             ),
             child: Row(
@@ -77,7 +81,7 @@ class CustomDropDownState<T> extends State<CustomDropDown<T>> {
                     widget.label,
                     style: AppTextStyles.manropeMedium(
                       fontSize: 13.sp,
-                      color: AppColors.white,
+                      color: widget.textColor ?? AppColors.white,
                     )
                   ),
                 ),

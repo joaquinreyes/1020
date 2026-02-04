@@ -20,6 +20,7 @@ import 'package:hop/repository/payment_repo.dart';
 import 'package:hop/repository/play_repo.dart';
 import 'package:hop/screens/open_match_detail/open_match_detail.dart';
 import 'package:hop/screens/payment_information/payment_information.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 import 'package:hop/utils/custom_extensions.dart';
 
 class OpenMatchApprovedRequestDialog extends ConsumerStatefulWidget {
@@ -106,7 +107,11 @@ class _ApprovedRequestDialogState
       return;
     }
     final canProceed = await Utils().checkForLevelAssessment(
-        ref: ref, context: context, sportsName: service.getSportsName(ref));
+      ref: ref,
+      context: context,
+      sportsName: service.getSportsName(ref),
+      isOpenMatchFlow: true,
+    );
 
     if (!canProceed) {
       return;
@@ -155,21 +160,19 @@ class _ApprovedRequestDialogState
           requestType: CourtPriceRequestType.join,
           dateTime: DateTime.now());
       await Utils.showLoadingDialog(context, courtPrice, ref);
-      final data = await showDialog(
+      final data = await showPaymentSheet(
         context: context,
-        builder: (context) {
-          return PaymentInformation(
-              type: PaymentDetailsRequestType.join,
-              locationID: locationID,
-              courtId: service.courtId,
+        child: PaymentInformation(
+            type: PaymentDetailsRequestType.join,
+            locationID: locationID,
+            courtId: service.courtId,
 
-              requestType: PaymentProcessRequestType.join,
-              price: price,
-              serviceID: serviceID,
-              isJoiningApproval: true,
-              duration: service.duration2,
-              startDate: service.bookingStartTime);
-        },
+            requestType: PaymentProcessRequestType.join,
+            price: price,
+            serviceID: serviceID,
+            isJoiningApproval: true,
+            duration: service.duration2,
+            startDate: service.bookingStartTime),
       );
       var (int? postPaymentServiceID, double? amount) = (null, null);
       if (data is (int, double?)) {

@@ -122,19 +122,10 @@ class __PaymentInformationState extends ConsumerState<PaymentInformation> {
               : "CANCELLATION_POLICY_HOURS".tr(context, params: {"HOUR": cancellationHour.toString()}))
           : "PAYMENT_INFORMATION_TEXT".tr(context),
       onClose: () async {
-        final confirmationDialog = await showDialog(
-          context: context,
-          builder: (context) {
-            return _CloseConfirmationDialog(showDescription: !widget.purchaseMembership);
-          },
-        );
-
-        if (confirmationDialog == true) {
-          if (widget.isMultiBooking) {
-            ref.invalidate(fetchBookingCartListProvider);
-          }
-          Navigator.pop(context);
+        if (widget.isMultiBooking) {
+          ref.invalidate(fetchBookingCartListProvider);
         }
+        Navigator.pop(context);
       },
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

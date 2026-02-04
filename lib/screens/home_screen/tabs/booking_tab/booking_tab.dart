@@ -47,6 +47,7 @@ import '../../../../routes/app_pages.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../auth/signup/signup_screen.dart';
 import '../../../payment_information/payment_information.dart';
+import '../../../payment_information/modern_payment_sheet.dart';
 import '../play_match_tab/play_match_tab.dart';
 import '../profile_tab/tabs/membership_tab/membership_tab.dart';
 

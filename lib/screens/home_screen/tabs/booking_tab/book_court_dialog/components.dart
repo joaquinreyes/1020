@@ -8,9 +8,6 @@ class _OpenMatch extends ConsumerStatefulWidget {
 }
 
 class __OpenMatchState extends ConsumerState<_OpenMatch> {
-  bool isLevelSelectorVisible = false;
-  final TextEditingController leaveNoteController = TextEditingController();
-  final FocusNode leaveNoteNode = FocusNode();
   @override
   void initState() {
     Future(() {
@@ -25,6 +22,17 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
     final appovePlayers = ref.watch(_isApprovePlayersProvider);
     final matchLevel = ref.watch(_matchLevelProvider);
     final reserveSpotsForMatch = ref.watch(_reserveSpotsForMatchProvider);
+    final minLevel = levelsList.first;
+    final maxLevel = levelsList.last;
+    double rangeStart = matchLevel.isNotEmpty ? matchLevel.first : minLevel;
+    double rangeEnd = matchLevel.isNotEmpty ? matchLevel.last : maxLevel;
+    if (rangeStart > rangeEnd) {
+      final temp = rangeStart;
+      rangeStart = rangeEnd;
+      rangeEnd = temp;
+    }
+    rangeStart = rangeStart.clamp(minLevel, maxLevel);
+    rangeEnd = rangeEnd.clamp(minLevel, maxLevel);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -49,50 +57,79 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
         Text(
           "SELECT_MATCH_LEVEL".trU(context),
           style: AppTextStyles.sofiaSansMedium(
-            color: AppColors.white,
-            fontSize: 21.sp
+            color: AppColors.black,
+            fontSize: 18.sp
           ),
         ),
-        SizedBox(height: 5.h),
-        InkWell(
-          onTap: () {
-            setState(() {
-              isLevelSelectorVisible = !isLevelSelectorVisible;
-            });
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.white25,
-              borderRadius: BorderRadius.circular(100.r),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (matchLevel.isNotEmpty) ...[
+        SizedBox(height: 6.h),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.black5,
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(color: AppColors.black10),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+          child: Column(
+            children: [
+              Row(
+                children: [
                   Text(
-                    "${matchLevel.first} - ${matchLevel.last}",
-                    style: AppTextStyles.manropeMedium(
-                      color: AppColors.white,
+                    "${rangeStart.toStringAsFixed(1)} - ${rangeEnd.toStringAsFixed(1)}",
+                    style: AppTextStyles.manropeSemiBold(
                       fontSize: 13.sp,
+                      color: AppColors.black,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    "LEVEL".tr(context),
+                    style: AppTextStyles.manropeMedium(
+                      fontSize: 12.sp,
+                      color: AppColors.black70,
                     ),
                   ),
                 ],
-                const Spacer(),
-                Icon(
-                  isLevelSelectorVisible
-                      ? Icons.keyboard_arrow_up_outlined
-                      : Icons.keyboard_arrow_down_outlined,
-                  color: AppColors.white,
-                  size: 20.h,
-                )
-              ],
-            ),
+              ),
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  activeTrackColor: AppColors.brick,
+                  inactiveTrackColor: AppColors.black10,
+                  rangeThumbShape: RoundRangeSliderThumbShape(
+                    enabledThumbRadius: 8.h,
+                  ),
+                  thumbColor: AppColors.brick,
+                  overlayColor: AppColors.brick.withOpacity(0.12),
+                  trackHeight: 3.h,
+                  valueIndicatorColor: AppColors.brick,
+                  valueIndicatorTextStyle: AppTextStyles.manropeMedium(
+                    fontSize: 12.sp,
+                    color: AppColors.white,
+                  ),
+                ),
+                child: RangeSlider(
+                  values: RangeValues(rangeStart, rangeEnd),
+                  min: minLevel,
+                  max: maxLevel,
+                  divisions: ((maxLevel - minLevel) / 0.5).round(),
+                  labels: RangeLabels(
+                    rangeStart.toStringAsFixed(1),
+                    rangeEnd.toStringAsFixed(1),
+                  ),
+                  onChanged: (values) {
+                    final roundedStart =
+                        (values.start * 2).roundToDouble() / 2;
+                    final roundedEnd =
+                        (values.end * 2).roundToDouble() / 2;
+                    ref.read(_matchLevelProvider.notifier).state = [
+                      roundedStart,
+                      roundedEnd
+                    ]..sort();
+                  },
+                ),
+              ),
+            ],
           ),
         ),
-        if (isLevelSelectorVisible) ...[
-          _levelSelector(),
-        ],
         SizedBox(height: 15.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -101,16 +138,16 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
               child: Text(
                 "ARE_YOU_GOING_WITH_SOMEONE_ELSE".trU(context),
                 style: AppTextStyles.sofiaSansMedium(
-                  fontSize: 21.sp,
-                  color: AppColors.white,
+                  fontSize: 18.sp,
+                  color: AppColors.black,
                 ),
               ),
             ),
             Text(
               " ${"OPTIONAL".tr(context).toLowerCase()}",
               style: AppTextStyles.manropeMedium(
-                color: AppColors.white,
-                fontSize: 15.sp,
+                color: AppColors.black70,
+                fontSize: 12.sp,
               ),
             ),
           ],
@@ -119,11 +156,12 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
         Container(
           decoration: BoxDecoration(
             // boxShadow: kInsetShadow2,
-            color: AppColors.white25,
-            borderRadius: BorderRadius.circular(100.r),
+            color: AppColors.black5,
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(color: AppColors.black10),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
             child: Row(
               children: [
                 _optionContainer(
@@ -156,41 +194,6 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
             ),
           ),
         ),
-        SizedBox(height: 15.h),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Text(
-                "LEAVE_A_NOTE".trU(context),
-                style: AppTextStyles.sofiaSansMedium(
-                  fontSize: 21.sp,
-                  color: AppColors.white,
-                ),
-              ),
-            ),
-            Text(
-              " ${"OPTIONAL".tr(context).toLowerCase()}",
-              style: AppTextStyles.manropeMedium(
-                color: AppColors.white,
-                fontSize: 15.sp,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 5.h),
-        CustomTextField(
-          controller: leaveNoteController,
-          node: leaveNoteNode,
-          borderRadius: BorderRadius.circular(100.r),
-          onChanged: (value) {
-            ref.read(_organizerNoteProvider.notifier).state = value;
-          },
-          hintText: 'TYPE_HERE'.tr(context),
-          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          borderColor: Colors.transparent,
-          isForPopup: true,
-        ),
       ],
     );
   }
@@ -201,10 +204,13 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.white : AppColors.white25,
-          borderRadius: BorderRadius.circular(100.r),
+          color: isSelected ? AppColors.brick : AppColors.black5,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(
+            color: isSelected ? AppColors.brick : AppColors.black10,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,11 +220,17 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
                 text,
                 style: AppTextStyles.manropeSemiBold(
                   fontSize: 13.sp,
-                  color: isSelected ? AppColors.brick : AppColors.white,
+                  color: isSelected ? AppColors.white : AppColors.black,
                 ),
               ),
             ),
-            SelectedTag(isSelected: isSelected,selectedColor: AppColors.yellow,unSelectedColor: AppColors.white25,unSelectedBorderColor: AppColors.white,selectedBorderColor: AppColors.black25,)
+            SelectedTag(
+              isSelected: isSelected,
+              selectedColor: AppColors.yellow,
+              selectedBorderColor: AppColors.brick,
+              unSelectedColor: AppColors.white,
+              unSelectedBorderColor: AppColors.black10,
+            )
           ],
         ),
       ),
@@ -235,77 +247,26 @@ class __OpenMatchState extends ConsumerState<_OpenMatch> {
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(100.r),
+            color: isSelected ? AppColors.brick : Colors.transparent,
+            borderRadius: BorderRadius.circular(12.r),
           ),
-          margin: EdgeInsets.symmetric(horizontal: 20.h, vertical: 2.w),
-          padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
+          margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
           child: Center(
               child: Text(
                 text,
                 style: isSelected
-                    ? AppTextStyles.manropeSemiBold(fontSize: 13.sp,color: AppColors.brick,)
-                    : AppTextStyles.manropeMedium(color: AppColors.white,fontSize: 13.sp,),
+                    ? AppTextStyles.manropeSemiBold(
+                        fontSize: 13.sp,
+                        color: AppColors.white,
+                      )
+                    : AppTextStyles.manropeMedium(
+                        color: AppColors.black,
+                        fontSize: 13.sp,
+                      ),
               )),
         ),
       ),
-    );
-  }
-
-  Widget _levelSelector() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ...levelsList.map(
-              (e) {
-            bool isSelected = ref.watch(_matchLevelProvider).contains(e);
-            return Padding(
-              padding: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
-              child: InkWell(
-                onTap: () {
-                  final appUser = ref.watch(userProvider);
-
-                  final userLevel =
-                      appUser?.user?.level(getSportsName(ref)) ?? 0.0;
-                  if (userLevel == e) {
-                    return;
-                  }
-                  setState(() {
-                    final matchLevel = ref.read(_matchLevelProvider);
-                    if (matchLevel.contains(e)) {
-                      ref.read(_matchLevelProvider.notifier).state =
-                          matchLevel.where((element) => element != e).toList();
-
-                      ref.read(_matchLevelProvider.notifier).state.sort();
-                    } else {
-                      ref.read(_matchLevelProvider.notifier).state = [
-                        ...matchLevel,
-                        e,
-                      ];
-                      ref.read(_matchLevelProvider.notifier).state.sort();
-                    }
-                  });
-                },
-                child: Container(
-                  padding:
-                  EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.white
-                        : AppColors.white25,
-                    borderRadius: BorderRadius.circular(100.r),
-                  ),
-                  child: Text(
-                    e.toString(),
-                    style: isSelected ? AppTextStyles.manropeSemiBold(color: AppColors.brick,fontSize: 13.sp,) : AppTextStyles.manropeMedium(fontSize: 13.sp,color: AppColors.white,),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ],
     );
   }
 

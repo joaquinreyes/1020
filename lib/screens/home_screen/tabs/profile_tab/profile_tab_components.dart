@@ -240,21 +240,19 @@ class _HeaderInfo extends ConsumerWidget {
     if (selectedMembership == null) {
       return;
     }
-    final data = await showDialog(
+    final data = await showPaymentSheet(
       context: context,
-      builder: (context) {
-        return PaymentInformation(
-            allowWallet: false,
-            type: PaymentDetailsRequestType.join,
-            locationID: selectedMembership.locationId,
-            requestType: PaymentProcessRequestType.membership,
-            price: selectedMembership.price ?? 0,
-            serviceID: selectedMembership.id,
-            startDate: null,
-            duration: null,
-            allowCoupon: false,
-            purchaseMembership: true);
-      },
+      child: PaymentInformation(
+          allowWallet: false,
+          type: PaymentDetailsRequestType.join,
+          locationID: selectedMembership.locationId,
+          requestType: PaymentProcessRequestType.membership,
+          price: selectedMembership.price ?? 0,
+          serviceID: selectedMembership.id,
+          startDate: null,
+          duration: null,
+          allowCoupon: false,
+          purchaseMembership: true),
     );
     var (int? success, double? amount) = (null, null);
     if (data is (int, double?)) {

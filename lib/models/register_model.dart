@@ -69,8 +69,12 @@ class RegisterModel {
         data['default_level'] = level;
       }
       data['prefered_sport'] = preferredSport;
-    }else{
-      data['quiz_answers'] = levelAnswers.map((e) => e ?? 0).toList();
+    } else {
+      if (allowPadelQuestionInRegistration &&
+          levelAnswers.isNotEmpty &&
+          levelAnswers.any((e) => e != null)) {
+        data['quiz_answers'] = levelAnswers.map((e) => e ?? 0).toList();
+      }
     }
     data['custom_fields'] = customFields;
     return data;

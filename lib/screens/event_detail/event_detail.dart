@@ -31,6 +31,7 @@ import 'package:hop/repository/payment_repo.dart';
 import 'package:hop/repository/play_repo.dart';
 import 'package:hop/routes/app_pages.dart';
 import 'package:hop/screens/payment_information/payment_information.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 import 'package:hop/screens/responsive_widgets/home_responsive_widget.dart';
 import 'package:hop/utils/custom_extensions.dart';
 import 'package:hop/widgets/background_view.dart';
@@ -436,22 +437,20 @@ class _DataBodyState extends ConsumerState<_DataBody> {
         return;
       }
 
-      final data = await showDialog(
+      final data = await showPaymentSheet(
         context: context,
-        builder: (context) {
-          return PaymentInformation(
-            courtId: service.courtId,
-              courtPriceModel: courtPriceModel,
-              type: PaymentDetailsRequestType.join,
-              locationID: service.service?.location?.id ?? 0,
-              price: price,
-              requestType: isReserve
-                  ? PaymentProcessRequestType.reserved
-                  : PaymentProcessRequestType.join,
-              serviceID: service.id!,
-              duration: service.duration2,
-              startDate: service.bookingStartTime);
-        },
+        child: PaymentInformation(
+          courtId: service.courtId,
+            courtPriceModel: courtPriceModel,
+            type: PaymentDetailsRequestType.join,
+            locationID: service.service?.location?.id ?? 0,
+            price: price,
+            requestType: isReserve
+                ? PaymentProcessRequestType.reserved
+                : PaymentProcessRequestType.join,
+            serviceID: service.id!,
+            duration: service.duration2,
+            startDate: service.bookingStartTime),
       );
       var (int? paymentDone, double? amount) = (null, null);
       if (data is (int, double?)) {
@@ -500,20 +499,18 @@ class _DataBodyState extends ConsumerState<_DataBody> {
     if (!canProceed) {
       return;
     }
-    final data = await showDialog(
+    final data = await showPaymentSheet(
       context: context,
-      builder: (context) {
-        return PaymentInformation(
-            courtId: service.courtId,
-            type: PaymentDetailsRequestType.join,
-            locationID: service.service!.location!.id!,
-            requestType: PaymentProcessRequestType.join,
-            price: service.service!.price!,
-            serviceID: service.id!,
-            isJoiningApproval: true,
-            duration: service.duration2,
-            startDate: service.bookingStartTime);
-      },
+      child: PaymentInformation(
+          courtId: service.courtId,
+          type: PaymentDetailsRequestType.join,
+          locationID: service.service!.location!.id!,
+          requestType: PaymentProcessRequestType.join,
+          price: service.service!.price!,
+          serviceID: service.id!,
+          isJoiningApproval: true,
+          duration: service.duration2,
+          startDate: service.bookingStartTime),
     );
     final (int? postPaymentServiceID, double? amount) = data;
     if (postPaymentServiceID != null && mounted) {

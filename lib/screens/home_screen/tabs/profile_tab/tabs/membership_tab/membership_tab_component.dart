@@ -365,25 +365,23 @@ class MembershipListComponent extends ConsumerWidget {
                                     selectedDate != true) {
                                   return;
                                 }
-                                final data = await showDialog(
+                                final data = await showPaymentSheet(
                                   context: context,
-                                  builder: (context) {
-                                    return PaymentInformation(
-                                      type: PaymentDetailsRequestType
-                                          .membership,
-                                      locationID: e.locationId,
-                                      allowCoupon: false,
-                                      allowMembership: false,
-                                      allowWallet: false,
-                                      purchaseMembership: true,
-                                      price: e.price ?? 0,
-                                      requestType: PaymentProcessRequestType
-                                          .membership,
-                                      serviceID: e.id ?? 0,
-                                      startDate: null,
-                                      duration: null,
-                                    );
-                                  },
+                                  child: PaymentInformation(
+                                    type: PaymentDetailsRequestType
+                                        .membership,
+                                    locationID: e.locationId,
+                                    allowCoupon: false,
+                                    allowMembership: false,
+                                    allowWallet: false,
+                                    purchaseMembership: true,
+                                    price: e.price ?? 0,
+                                    requestType: PaymentProcessRequestType
+                                        .membership,
+                                    serviceID: e.id ?? 0,
+                                    startDate: null,
+                                    duration: null,
+                                  ),
                                 );
                                 var (int? paymentDone, double? amount) =
                                     (null, null);
@@ -446,24 +444,22 @@ class MembershipListComponent extends ConsumerWidget {
                           if (selectedDate is! bool && selectedDate != true) {
                             return;
                           }
-                          final data = await showDialog(
+                          final data = await showPaymentSheet(
                             context: context,
-                            builder: (context) {
-                              return PaymentInformation(
-                                type: PaymentDetailsRequestType.membership,
-                                locationID: e.locationId,
-                                allowCoupon: false,
-                                allowMembership: false,
-                                allowWallet: false,
-                                purchaseMembership: true,
-                                price: e.price ?? 0,
-                                requestType:
-                                    PaymentProcessRequestType.membership,
-                                serviceID: e.id ?? 0,
-                                startDate: null,
-                                duration: null,
-                              );
-                            },
+                            child: PaymentInformation(
+                              type: PaymentDetailsRequestType.membership,
+                              locationID: e.locationId,
+                              allowCoupon: false,
+                              allowMembership: false,
+                              allowWallet: false,
+                              purchaseMembership: true,
+                              price: e.price ?? 0,
+                              requestType:
+                                  PaymentProcessRequestType.membership,
+                              serviceID: e.id ?? 0,
+                              startDate: null,
+                              duration: null,
+                            ),
                           );
                           var (int? paymentDone, double? amount) =
                               (null, null);

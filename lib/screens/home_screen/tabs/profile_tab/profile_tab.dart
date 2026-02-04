@@ -36,6 +36,7 @@ import 'package:hop/utils/custom_extensions.dart';
 import '../../../../globals/current_platform.dart';
 import '../../../../repository/payment_repo.dart';
 import '../../../payment_information/payment_information.dart';
+import '../../../payment_information/modern_payment_sheet.dart';
 import '../../../ranking_profile/ranking_profile.dart';
 
 part 'profile_tab_components.dart';

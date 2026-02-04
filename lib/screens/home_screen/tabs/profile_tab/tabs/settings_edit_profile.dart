@@ -38,42 +38,58 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: CustomDialog(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+        color: AppColors.alysumWhite,
+        closeIconColor: AppColors.black,
+        borderRadius: BorderRadius.circular(18.r),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "EDIT_YOUR_INFORMATION".trU(context),
-                style: AppTextStyles.popupHeaderTextStyle,
+                style: AppTextStyles.sofiaSansMedium(
+                  fontSize: 22.sp,
+                  color: AppColors.black,
+                ),
               ),
-              SizedBox(height: 20.h),
+              6.verticalSpace,
+              Container(
+                height: 2.h,
+                width: 32.w,
+                decoration: BoxDecoration(
+                  color: AppColors.brick,
+                  borderRadius: BorderRadius.circular(100.r),
+                ),
+              ),
+              18.verticalSpace,
 
               _buildTextField(
                 "FIRST_NAME".tr(context),
                 _firstNameController,
               ),
-              SizedBox(height: 5.h),
+              SizedBox(height: 12.h),
 
               _buildTextField(
                 "SURNAME".tr(context),
                 _lastNameController,
               ),
-              SizedBox(height: 5.h),
+              SizedBox(height: 12.h),
 
               _buildTextField(
                 "EMAIL".tr(context),
                 _emailController,
                 isEnabled: false,
               ),
-              SizedBox(height: 5.h),
+              SizedBox(height: 12.h),
 
               _buildTextField(
                 "PHONE_NUMBER".tr(context),
                 _phoneController,
                 isNumber: true,
               ),
-              SizedBox(height: 5.h),
+              SizedBox(height: 12.h),
 
               // _buildTextField(
               //   "LEVEL".tr(context),
@@ -82,7 +98,7 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
               //   isNumber: true,
               // ),
               _editCustomFields(),
-              SizedBox(height: 15.h),
+              SizedBox(height: 12.h),
               _buildField(
                 "LANGUAGE".tr(context),
                 const LanguageSelectorAuth(),
@@ -91,7 +107,13 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
               MainButton(
                 label: "SAVE".trU(context),
                 enabled: true,
-                isForPopup: true,
+                color: AppColors.brick,
+                labelStyle: AppTextStyles.sofiaSansMedium(
+                  fontSize: 20.sp,
+                  color: AppColors.white,
+                ),
+                applyShadow: true,
+                isForPopup: false,
                 onTap: () async {
                   final customFields = <String, dynamic>{};
                   for (final key in userCustomFields.keys) {
@@ -238,10 +260,11 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
                 },
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.white25,
-              borderRadius: BorderRadius.circular(100.r),
+              color: AppColors.black5,
+              borderRadius: BorderRadius.circular(14.r),
+              border: Border.all(color: AppColors.black10),
             ),
-            padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 12.w),
+            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
             child: Row(
               children: [
                 Expanded(
@@ -251,14 +274,14 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
                         : "mm/yyyy",
                     style: AppTextStyles.manropeMedium(
                       fontSize: 13.sp,
-                      color: AppColors.white,
+                      color: AppColors.black,
                     ),
                   ),
                 ),
                 Image.asset(
                   AppImages.dropdownIcon.path,
                   width: 16.w,
-                  color: AppColors.white,
+                  color: AppColors.black,
                 ),
               ],
             ),
@@ -294,6 +317,11 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
                 key: customFieldDropDownsKeys[id],
                 label: labelToShow,
                 items: options,
+                backgroundColor: AppColors.black5,
+                textColor: AppColors.black,
+                iconColor: AppColors.black,
+                borderRadius: BorderRadius.circular(14.r),
+                height: 40.h,
                 onExpansionChanged: (isExpanded) {
                   for (final key in customFieldDropDownsKeys.keys) {
                     if (key != id) {
@@ -324,13 +352,13 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            vertical: 6.h, horizontal: 12.w),
+                            vertical: 8.h, horizontal: 12.w),
                         margin: EdgeInsets.symmetric(vertical: 0.5.h),
                         decoration: BoxDecoration(
                           color: !isSelected
-                              ? AppColors.black25
-                              : AppColors.yellow50,
-                          borderRadius: BorderRadius.circular(8.r),
+                              ? AppColors.black5
+                              : AppColors.yellow30,
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Text(
                           str,
@@ -373,10 +401,14 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
         Opacity(
           opacity: customField.editableForUsers == true ? 1 : 0.7,
           child: CustomDropDown(
-            borderRadius: BorderRadius.circular(100.r),
             key: customFieldDropDownsKeys[id],
             label: userCustomFields[id] ?? "Select $label",
             items: options,
+            backgroundColor: AppColors.black5,
+            textColor: AppColors.black,
+            iconColor: AppColors.black,
+            borderRadius: BorderRadius.circular(14.r),
+            height: 40.h,
             onExpansionChanged: (isExpanded) {
               for (final key in customFieldDropDownsKeys.keys) {
                 if (key != id) {
@@ -399,14 +431,14 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                      vertical: 6.h,
+                      vertical: 8.h,
                       horizontal: 12.w,
                     ),
                     margin: EdgeInsets.symmetric(vertical: 0.5.h),
                     decoration: BoxDecoration(
                       color:
-                          !isSelected ? AppColors.white25 : AppColors.white,
-                      borderRadius: BorderRadius.circular(100.r),
+                          !isSelected ? AppColors.black5 : AppColors.yellow30,
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Text(
                       str,
@@ -416,7 +448,7 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
                               fontSize: 13.sp,
                             )
                           : AppTextStyles.manropeMedium(
-                              color: AppColors.white,
+                              color: AppColors.black,
                               fontSize: 13.sp,
                             ),
                     ),
@@ -433,12 +465,17 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
   Widget _buildTextField(String label, TextEditingController controller,
       {String? id, bool isNumber = false, bool isEnabled = true}) {
     final currentPassNode = FocusNode();
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(14.r),
+      borderSide: BorderSide(color: AppColors.black10),
+    );
+    final enabled = isEnabled;
 
     return _buildField(
       label,
       CustomTextField(
         controller: controller,
-        // isEnabled: isEnabled,
+        readOnly: !enabled,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         onChanged: (_) {
           if (id != null) {
@@ -452,30 +489,38 @@ class __EDITProfileState extends ConsumerState<_EditProfile> {
           }
           setState(() {});
         },
-        borderRadius: BorderRadius.circular(100.r),
+        borderRadius: BorderRadius.circular(14.r),
+        border: border,
+        fillColor: enabled ? AppColors.white : AppColors.black5,
         node: currentPassNode,
-        fillColor: AppColors.white25,
-        borderColor: Colors.transparent,
-        isForPopup: true
+        style: AppTextStyles.manropeMedium(
+          fontSize: 14.sp,
+          color: enabled ? AppColors.black : AppColors.black50,
+        ),
+        hintTextStyle: AppTextStyles.manropeMedium(
+          fontSize: 13.sp,
+          color: AppColors.black50,
+        ),
+        isForPopup: false,
+        contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
       ),
     );
   }
 
   Widget _buildField(String header, Widget widget) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          flex: 2,
-          child: Text(
-            header.tr(context),
-            style: AppTextStyles.manropeMedium(fontSize: 16.sp,color: AppColors.white,),
+        Text(
+          header.tr(context),
+          style: AppTextStyles.manropeSemiBold(
+            fontSize: 13.sp,
+            color: AppColors.black70,
+            letterSpacing: 0.3,
           ),
         ),
-        Expanded(
-          flex: 3,
-          child: widget,
-        ),
+        6.verticalSpace,
+        widget,
       ],
     );
   }

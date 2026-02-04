@@ -22,6 +22,7 @@ import 'package:hop/routes/app_pages.dart';
 import 'package:hop/routes/app_routes.dart';
 import 'package:hop/screens/home_screen/tabs/play_match_tab/tabs/tab_parent.dart';
 import 'package:hop/screens/payment_information/payment_information.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 import 'package:hop/utils/custom_extensions.dart';
 
 import '../../../../../../repository/booking_repo.dart';
@@ -299,20 +300,18 @@ class _LessonsState extends ConsumerState<_Lessons> {
       final double? price =
           await Utils.showLoadingDialog(context, provider, ref);
       if (price != null && context.mounted && mounted) {
-        final data = await showDialog(
+        final data = await showPaymentSheet(
           context: context,
-          builder: (context) {
-            return PaymentInformation(
-                title: "PAY_MY_SHARE".trU(context),
-                // boldPosition: 1,
-                type: PaymentDetailsRequestType.join,
-                locationID: widget.lesson.location!.id!,
-                price: price,
-                requestType: PaymentProcessRequestType.join,
-                serviceID: serviceBooking.id!,
-                duration: serviceBooking.duration2,
-                startDate: serviceBooking.bookingStartTime);
-          },
+          child: PaymentInformation(
+              title: "PAY_MY_SHARE".trU(context),
+              // boldPosition: 1,
+              type: PaymentDetailsRequestType.join,
+              locationID: widget.lesson.location!.id!,
+              price: price,
+              requestType: PaymentProcessRequestType.join,
+              serviceID: serviceBooking.id!,
+              duration: serviceBooking.duration2,
+              startDate: serviceBooking.bookingStartTime),
         );
 
         var (int? paymentDone, double? amount) = (null, null);

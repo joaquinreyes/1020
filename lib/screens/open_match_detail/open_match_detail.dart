@@ -27,6 +27,7 @@ import 'package:hop/repository/payment_repo.dart';
 import 'package:hop/repository/play_repo.dart';
 import 'package:hop/routes/app_pages.dart';
 import 'package:hop/screens/payment_information/payment_information.dart';
+import 'package:hop/screens/payment_information/modern_payment_sheet.dart';
 import 'package:hop/screens/responsive_widgets/home_responsive_widget.dart';
 import 'package:hop/utils/custom_extensions.dart';
 import 'package:hop/widgets/background_view.dart';
@@ -683,31 +684,33 @@ class _DataBodyState extends ConsumerState<_DataBody> {
     }
 
     final canProceed = await Utils().checkForLevelAssessment(
-        ref: ref, context: context, sportsName: service.getSportsName(ref));
+      ref: ref,
+      context: context,
+      sportsName: service.getSportsName(ref),
+      isOpenMatchFlow: true,
+    );
 
     if (!canProceed) {
       return;
     }
 
-    final data = await showDialog(
+    final data = await showPaymentSheet(
       context: context,
-      builder: (context) {
-        return PaymentInformation(
-            title: "PAY_MY_SHARE".tr(context),
-            isOpenMatch: true,
-            courtId: service.courtId,
-            // boldPosition: 1,
-            type: PaymentDetailsRequestType.join,
-            locationID: service.service!.location!.id!,
-            isJoiningApproval: isJoinApproval,
-            price: price,
-            requestType: isReserve
-                ? PaymentProcessRequestType.reserved
-                : PaymentProcessRequestType.join,
-            serviceID: service.id!,
-            duration: service.duration2,
-            startDate: service.bookingStartTime);
-      },
+      child: PaymentInformation(
+          title: "PAY_MY_SHARE".tr(context),
+          isOpenMatch: true,
+          courtId: service.courtId,
+          // boldPosition: 1,
+          type: PaymentDetailsRequestType.join,
+          locationID: service.service!.location!.id!,
+          isJoiningApproval: isJoinApproval,
+          price: price,
+          requestType: isReserve
+              ? PaymentProcessRequestType.reserved
+              : PaymentProcessRequestType.join,
+          serviceID: service.id!,
+          duration: service.duration2,
+          startDate: service.bookingStartTime),
     );
 
     var (int? paymentDone, double? amount) = (null, null);

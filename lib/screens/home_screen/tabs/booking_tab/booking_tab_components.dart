@@ -1139,8 +1139,12 @@ class __AvailableTimeslotLessonState
 
 class QuizQuestions extends ConsumerStatefulWidget {
   final String sportsName;
+  final bool isOpenMatchFlow;
 
-  const QuizQuestions({required this.sportsName});
+  const QuizQuestions({
+    required this.sportsName,
+    this.isOpenMatchFlow = false,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => __QuizQuestionsState();
@@ -1158,104 +1162,132 @@ class __QuizQuestionsState extends ConsumerState<QuizQuestions> {
 
     final provider =
         ref.watch(levelQuestionsProvider(sport: widget.sportsName));
+    final showIntro = widget.isOpenMatchFlow;
 
-    return CustomDialog(
-      showCloseIcon: true,
-      contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 15.w),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          provider.when(
-            data: (data) {
-              totalPages = data.length + 1;
-              if (registerModel.levelAnswers.length != data.length) {
-                registerModel.levelAnswers = List.filled(data.length, null);
-              }
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 1.8,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (pageIndex > 0)
-                      Container(
-                        // padding: EdgeInsets.symmetric(horizontal: 32.w),
-                        alignment: AlignmentDirectional.centerStart,
-                        child: InkWell(
+    return Scaffold(
+      backgroundColor: AppColors.alysumWhite,
+      body: SafeArea(
+        child: provider.when(
+          data: (data) {
+            totalPages = data.length + (showIntro ? 2 : 1);
+            if (registerModel.levelAnswers.length != data.length) {
+              registerModel.levelAnswers = List.filled(data.length, null);
+            }
+            return Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  child: Row(
+                    children: [
+                      if (pageIndex > 0)
+                        InkWell(
                           onTap: _onBack,
-                          child: Image.asset(
-                            AppImages.arrowBack.path,
-                            height: 18.h,
-                            color: AppColors.white,
+                          borderRadius: BorderRadius.circular(100.r),
+                          child: Padding(
+                            padding: EdgeInsets.all(6.w),
+                            child: Image.asset(
+                              AppImages.arrowBack.path,
+                              height: 18.h,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        )
+                      else
+                        SizedBox(width: 30.w),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () => Navigator.pop(context, false),
+                        borderRadius: BorderRadius.circular(100.r),
+                        child: Padding(
+                          padding: EdgeInsets.all(6.w),
+                          child: Icon(
+                            Icons.close,
+                            size: 20.h,
+                            color: AppColors.black,
                           ),
                         ),
                       ),
-                    Expanded(
-                      child: PageView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: pageController,
-                        onPageChanged: (i) {
-                          pageIndex = i;
-                          setState(() {});
-                        },
-                        children: [
-                          for (int i = 0; i < data.length; i++)
-                            LevelAssessmentTab(
-                              // isForPopup: true,
-                              // isPage: false,
-                              index: i,
-                              isLastQuestion: i == data.length - 1,
-                              levelQuesiton: data[i],
-                              registerModel: registerModel,
-                              onProceed: () {
-                                pageController.animateToPage(
-                                  pageIndex + 1,
-                                  duration: kAnimationDuration,
-                                  curve: Curves.linear,
-                                );
-                              },
-                            ),
-                          LevelScoreTab(
-                            registerModel: registerModel,
-                            isForPopUp: true,
-                            onProceed: () async {
-                              final provider = calculateLevelProvider(
-                                  answers: registerModel.levelAnswers,
-                                  allowClub: true,
-                                  sportsName: widget.sportsName);
-                              final CalculatedLevelData? check =
-                                  await Utils.showLoadingDialog(
-                                      context, provider, ref);
-                              if (check != null) {
-                                if (context.mounted) {
-                                  ref.refresh(fetchUserProvider);
-                                  Navigator.pop(context, true);
-                                }
-                              }
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: pageController,
+                      onPageChanged: (i) {
+                        pageIndex = i;
+                        setState(() {});
+                      },
+                      children: [
+                        if (showIntro)
+                          _OpenMatchAssessmentIntro(
+                            onStart: () {
+                              pageController.animateToPage(
+                                1,
+                                duration: kAnimationDuration,
+                                curve: Curves.linear,
+                              );
                             },
-                            sportsName: widget.sportsName,
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-            loading: () => Center(
-                child: CupertinoActivityIndicator(color: AppColors.white)),
-            error: (e, _) => Center(
-              child: Text(
-                e.toString(),
-                style: AppTextStyles.manropeLight(
-                  fontSize: 16.sp,
-                  color: AppColors.errorColor,
-                ),
+                          ),
+                        for (int i = 0; i < data.length; i++)
+                          LevelAssessmentTab(
+                            index: i,
+                            isLastQuestion: i == data.length - 1,
+                            levelQuesiton: data[i],
+                            registerModel: registerModel,
+                            isForPopup: true,
+                            isOpenMatchFlow: widget.isOpenMatchFlow,
+                            totalQuestions: data.length,
+                            onProceed: () {
+                              pageController.animateToPage(
+                                pageIndex + 1,
+                                duration: kAnimationDuration,
+                                curve: Curves.linear,
+                              );
+                            },
+                          ),
+                        LevelScoreTab(
+                          registerModel: registerModel,
+                          isForPopUp: true,
+                          isOpenMatchFlow: widget.isOpenMatchFlow,
+                          onProceed: () async {
+                            final provider = calculateLevelProvider(
+                                answers: registerModel.levelAnswers,
+                                allowClub: true,
+                                sportsName: widget.sportsName);
+                            final CalculatedLevelData? check =
+                                await Utils.showLoadingDialog(
+                                    context, provider, ref);
+                            if (check != null) {
+                              if (context.mounted) {
+                                ref.refresh(fetchUserProvider);
+                                Navigator.pop(context, true);
+                              }
+                            }
+                          },
+                          sportsName: widget.sportsName,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+          loading: () => const Center(
+              child: CupertinoActivityIndicator(color: AppColors.brick)),
+          error: (e, _) => Center(
+            child: Text(
+              e.toString(),
+              style: AppTextStyles.manropeLight(
+                fontSize: 16.sp,
+                color: AppColors.errorColor,
               ),
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -1265,6 +1297,85 @@ class __QuizQuestionsState extends ConsumerState<QuizQuestions> {
       pageController.animateToPage(pageIndex - 1,
           duration: kAnimationDuration, curve: Curves.linear);
     }
+  }
+}
+
+class _OpenMatchAssessmentIntro extends StatelessWidget {
+  const _OpenMatchAssessmentIntro({required this.onStart});
+
+  final VoidCallback onStart;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          6.verticalSpace,
+          Center(
+            child: Container(
+              width: 72.w,
+              height: 72.w,
+              decoration: BoxDecoration(
+                color: AppColors.black5,
+                borderRadius: BorderRadius.circular(18.r),
+              ),
+              child: Center(
+                child: Image.asset(
+                  AppImages.levelAssessment.path,
+                  width: 42.w,
+                  height: 42.w,
+                  color: AppColors.brick,
+                ),
+              ),
+            ),
+          ),
+          18.verticalSpace,
+          Text(
+            'OPEN_MATCH_ASSESSMENT_TITLE'.trU(context),
+            style: AppTextStyles.sofiaSansMedium(
+              fontSize: 24.sp,
+              color: AppColors.black,
+            ),
+          ),
+          8.verticalSpace,
+          Text(
+            'OPEN_MATCH_ASSESSMENT_SUBTITLE'.tr(context),
+            style: AppTextStyles.manropeMedium(
+              fontSize: 15.sp,
+              color: AppColors.black70,
+            ),
+          ),
+          14.verticalSpace,
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+            decoration: BoxDecoration(
+              color: AppColors.black5,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Text(
+              'OPEN_MATCH_ASSESSMENT_TIME'.tr(context),
+              style: AppTextStyles.manropeMedium(
+                fontSize: 14.sp,
+                color: AppColors.black70,
+              ),
+            ),
+          ),
+          const Spacer(),
+          SizedBox(
+            width: double.infinity,
+            child: MainButton(
+              isForPopup: true,
+              applySize: false,
+              height: 56.h,
+              label: 'OPEN_MATCH_ASSESSMENT_START'.trU(context),
+              onTap: onStart,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -2000,21 +2111,19 @@ Future<void> _onPurchaseMembership(
   if (selectedMembership == null) {
     return;
   }
-  final data = await showDialog(
+  final data = await showPaymentSheet(
     context: context,
-    builder: (context) {
-      return PaymentInformation(
-          allowWallet: false,
-          type: PaymentDetailsRequestType.join,
-          locationID: selectedMembership.locationId,
-          requestType: PaymentProcessRequestType.membership,
-          price: selectedMembership.price ?? 0,
-          serviceID: selectedMembership.id,
-          startDate: null,
-          duration: null,
-          allowCoupon: false,
-          purchaseMembership: true);
-    },
+    child: PaymentInformation(
+        allowWallet: false,
+        type: PaymentDetailsRequestType.join,
+        locationID: selectedMembership.locationId,
+        requestType: PaymentProcessRequestType.membership,
+        price: selectedMembership.price ?? 0,
+        serviceID: selectedMembership.id,
+        startDate: null,
+        duration: null,
+        allowCoupon: false,
+        purchaseMembership: true),
   );
   var (int? success, double? amount) = (null, null);
   if (data is (int, double?)) {

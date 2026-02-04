@@ -1,12 +1,19 @@
 part of 'signup_screen.dart';
 
 class LevelScoreTab extends ConsumerStatefulWidget {
-  const LevelScoreTab({required this.registerModel, this.isForPopUp = false, required this.onProceed, required this.sportsName});
+  const LevelScoreTab({
+    required this.registerModel,
+    this.isForPopUp = false,
+    this.isOpenMatchFlow = false,
+    required this.onProceed,
+    required this.sportsName,
+  });
 
   final RegisterModel registerModel;
   final Function() onProceed;
   final String sportsName;
   final bool isForPopUp;
+  final bool isOpenMatchFlow;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => __LevelScoreTab();
@@ -29,7 +36,9 @@ class __LevelScoreTab extends ConsumerState<LevelScoreTab> {
   Widget build(BuildContext context) {
     final calculatedData =
         ref.watch(calculateLevelProvider(answers: widget.registerModel.levelAnswers, allowClub: false, sportsName: widget.sportsName));
-    final textColor = widget.isForPopUp ? AppColors.black : AppColors.black;
+    final isPopup = widget.isForPopUp;
+    final isOpenMatchPopup = isPopup && widget.isOpenMatchFlow;
+    final textColor = AppColors.black;
 
     return calculatedData.when(
       data: (data) {
@@ -38,33 +47,45 @@ class __LevelScoreTab extends ConsumerState<LevelScoreTab> {
         }
         return SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: widget.isForPopUp ? 0.w : 30.w),
+            margin: EdgeInsets.symmetric(horizontal: isPopup ? 0.w : 30.w),
             child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'REGISTER'.trU(context),
+                      isPopup
+                          ? (isOpenMatchPopup
+                              ? 'OPEN_MATCH_ASSESSMENT_TITLE'.trU(context)
+                              : 'LEVEL_ASSESSMENT'.trU(context))
+                          : 'REGISTER'.trU(context),
                       style: AppTextStyles.sofiaSansMedium(
                         color: AppColors.black,
-                        fontSize: 40.sp,
+                        fontSize: isPopup ? 28.sp : 40.sp,
                       ),
                     ),
-                    33.verticalSpace,
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'LEVEL_ASSESSMENT'.trU(context),
-                        style: AppTextStyles.sofiaSansMedium(fontSize: 26.sp, color: textColor),
-                        textAlign: TextAlign.center,
+                    (isPopup ? 18 : 33).verticalSpace,
+                    if (!isPopup) ...[
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'LEVEL_ASSESSMENT'.trU(context),
+                          style: AppTextStyles.sofiaSansMedium(
+                            fontSize: 26.sp,
+                            color: textColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    8.verticalSpace,
+                      8.verticalSpace,
+                    ],
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS'.tr(context),
+                        (isOpenMatchPopup
+                                ? 'OPEN_MATCH_ASSESSMENT_SUBTITLE'
+                                : 'THIS_WILL_GIVE_OTHERS_AN_IDEA_ABOUT_YOUR_SKILLS')
+                            .tr(context),
                         style: AppTextStyles.manropeMedium(
                           fontSize: 16.sp,
                         ),
@@ -241,13 +262,15 @@ class __LevelScoreTab extends ConsumerState<LevelScoreTab> {
                     // ),
                     SizedBox(height: widget.isForPopUp ? 15.h : 88.h),
                     Align(
-                      alignment: Alignment.centerRight,
+                      alignment: isPopup ? Alignment.center : Alignment.centerRight,
                       child: SizedBox(
-                        width: 160.w,
+                        width: isPopup ? double.infinity : 160.w,
                         child: MainButton(
                           enabled: _canProceed,
-                          isForPopup:widget.isForPopUp,
-                          label: 'CONTINUE',
+                          isForPopup: isPopup,
+                          applySize: !isPopup,
+                          height: isPopup ? 56.h : null,
+                          label: 'CONTINUE'.trU(context),
                           // labelStyle: AppTextStyles.qanelasLight(
                           //   color: AppColors.white,
                           //   fontSize: 18.sp,
