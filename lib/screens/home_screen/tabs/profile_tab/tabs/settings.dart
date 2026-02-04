@@ -49,7 +49,7 @@ class _UpComingBookingsState extends ConsumerState<Settings> {
     final appUser = ref.watch(userProvider);
     final user = appUser?.user;
     final userLevelPadel = user?.level(kSportName);
-    final userLevelPickleBall = user?.level(kPickleBallName);
+    // final userLevelPickleBall = user?.level(kPickleBallName);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,8 +88,8 @@ class _UpComingBookingsState extends ConsumerState<Settings> {
         _buildInfoField("PHONE_NUMBER".tr(context), user?.phoneNumber ?? ""),
         SizedBox(height: 8.h),
         _buildInfoField("PADEL_LEVEL".tr(context), (userLevelPadel ?? 0).formatString()),
-        SizedBox(height: 8.h),
-        _buildInfoField("PICKLEBALL_LEVEL".tr(context), (userLevelPickleBall ?? 0).formatString()),
+        // SizedBox(height: 8.h),
+        // _buildInfoField("PICKLEBALL_LEVEL".tr(context), (userLevelPickleBall ?? 0).formatString()),
         if (user != null)
           _CustomFields(
             user: user,

@@ -70,11 +70,8 @@ class RegisterModel {
       }
       data['prefered_sport'] = preferredSport;
     } else {
-      if (allowPadelQuestionInRegistration &&
-          levelAnswers.isNotEmpty &&
-          levelAnswers.any((e) => e != null)) {
-        data['quiz_answers'] = levelAnswers.map((e) => e ?? 0).toList();
-      }
+      // Quiz disabled in registration
+      data['prefered_sport'] = preferredSport;
     }
     data['custom_fields'] = customFields;
     return data;
