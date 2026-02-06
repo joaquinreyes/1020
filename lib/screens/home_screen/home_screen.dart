@@ -68,26 +68,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               token,
             );
       }
-      // final user = ref.read(userManagerProvider).user;
-      // final image = user?.user?.profileUrl;
-      // final startedPlaying = user?.user?.startedPlaying;
-      // final bool selectImage = image?.isEmpty ?? true;
-      // final bool selectDate = (startedPlaying?.isEmpty ?? true) && (user?.user?.preferredSport ?? "").toLowerCase() != "wellness";
-      // final bool hasDialogShown = ref.read(sharedPrefManagerProvider).hasProfilePictureDialogShown();
+      final user = ref.read(userManagerProvider).user;
+      final image = user?.user?.profileUrl;
+      final startedPlaying = user?.user?.startedPlaying;
+      final bool selectImage = image?.isEmpty ?? true;
+      final bool selectDate = (startedPlaying?.isEmpty ?? true) && (user?.user?.preferredSport ?? "").toLowerCase() != "wellness";
+      final bool hasDialogShown = ref.read(sharedPrefManagerProvider).hasProfilePictureDialogShown();
 
-      // if ((selectImage || selectDate) && Utils.checkUserLogin(ref) && !hasDialogShown) {
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return _AddProfilePicture(
-      //         selectDate: selectDate,
-      //         selectImage: selectImage,
-      //       );
-      //     },
-      //   );
-      //   // Mark dialog as shown
-      //   ref.read(sharedPrefManagerProvider).setProfilePictureDialogShown(true);
-      // }
+      if ((selectImage || selectDate) && Utils.checkUserLogin(ref) && !hasDialogShown) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return _AddProfilePicture(
+              selectDate: false,
+              // selectDate: selectDate,
+              selectImage: selectImage,
+            );
+          },
+        );
+        // Mark dialog as shown
+        ref.read(sharedPrefManagerProvider).setProfilePictureDialogShown(true);
+      }
     });
     super.initState();
   }

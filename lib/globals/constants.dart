@@ -14,7 +14,6 @@ const kAllowPlayerRanking = true;
 
 const kAppName = '10 - 20';
 const kSportName = "Падел"; //sport
-const kPadelName = "padel"; //sport
 const kPickleBallName = "pickleball"; //sport
 const kWhatsAppContact = "+353870356077";
 const int kMinimumLimit = 8;
@@ -43,8 +42,8 @@ String kFormatForAPI = "yyyy-MM-dd";
 
 final kComponentWidthConstraint = BoxConstraints(maxWidth: 450.w);
 const kAnimationDuration = Duration(milliseconds: 250);
-const kStartedPlayingCustomID = "68b06af553f6b47a6a8edd8b";
-const kPositionID = "68b06aeb53f6b47a6a8edd5b";
+const kStartedPlayingCustomID = "69857bbca8879446276f2490";
+const kPositionID = "69857b9ea8879446276f2427";
 const kTermsConditions = "688754a171f940dd68e0e209";
 const kGender = "68de0fa9e086dde9a76f1e48";
 

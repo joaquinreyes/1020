@@ -63,7 +63,7 @@ class User {
 
   bool get isPadelLevelSet {
     return sportsLevel.any((element) =>
-        element.sportName?.toLowerCase() == kPadelName.toLowerCase());
+        element.sportName?.toLowerCase() == kSportName.toLowerCase());
   }
 
   bool get isPickleBallLevelSet {

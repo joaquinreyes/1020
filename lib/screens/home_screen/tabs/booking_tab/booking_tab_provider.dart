@@ -2,7 +2,7 @@ part of 'booking_tab.dart';
 
 final _selectedLessonBookingType = StateProvider<int?>((ref) => null);
 
-final _dateBookableLesson = StateProvider<bool>((ref) => false);
+final _dateBookableLesson = StateProvider<bool>((ref) => true);
 final _selectedDuration = StateProvider<int?>((ref) => null);
 final _selectedCourt = StateProvider<int?>((ref) => null);
 final _selectedLessonCoachId = StateProvider<List<int>>((ref) => []);

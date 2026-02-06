@@ -241,7 +241,7 @@ class _BookingTabState extends ConsumerState<BookingTab> with WidgetsBindingObse
 
           // Only set the value once when it's empty
           if (selectedLessonCoachId.isEmpty) {
-            if (coachesList.isNotEmpty) {
+            if (coachesList.isNotEmpty && !isDateLessonSelected) {
               Future(() {
                 ref.read(_selectedLessonCoachId.notifier).state = [
                   (coachesList.first.id ?? 0)
@@ -809,7 +809,7 @@ class _LessonState extends ConsumerState<LessonsList> {
     final endDate = dateLessonsRangeProvider.endDate!;
     final lessons = ref.watch(lessonsSlotProvider(
         startTime: !isDateLessonSelected ? startDate : date.dateTime,
-        sportName: "padel",
+        sportName: kSportName,
         endTime: !isDateLessonSelected ? endDate : null,
         coachId: selectedLessonCoachId,
         duration: null));
