@@ -1818,7 +1818,7 @@ class BookLessonCourtFamily extends Family {
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
   Override overrideWith(
-      FutureOr<void> Function(BookLessonCourtRef ref) create) {
+      FutureOr<double?> Function(BookLessonCourtRef ref) create) {
     return _$BookLessonCourtFamilyOverride(this, create);
   }
 }
@@ -1826,7 +1826,7 @@ class BookLessonCourtFamily extends Family {
 class _$BookLessonCourtFamilyOverride implements FamilyOverride {
   _$BookLessonCourtFamilyOverride(this.overriddenFamily, this.create);
 
-  final FutureOr<void> Function(BookLessonCourtRef ref) create;
+  final FutureOr<double?> Function(BookLessonCourtRef ref) create;
 
   @override
   final BookLessonCourtFamily overriddenFamily;
@@ -1840,7 +1840,7 @@ class _$BookLessonCourtFamilyOverride implements FamilyOverride {
 }
 
 /// See also [bookLessonCourt].
-class BookLessonCourtProvider extends AutoDisposeFutureProvider<void> {
+class BookLessonCourtProvider extends AutoDisposeFutureProvider<double?> {
   /// See also [bookLessonCourt].
   BookLessonCourtProvider({
     required int lessonTime,
@@ -1905,7 +1905,7 @@ class BookLessonCourtProvider extends AutoDisposeFutureProvider<void> {
 
   @override
   Override overrideWith(
-    FutureOr<void> Function(BookLessonCourtRef ref) create,
+    FutureOr<double?> Function(BookLessonCourtRef ref) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1949,12 +1949,12 @@ class BookLessonCourtProvider extends AutoDisposeFutureProvider<void> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<void> createElement() {
+  AutoDisposeFutureProviderElement<double?> createElement() {
     return _BookLessonCourtProviderElement(this);
   }
 
   BookLessonCourtProvider _copyWith(
-    FutureOr<void> Function(BookLessonCourtRef ref) create,
+    FutureOr<double?> Function(BookLessonCourtRef ref) create,
   ) {
     return BookLessonCourtProvider._internal(
       (ref) => create(ref as BookLessonCourtRef),
@@ -2000,7 +2000,7 @@ class BookLessonCourtProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
-mixin BookLessonCourtRef on AutoDisposeFutureProviderRef<void> {
+mixin BookLessonCourtRef on AutoDisposeFutureProviderRef<double?> {
   /// The parameter `lessonTime` of this provider.
   int get lessonTime;
 
@@ -2024,7 +2024,7 @@ mixin BookLessonCourtRef on AutoDisposeFutureProviderRef<void> {
 }
 
 class _BookLessonCourtProviderElement
-    extends AutoDisposeFutureProviderElement<void> with BookLessonCourtRef {
+    extends AutoDisposeFutureProviderElement<double?> with BookLessonCourtRef {
   _BookLessonCourtProviderElement(super.provider);
 
   @override
