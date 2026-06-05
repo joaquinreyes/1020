@@ -405,27 +405,35 @@ class Utils {
 
   static Future<void> openWhatsapp(
       {required BuildContext context, message}) async {
+    // Share via the native OS share sheet, NOT a whatsapp://send deeplink.
+    // The deeplink drops the multi-line formatted body and shares only the
+    // bare link. sharePositionOrigin is REQUIRED on iOS: share_plus presents
+    // the sheet as a popover and throws "sharePositionOrigin: argument must be
+    // set" when the anchor rect is empty. On iOS 26 the popover controller is
+    // non-nil even on iPhone, so omitting it makes the share fail on every
+    // device (the sheet never appears). Always pass a valid, non-empty anchor.
     try {
-      myPrint("----------- Message -----------");
-      myPrint(message);
-      myPrint("----------------------");
-      final encodedMessage = Uri.encodeComponent(message);
-      final Uri url = Uri.parse('whatsapp://send?text=$encodedMessage');
-      // final Uri url =  Uri.parse('$kWhatsAppLink?text=$encodedMessage');
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url);
-      } else {
-        if (!context.mounted) {
-          return;
-        }
-        Utils.showMessageDialog(
-          context,
-          "NO_WHATSAPP_APP_DETECTED".tr(context),
-        );
-      }
-    } catch (_) {
-      myPrint('Error opening whatsapp');
+      await Share.share(message, sharePositionOrigin: _shareOrigin(context));
+    } catch (e) {
+      myPrint('Error preparing message for sharing: $e');
     }
+  }
+
+  /// A valid, non-empty anchor rect for the iOS share popover. Uses the tapped
+  /// widget's bounds when a [context] is available, otherwise falls back to the
+  /// centre of the screen. Never returns an empty rect (which iOS rejects).
+  static Rect _shareOrigin(BuildContext? context) {
+    final renderObject = context?.findRenderObject();
+    if (renderObject is RenderBox && renderObject.hasSize) {
+      return renderObject.localToGlobal(Offset.zero) & renderObject.size;
+    }
+    final view = WidgetsBinding.instance.platformDispatcher.views.first;
+    final size = view.physicalSize / view.devicePixelRatio;
+    return Rect.fromCenter(
+      center: Offset(size.width / 2, size.height / 3),
+      width: 1,
+      height: 1,
+    );
   }
 
   static Future<void> openWhatsappSupport(
