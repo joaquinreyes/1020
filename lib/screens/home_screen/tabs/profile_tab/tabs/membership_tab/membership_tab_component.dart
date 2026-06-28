@@ -300,18 +300,33 @@ class MembershipListComponent extends ConsumerWidget {
       {required WidgetRef ref,
       required List<MembershipModel> membershipModels}) {
     final isHorizontalScroll = scrollDirection == Axis.horizontal;
+    // GZ#1508 — a customer may hold several active rows of the same membership
+    // type (e.g. a 0-use pass + a freshly topped-up one). Flatten the catalog
+    // so each active row gets its own entry; catalog entries with no active row
+    // render once with a null active membership.
+    final entries = <({MembershipModel membership, ActiveMemberships? active})>[];
+    for (final e in membershipModels) {
+      final actives = data.activeMembershipsFor(e.id ?? 0);
+      if (actives.isNotEmpty) {
+        for (final am in actives) {
+          entries.add((membership: e, active: am));
+        }
+      } else {
+        entries.add((membership: e, active: null));
+      }
+    }
     return ListView.builder(
         shrinkWrap: !isHorizontalScroll,
         scrollDirection: scrollDirection,
-        itemCount: membershipModels.length,
+        itemCount: entries.length,
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         physics: isHorizontalScroll
             ? BouncingScrollPhysics()
             : const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          final e = membershipModels[index];
+          final e = entries[index].membership;
           final membershipName = (e.membershipName ?? "");
-          final activeMembership = data.activeMemberships(e.id ?? 0);
+          final activeMembership = entries[index].active;
           return Padding(
             padding: isHorizontalScroll
                 ? EdgeInsets.only(right: 15.w)

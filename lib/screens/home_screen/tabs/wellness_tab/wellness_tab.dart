@@ -383,10 +383,27 @@ class _WellnessTabState extends ConsumerState<WellnessTab> {
           if (data.getMemberships(selectedIndex).isEmpty) {
             return SecondaryText(text: "NO_MEMBERSHIP_FOUND".tr(context));
           }
+          // GZ#1508 — a customer may hold several active rows of the same
+          // membership type (e.g. a 0-use pass + a freshly topped-up one).
+          // Flatten so each active row renders its own card; catalog entries
+          // with no active row render once with a null active membership.
+          final entries =
+              <({MembershipModel membership, ActiveMemberships? active})>[];
+          for (final e in data.getMemberships(selectedIndex)) {
+            final actives = data.activeMembershipsFor(e.id ?? 0);
+            if (actives.isNotEmpty) {
+              for (final am in actives) {
+                entries.add((membership: e, active: am));
+              }
+            } else {
+              entries.add((membership: e, active: null));
+            }
+          }
           return Column(
-            children: data.getMemberships(selectedIndex).map((e) {
+            children: entries.map((entry) {
+              final e = entry.membership;
               final membershipName = (e.membershipName ?? "").capitalizeFirst;
-              final activeMembership = data.activeMemberships(e.id ?? 0);
+              final activeMembership = entry.active;
               final membershipPrice = e.price ?? 0;
               final duration = (e.duration ?? "").capitalizeFirst;
 

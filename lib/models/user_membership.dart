@@ -16,6 +16,17 @@ class UserActiveMembership {
     return value.id != null ? value : null;
   }
 
+  /// GZ#1508 — a customer can hold MORE THAN ONE active membership of the same
+  /// type (e.g. a depleted pass plus a freshly topped-up one). Return every
+  /// real active row for [id] so the UI can render one card per pass, instead
+  /// of `activeMemberships()` collapsing them to a single `lastWhere` match
+  /// (which hid the topped-up pass behind the 0-use one).
+  List<ActiveMemberships> activeMembershipsFor(int id) {
+    return activeMembership
+        .where((element) => element.membershipId == id && element.id != null)
+        .toList();
+  }
+
   ActiveMemberships? get haveActiveHOPMembership {
     final value = activeMembership.lastWhere(
         (element) => (element.membershipName ?? "")
