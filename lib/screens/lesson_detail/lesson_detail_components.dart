@@ -53,8 +53,7 @@ class _InfoCard extends StatelessWidget {
               Expanded(
                 child: _colInfo(
                   lesson.bookingDate.format("EEE dd MMM"),
-                  "${lesson.bookingStartTime.format("h:mm")} - ${lesson.bookingEndTime.format("h:mm a")}"
-                      .toLowerCase(),
+                  "${lesson.bookingStartTime.format("HH:mm")} - ${lesson.bookingEndTime.format("HH:mm")}",
                 ),
               ),
               Expanded(
@@ -139,7 +138,7 @@ class _LessonVariantInfoCard extends StatelessWidget {
         ? "${lesson.getMaximumCapacity} pax"
         : "-";
     final time =
-        "${lesson.bookingStartTime.format("H:mm")} - ${lesson.bookingEndTime.format("H:mm")}";
+        "${lesson.bookingStartTime.format("HH:mm")} - ${lesson.bookingEndTime.format("HH:mm")}";
     final date = lesson.bookingDate.format("EEEE d MMM");
 
     return Container(

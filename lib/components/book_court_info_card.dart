@@ -153,7 +153,7 @@ class BookCourtInfoCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "${startTime.format("h:mm")} - ${endTime.format("h:mm a").toLowerCase()}",
+                      "${startTime.format("HH:mm")} - ${endTime.format("HH:mm")}",
                       textAlign: TextAlign.center,
                       style: dataTextStyle0 != null
                           ? dataTextStyle0
@@ -308,7 +308,7 @@ class BookCourtInfoCardLesson extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "${startTime.format("h:mm")} - ${endTime.format("h:mm a").toLowerCase()}",
+                      "${startTime.format("HH:mm")} - ${endTime.format("HH:mm")}",
                       textAlign: TextAlign.center,
                       style: AppTextStyles.manropeMedium(
                         color: textColor ?? AppColors.brick,fontSize: 15.sp,

@@ -630,5 +630,10 @@
 
   "LANGUAGE": "Language",
   "RUSSIAN": "Russian",
-  "ENGLISH": "English"
+  "ENGLISH": "English",
+  "ACCOUNT_EXISTS_NO_PASSWORD": "Your account was created by an administrator. Please set up a password.",
+  "SETUP_PASSWORD": "Set Up Password",
+  "CONFIRM_PASSWORD": "Confirm password",
+  "PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
+  "EMAIL_NOT_REGISTERED": "This email is not registered. Please sign up first."
 }

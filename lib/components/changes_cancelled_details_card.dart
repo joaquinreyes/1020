@@ -10,11 +10,11 @@ import '../globals/utils.dart';
 
 class ChangesCancelledDetailsCard extends StatelessWidget {
   const ChangesCancelledDetailsCard(
-      {super.key, required this.heading, required this.description});
+      {super.key, required this.heading, required this.description, this.contactPhone});
 
   final String heading;
   final String description;
-
+  final String? contactPhone;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +64,7 @@ class ChangesCancelledDetailsCard extends StatelessWidget {
             child: SecondaryImageButton(
               onTap: () async {
                 // await launchUrl(Uri.parse(sendUsMessageUrl));
-                await Utils.openWhatsappSupport(context: context);
+                await Utils.openWhatsappSupport(context: context, phone: contactPhone);
               },
               label: "SEND_US_A_MESSAGE".tr(context),
               image: AppImages.whatsaapIcon.path,

@@ -177,7 +177,7 @@ class _OpenMatchCard extends ConsumerWidget {
               Expanded(
                 flex: 10,
                 child: Text(
-                  '${match.bookingDate.format("EEE dd MMM")} | ${match.bookingStartTime.format("h:mm")} - ${match.bookingEndTime.format("h:mm a").toLowerCase()}',
+                  '${match.bookingDate.format("EEE dd MMM")} | ${match.bookingStartTime.format("HH:mm")} - ${match.bookingEndTime.format("HH:mm")}',
                   style: AppTextStyles.manropeSemiBold(
                     fontSize: 13.sp,
                   ),

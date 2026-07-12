@@ -7,6 +7,7 @@ class ClubLocationData {
   String? locationName;
   String? currency;
   String? geoReferenced;
+  String? locationNumber;
   List<ClubLocationSports> sports = [];
   List<ServiceDetailCoach> coaches = [];
 
@@ -33,13 +34,14 @@ class ClubLocationData {
   }
 
   ClubLocationData(
-      {this.id, this.locationName, this.currency, this.geoReferenced});
+      {this.id, this.locationName, this.currency, this.geoReferenced, this.locationNumber});
 
   ClubLocationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     locationName = json['location_name'];
     currency = json['currency'];
     geoReferenced = json['georeferenced'];
+    locationNumber = json['location_number']?.toString();
     if (json['sports'] != null && json['sports'].isNotEmpty) {
       sports = <ClubLocationSports>[];
       json['sports'].forEach((v) {
@@ -60,6 +62,7 @@ class ClubLocationData {
     data['location_name'] = locationName;
     data['currency'] = currency;
     data['georeferenced'] = geoReferenced;
+    data['location_number'] = locationNumber;
     if (sports.isNotEmpty) {
       data['sports'] = sports.map((v) => v.toJson()).toList();
     }

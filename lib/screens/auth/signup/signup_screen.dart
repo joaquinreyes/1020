@@ -36,6 +36,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../components/secondary_text.dart';
 import '../../../components/secondary_textfield.dart';
 import '../../../models/club_locations.dart';
+import '../signin/signin_screen.dart';
 
 part 'signup_form_tab.dart';
 
@@ -319,6 +320,16 @@ class __SignupFlowState extends ConsumerState<_SignupFlow> {
         ref.watch(getCourtBookingProvider);
         ref.read(pageIndexProvider.notifier).index = 1;
         ref.read(goRouterProvider).go(RouteNames.home);
+      } else if (context.mounted) {
+        final authRepo = ref.read(authRepoProvider);
+        final email = authRepo.pendingSetupPasswordEmail;
+        if (email != null) {
+          authRepo.pendingSetupPasswordEmail = null;
+          showDialog(
+            context: context,
+            builder: (context) => SetupPasswordDialog(email: email),
+          );
+        }
       }
     } catch (e, st) {
       myPrint("Registration Error : $e -- $st");

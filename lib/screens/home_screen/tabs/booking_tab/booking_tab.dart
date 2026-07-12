@@ -693,14 +693,12 @@ class _BookingTabState extends ConsumerState<BookingTab> with WidgetsBindingObse
   }
 
   void _invalidateDateIfBeyondFutureLimit(int futureDateLength) {
-    if (futureDateLength < 1) {
-      return;
-    }
-    final selectedDate = ref.watch(selectedDateProvider);
+    if (futureDateLength <= 1) return;
+    final selectedDate = ref.read(selectedDateProvider);
     final today = DubaiDateTime.now();
     final difference =
         selectedDate.dateTime.difference(today.dateTime).inDays + 1;
-    if (difference >= futureDateLength) {
+    if (difference > futureDateLength) {
       Future(() {
         ref.invalidate(selectedDateProvider);
       });

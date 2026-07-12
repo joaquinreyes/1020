@@ -114,7 +114,7 @@ final sportListProvider =
 );
 
 typedef _$SportList = Notifier<List<ClubLocationSports>>;
-String _$languageValueHash() => r'30025adef93c7987ee243a29877e0be0182abf98';
+String _$languageValueHash() => r'610cb6665acdf7a601ab3cb96c755b56189ac7a7';
 
 /// See also [LanguageValue].
 @ProviderFor(LanguageValue)

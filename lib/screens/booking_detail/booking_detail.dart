@@ -146,6 +146,10 @@ class _DataBody extends ConsumerWidget {
             ChangesCancelledDetailsCard(
               heading: "BOOKING_CANCELLED".tr(context),
               description: "CANCEL_DESC".tr(context),
+              contactPhone: ref.read(clubLocationsProvider).value
+                  ?.where((l) => l.id == userBooking.service?.location?.id)
+                  .firstOrNull
+                  ?.locationNumber,
             ),
             SizedBox(height: 10.h),
           ],
@@ -387,7 +391,7 @@ class _DataBody extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "${userBooking.bookingDate.format("EEE dd MMM")} | ${userBooking.bookingStartTime.format("h:mm")} - ${userBooking.bookingEndTime.format("h:mm a").toLowerCase()}",
+                    "${userBooking.bookingDate.format("EEE dd MMM")} | ${userBooking.bookingStartTime.format("HH:mm")} - ${userBooking.bookingEndTime.format("HH:mm")}",
                     style: AppTextStyles.manropeMedium(
                       color: AppColors.white,
                       fontSize: 15.sp,
@@ -452,6 +456,7 @@ class _DataBody extends ConsumerWidget {
         sportName = userBooking.players!.first.customer!.sportsLevel.first.sportName ?? "";
       }
       int? serviceId = await showDialog(
+        useSafeArea: false,
         context: context,
         builder: (context) {
           return BookCourtDialog(

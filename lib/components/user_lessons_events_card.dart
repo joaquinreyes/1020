@@ -141,6 +141,7 @@ class UserLessonsEventsCard extends ConsumerWidget {
                       final singleEvent =
                           (booking.service?.eventType ?? "").toLowerCase() == "single";
                       dynamic paid = await showDialog(
+                        useSafeArea: false,
                         context: context,
                         builder: (context) {
                           return BookCourtDialog(

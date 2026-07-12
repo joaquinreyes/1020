@@ -139,7 +139,7 @@ class _LessonDateItem extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 10.w),
                   child: Text(
-                    "${serviceBooking?.bookingStartTime.format("h:mm")} - ${serviceBooking?.bookingEndTime.format("h:mm a").toLowerCase()}",
+                    "${serviceBooking?.bookingStartTime.format("HH:mm")} - ${serviceBooking?.bookingEndTime.format("HH:mm")}",
                     style: AppTextStyles.manropeMedium(fontSize: 15.sp),
                   ),
                 ),

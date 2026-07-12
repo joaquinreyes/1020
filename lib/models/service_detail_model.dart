@@ -163,7 +163,7 @@ class ServiceDetail extends BookingBase {
     if (startTime == null) {
       return '';
     }
-    return "${bookingStartTime.format("h:mm")} - ${bookingEndTime.format("h:mm a")}";
+    return "${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm")}";
   }
 
   String get formatStartTime {

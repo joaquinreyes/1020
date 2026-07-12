@@ -99,6 +99,7 @@ class UserOpenMatchCard extends ConsumerWidget {
                       }).toList();
 
                       dynamic paid = await showDialog(
+                        useSafeArea: false,
                         context: context,
                         builder: (context) {
                           return BookCourtDialog(

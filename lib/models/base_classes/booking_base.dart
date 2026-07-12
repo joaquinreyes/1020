@@ -113,21 +113,21 @@ class BookingBase {
     if (startTime == null) {
       return '';
     }
-    return "${bookingDate.format("EEE dd MMM")} | ${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm a").toLowerCase()}";
+    return "${bookingDate.format("EEE dd MMM")} | ${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm")}";
   }
 
   String get formattedDateStartEndTimeAMH {
     if (startTime == null) {
       return '';
     }
-    return "${bookingDate.format("EEE dd MMM")} | ${bookingStartTime.format("h:mm")} - ${bookingEndTime.format("h:mm a").toLowerCase()}";
+    return "${bookingDate.format("EEE dd MMM")} | ${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm")}";
   }
 
   String get formattedDateStartEndTimeAM12 {
     if (startTime == null) {
       return '';
     }
-    return "${bookingDate.format("EEE dd MMM")} | ${bookingStartTime.format("h:mm")} - ${bookingEndTime.format("h:mm a").toLowerCase()}";
+    return "${bookingDate.format("EEE dd MMM")} | ${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm")}";
   }
 
   String get formatStartEndTime {
@@ -141,14 +141,14 @@ class BookingBase {
     if (startTime == null) {
       return '';
     }
-    return "${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm a")}";
+    return "${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm")}";
   }
 
   String get formatStartEndTimeAM12 {
     if (startTime == null) {
       return '';
     }
-    return "${bookingStartTime.format("h:mm")} - ${bookingEndTime.format("h:mm a")}";
+    return "${bookingStartTime.format("HH:mm")} - ${bookingEndTime.format("HH:mm")}";
   }
 
   String get formattedDateStartEndTimeForShare {

@@ -27,7 +27,9 @@ import '../utils/pagination_state.dart';
 part 'user_repo.g.dart';
 
 class AuthRepo {
-  Future<AppUser> signIn(String email, String password, Ref ref) async {
+  String? pendingSetupPasswordEmail;
+
+  Future<AppUser> signIn(String email, String password, dynamic ref) async {
     try {
       final apiManager = ref.read(apiManagerProvider);
       final response = await apiManager.post(ref, ApiEndPoint.login, {
@@ -42,30 +44,51 @@ class AuthRepo {
       throw "Some error occured";
     } catch (e) {
       if (e is Map<String, dynamic>) {
-        if (e['message'].toString().toLowerCase() ==
-            'Password field is missing'.toLowerCase()) {
-          final done = await setPassword(ref, email, password);
-          if (done) {
-            return ref.watch(authRepoProvider).signIn(email, password, ref);
-          }
-        } else {
-          throw e['message'];
-        }
+        throw e['message'];
       }
       rethrow;
     }
   }
 
-  Future<bool> setPassword(Ref ref, String email, String password) async {
+  Future<AppUser> setPasswordAndLogin(dynamic ref, String email, String password) async {
     try {
       final apiManager = ref.read(apiManagerProvider);
-      await apiManager.post(ref, ApiEndPoint.setUserPassword, {
+      final response = await apiManager.post(ref, ApiEndPoint.setUserPassword, {
         'email': email,
         'password': password,
       });
-      return true;
+      if (response is Map<String, dynamic>) {
+        final AppUser user = AppUser.fromJson(response);
+        await ref.read(userManagerProvider).authenticate(ref, user);
+        return user;
+      }
+      throw "Some error occured";
     } catch (e) {
-      return false;
+      if (e is Map<String, dynamic>) {
+        throw e['message'];
+      }
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> checkEmail(dynamic ref, String email) async {
+    try {
+      final apiManager = ref.read(apiManagerProvider);
+      final response = await apiManager.post(ref, ApiEndPoint.checkEmail, {
+        'email': email,
+      });
+      if (response is Map<String, dynamic>) {
+        return {
+          'exists': response['exists'] ?? false,
+          'hasPassword': response['hasPassword'] ?? false,
+        };
+      }
+      throw "Some error occured";
+    } catch (e) {
+      if (e is Map<String, dynamic>) {
+        throw e['message'];
+      }
+      rethrow;
     }
   }
 
@@ -83,7 +106,12 @@ class AuthRepo {
       throw "Some error occured";
     } catch (e) {
       if (e is Map<String, dynamic>) {
-        throw e['message'];
+        final message = e['message']?.toString() ?? '';
+        if (message == 'ACCOUNT_EXISTS_NO_PASSWORD') {
+          pendingSetupPasswordEmail = model?.email;
+          throw 'ACCOUNT_EXISTS_NO_PASSWORD';
+        }
+        throw message;
       }
       rethrow;
     }
@@ -579,6 +607,18 @@ AuthRepo authRepo(Ref ref) {
 Future<AppUser?> loginUser(
     LoginUserRef ref, String email, String password) async {
   return ref.watch(authRepoProvider).signIn(email, password, ref);
+}
+
+@riverpod
+Future<AppUser> setupPasswordAndLogin(Ref ref, String email, String password) async {
+  final authRepo = ref.read(authRepoProvider);
+  return authRepo.setPasswordAndLogin(ref, email, password);
+}
+
+@riverpod
+Future<Map<String, dynamic>> checkEmailStatus(Ref ref, String email) async {
+  final authRepo = ref.read(authRepoProvider);
+  return authRepo.checkEmail(ref, email);
 }
 
 @riverpod

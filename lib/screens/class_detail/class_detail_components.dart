@@ -55,8 +55,7 @@ class _InfoCard extends StatelessWidget {
               Expanded(
                 child: _colInfo(
                   event.bookingDate.format("EEE dd MMM"),
-                  "${event.bookingStartTime.format("HH:mm")} - ${event.bookingEndTime.format("HH:mm a")}"
-                      .toLowerCase(),
+                  "${event.bookingStartTime.format("HH:mm")} - ${event.bookingEndTime.format("HH:mm")}",
                 ),
               ),
               Expanded(

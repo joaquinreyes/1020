@@ -233,6 +233,375 @@ class _LoginUserProviderElement
   String get password => (origin as LoginUserProvider).password;
 }
 
+String _$setupPasswordAndLoginHash() =>
+    r'4d2d5ba3e0798fea48a78c87034c2054f1f215ec';
+
+/// See also [setupPasswordAndLogin].
+@ProviderFor(setupPasswordAndLogin)
+const setupPasswordAndLoginProvider = SetupPasswordAndLoginFamily();
+
+/// See also [setupPasswordAndLogin].
+class SetupPasswordAndLoginFamily extends Family {
+  /// See also [setupPasswordAndLogin].
+  const SetupPasswordAndLoginFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'setupPasswordAndLoginProvider';
+
+  /// See also [setupPasswordAndLogin].
+  SetupPasswordAndLoginProvider call(
+    String email,
+    String password,
+  ) {
+    return SetupPasswordAndLoginProvider(
+      email,
+      password,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  SetupPasswordAndLoginProvider getProviderOverride(
+    covariant SetupPasswordAndLoginProvider provider,
+  ) {
+    return call(
+      provider.email,
+      provider.password,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(
+      FutureOr<AppUser> Function(SetupPasswordAndLoginRef ref) create) {
+    return _$SetupPasswordAndLoginFamilyOverride(this, create);
+  }
+}
+
+class _$SetupPasswordAndLoginFamilyOverride implements FamilyOverride {
+  _$SetupPasswordAndLoginFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<AppUser> Function(SetupPasswordAndLoginRef ref) create;
+
+  @override
+  final SetupPasswordAndLoginFamily overriddenFamily;
+
+  @override
+  SetupPasswordAndLoginProvider getProviderOverride(
+    covariant SetupPasswordAndLoginProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// See also [setupPasswordAndLogin].
+class SetupPasswordAndLoginProvider extends AutoDisposeFutureProvider<AppUser> {
+  /// See also [setupPasswordAndLogin].
+  SetupPasswordAndLoginProvider(
+    String email,
+    String password,
+  ) : this._internal(
+          (ref) => setupPasswordAndLogin(
+            ref as SetupPasswordAndLoginRef,
+            email,
+            password,
+          ),
+          from: setupPasswordAndLoginProvider,
+          name: r'setupPasswordAndLoginProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$setupPasswordAndLoginHash,
+          dependencies: SetupPasswordAndLoginFamily._dependencies,
+          allTransitiveDependencies:
+              SetupPasswordAndLoginFamily._allTransitiveDependencies,
+          email: email,
+          password: password,
+        );
+
+  SetupPasswordAndLoginProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.email,
+    required this.password,
+  }) : super.internal();
+
+  final String email;
+  final String password;
+
+  @override
+  Override overrideWith(
+    FutureOr<AppUser> Function(SetupPasswordAndLoginRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SetupPasswordAndLoginProvider._internal(
+        (ref) => create(ref as SetupPasswordAndLoginRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        email: email,
+        password: password,
+      ),
+    );
+  }
+
+  @override
+  (
+    String,
+    String,
+  ) get argument {
+    return (
+      email,
+      password,
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<AppUser> createElement() {
+    return _SetupPasswordAndLoginProviderElement(this);
+  }
+
+  SetupPasswordAndLoginProvider _copyWith(
+    FutureOr<AppUser> Function(SetupPasswordAndLoginRef ref) create,
+  ) {
+    return SetupPasswordAndLoginProvider._internal(
+      (ref) => create(ref as SetupPasswordAndLoginRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      email: email,
+      password: password,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SetupPasswordAndLoginProvider &&
+        other.email == email &&
+        other.password == password;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, email.hashCode);
+    hash = _SystemHash.combine(hash, password.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SetupPasswordAndLoginRef on AutoDisposeFutureProviderRef<AppUser> {
+  /// The parameter `email` of this provider.
+  String get email;
+
+  /// The parameter `password` of this provider.
+  String get password;
+}
+
+class _SetupPasswordAndLoginProviderElement
+    extends AutoDisposeFutureProviderElement<AppUser>
+    with SetupPasswordAndLoginRef {
+  _SetupPasswordAndLoginProviderElement(super.provider);
+
+  @override
+  String get email => (origin as SetupPasswordAndLoginProvider).email;
+  @override
+  String get password => (origin as SetupPasswordAndLoginProvider).password;
+}
+
+String _$checkEmailStatusHash() => r'9361c2efe9cc130b6c3fdca6dac688161a3f3970';
+
+/// See also [checkEmailStatus].
+@ProviderFor(checkEmailStatus)
+const checkEmailStatusProvider = CheckEmailStatusFamily();
+
+/// See also [checkEmailStatus].
+class CheckEmailStatusFamily extends Family {
+  /// See also [checkEmailStatus].
+  const CheckEmailStatusFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'checkEmailStatusProvider';
+
+  /// See also [checkEmailStatus].
+  CheckEmailStatusProvider call(
+    String email,
+  ) {
+    return CheckEmailStatusProvider(
+      email,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  CheckEmailStatusProvider getProviderOverride(
+    covariant CheckEmailStatusProvider provider,
+  ) {
+    return call(
+      provider.email,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(
+      FutureOr<Map<String, dynamic>> Function(CheckEmailStatusRef ref) create) {
+    return _$CheckEmailStatusFamilyOverride(this, create);
+  }
+}
+
+class _$CheckEmailStatusFamilyOverride implements FamilyOverride {
+  _$CheckEmailStatusFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<Map<String, dynamic>> Function(CheckEmailStatusRef ref) create;
+
+  @override
+  final CheckEmailStatusFamily overriddenFamily;
+
+  @override
+  CheckEmailStatusProvider getProviderOverride(
+    covariant CheckEmailStatusProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// See also [checkEmailStatus].
+class CheckEmailStatusProvider
+    extends AutoDisposeFutureProvider<Map<String, dynamic>> {
+  /// See also [checkEmailStatus].
+  CheckEmailStatusProvider(
+    String email,
+  ) : this._internal(
+          (ref) => checkEmailStatus(
+            ref as CheckEmailStatusRef,
+            email,
+          ),
+          from: checkEmailStatusProvider,
+          name: r'checkEmailStatusProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$checkEmailStatusHash,
+          dependencies: CheckEmailStatusFamily._dependencies,
+          allTransitiveDependencies:
+              CheckEmailStatusFamily._allTransitiveDependencies,
+          email: email,
+        );
+
+  CheckEmailStatusProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.email,
+  }) : super.internal();
+
+  final String email;
+
+  @override
+  Override overrideWith(
+    FutureOr<Map<String, dynamic>> Function(CheckEmailStatusRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CheckEmailStatusProvider._internal(
+        (ref) => create(ref as CheckEmailStatusRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        email: email,
+      ),
+    );
+  }
+
+  @override
+  (String,) get argument {
+    return (email,);
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
+    return _CheckEmailStatusProviderElement(this);
+  }
+
+  CheckEmailStatusProvider _copyWith(
+    FutureOr<Map<String, dynamic>> Function(CheckEmailStatusRef ref) create,
+  ) {
+    return CheckEmailStatusProvider._internal(
+      (ref) => create(ref as CheckEmailStatusRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      email: email,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CheckEmailStatusProvider && other.email == email;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, email.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin CheckEmailStatusRef
+    on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
+  /// The parameter `email` of this provider.
+  String get email;
+}
+
+class _CheckEmailStatusProviderElement
+    extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
+    with CheckEmailStatusRef {
+  _CheckEmailStatusProviderElement(super.provider);
+
+  @override
+  String get email => (origin as CheckEmailStatusProvider).email;
+}
+
 String _$registerUserHash() => r'8cea4ebe62c9c7672d840412af619633db2fafdb';
 
 /// See also [registerUser].

@@ -165,7 +165,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 }
                 String time = (DateTime.tryParse(message.createdAt ?? "") ??
                         DateTime.now()).toLocal()
-                    .format("h:mm");
+                    .format("HH:mm");
 
                 // Generate consistent color for each user based on their ID
                 Color incomingMsgColor = AppColors.blue;

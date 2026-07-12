@@ -98,6 +98,159 @@ part of 'signin_screen.dart';
 //   );
 // }
 
+class SetupPasswordDialog extends ConsumerStatefulWidget {
+  const SetupPasswordDialog({super.key, required this.email});
+  final String email;
+
+  @override
+  ConsumerState<SetupPasswordDialog> createState() =>
+      _SetupPasswordDialogState();
+}
+
+class _SetupPasswordDialogState extends ConsumerState<SetupPasswordDialog> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final passwordController = TextEditingController();
+  final passwordNode = FocusNode();
+  final confirmPasswordController = TextEditingController();
+  final confirmPasswordNode = FocusNode();
+
+  bool get canProceed =>
+      passwordController.text.length >= 6 &&
+      confirmPasswordController.text.isNotEmpty;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: CustomDialog(
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'SETUP_PASSWORD'.trU(context),
+                style: AppTextStyles.popupHeaderTextStyle,
+              ),
+              SizedBox(height: 15.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Text(
+                  'ACCOUNT_EXISTS_NO_PASSWORD'.tr(context),
+                  style: AppTextStyles.popupBodyTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    'NEW_PASSWORD'.tr(context),
+                    style: AppTextStyles.manropeMedium(
+                      fontSize: 16.sp,
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 5.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: CustomTextField(
+                  controller: passwordController,
+                  node: passwordNode,
+                  borderRadius: BorderRadius.circular(100.r),
+                  hintText: "TYPE_HERE".tr(context),
+                  obscureText: true,
+                  validator: (val) {
+                    if ((val?.isEmpty ?? true) || (val?.length ?? 0) < 6) {
+                      return "PASSWORD_MUST_BE_".tr(context);
+                    }
+                    return null;
+                  },
+                  isForPopup: true,
+                  fillColor: AppColors.white25,
+                  borderColor: Colors.transparent,
+                  onChanged: (_) => setState(() {}),
+                ),
+              ),
+              SizedBox(height: 15.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    'CONFIRM_PASSWORD'.tr(context),
+                    style: AppTextStyles.manropeMedium(
+                      fontSize: 16.sp,
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 5.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: CustomTextField(
+                  controller: confirmPasswordController,
+                  node: confirmPasswordNode,
+                  borderRadius: BorderRadius.circular(100.r),
+                  hintText: "TYPE_HERE".tr(context),
+                  obscureText: true,
+                  validator: (val) {
+                    if (val != passwordController.text) {
+                      return "PASSWORDS_DO_NOT_MATCH".tr(context);
+                    }
+                    return null;
+                  },
+                  isForPopup: true,
+                  fillColor: AppColors.white25,
+                  borderColor: Colors.transparent,
+                  onChanged: (_) => setState(() {}),
+                ),
+              ),
+              SizedBox(height: 25.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: MainButton(
+                  enabled: canProceed,
+                  label: 'SETUP_PASSWORD'.trU(context),
+                  showArrow: false,
+                  isForPopup: true,
+                  onTap: () async {
+                    if (!(formKey.currentState?.validate() ?? true)) return;
+                    final provider = setupPasswordAndLoginProvider(
+                      widget.email,
+                      passwordController.text,
+                    );
+                    final user = await Utils.showLoadingDialog<AppUser>(
+                      context,
+                      provider,
+                      ref,
+                    );
+                    if (user != null && context.mounted) {
+                      if (FcmManager().token.isNotEmpty) {
+                        ref.watch(
+                            saveFCMTokenProvider(FcmManager().token));
+                      }
+                      ref.watch(getCourtBookingProvider);
+                      ref.read(pageIndexProvider.notifier).index = 1;
+                      ref.invalidate(pageControllerProvider);
+                      ref.read(goRouterProvider).go(RouteNames.home);
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class RecoverPassword1 extends ConsumerStatefulWidget {
   RecoverPassword1();
 

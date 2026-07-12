@@ -408,7 +408,7 @@ class __TimeslotsState extends ConsumerState<_Timeslots> {
             borderRadius: borderRadius,
           ),
           child: Text(
-            timeSlotChunked[rowIndex][colIndex].format("h:mm a").toLowerCase(),
+            timeSlotChunked[rowIndex][colIndex].format("HH:mm"),
             style: selected
                 ? AppTextStyles.manropeSemiBold(
                     fontSize: 15.sp,
@@ -478,7 +478,7 @@ class __AvailableTimeslotState extends ConsumerState<_AvailableTimeslot> {
         final startTime = timeslot;
         final endTime = startTime.add(Duration(minutes: selectedDuration));
         final String formattedTime =
-            "${startTime.format("EEE d MMM")} | ${startTime.format("h:mm")} - ${endTime.format("h:mm a").toLowerCase()}";
+            "${startTime.format("EEE d MMM")} | ${startTime.format("HH:mm")} - ${endTime.format("HH:mm")}";
         return Column(
           children: [
             Padding(
@@ -606,6 +606,7 @@ class __AvailableTimeslotState extends ConsumerState<_AvailableTimeslot> {
                         return;
                       }
                       showDialog(
+                        useSafeArea: false,
                         context: context,
                         builder: (context) {
                           return BookCourtDialog(
@@ -885,7 +886,7 @@ class __TimeslotsLessonState extends ConsumerState<_TimeslotsLesson> {
               boxShadow: [kBoxShadow],
               borderRadius: BorderRadius.circular(12.r)),
           child: Text(
-            timeSlotChunked[rowIndex][colIndex].format("h:mm a").toLowerCase(),
+            timeSlotChunked[rowIndex][colIndex].format("HH:mm"),
             style: selected
                 ? AppTextStyles.manropeSemiBold(color: AppColors.white,fontSize: 15.sp,).copyWith(height: 1)
                 : AppTextStyles.manropeMedium(
@@ -1021,7 +1022,7 @@ class __AvailableTimeslotLessonState
           final endTime = startTime
               .add(Duration(minutes: selectedLessonType?.duration ?? 30));
           final String formattedTime =
-              "${startTime.format("EEE d MMM")} | ${startTime.format("h:mm")} - ${endTime.format("h:mm a")}";
+              "${startTime.format("EEE d MMM")} | ${startTime.format("HH:mm")} - ${endTime.format("HH:mm")}";
           return Column(
             children: [
               Padding(
