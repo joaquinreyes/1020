@@ -647,23 +647,6 @@ $link
     Share.share(text, sharePositionOrigin: _shareOrigin(context));
   }
 
-  /// A valid, non-empty anchor rect for the iOS share popover. Uses the tapped
-  /// widget's bounds when a [context] is available, otherwise falls back to the
-  /// centre of the screen. Never returns an empty rect (which iOS rejects).
-  static Rect _shareOrigin(BuildContext? context) {
-    final renderObject = context?.findRenderObject();
-    if (renderObject is RenderBox && renderObject.hasSize) {
-      return renderObject.localToGlobal(Offset.zero) & renderObject.size;
-    }
-    final view = WidgetsBinding.instance.platformDispatcher.views.first;
-    final size = view.physicalSize / view.devicePixelRatio;
-    return Rect.fromCenter(
-      center: Offset(size.width / 2, size.height / 3),
-      width: 1,
-      height: 1,
-    );
-  }
-
   static void closeKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
   }

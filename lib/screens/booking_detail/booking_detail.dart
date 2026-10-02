@@ -16,6 +16,7 @@ import 'package:hop/globals/images.dart';
 import 'package:hop/globals/utils.dart';
 import 'package:hop/models/service_detail_model.dart';
 import 'package:hop/repository/booking_repo.dart';
+import 'package:hop/repository/club_repo.dart';
 import 'package:hop/repository/play_repo.dart';
 import 'package:hop/routes/app_pages.dart';
 import 'package:hop/screens/responsive_widgets/home_responsive_widget.dart';

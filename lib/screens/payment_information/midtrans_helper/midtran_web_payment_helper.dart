@@ -1,3 +1,6 @@
+// Web-only (conditional export). dart:js allowInterop is not visible to the
+// analyzer outside web since Flutter 3.41; the web build still compiles it.
+// ignore_for_file: undefined_function
 import 'dart:async';
 
 import 'package:flutter/material.dart';
