@@ -136,6 +136,15 @@ class _HOPIrelandState extends ConsumerState<HOPIreland> {
         ],
         theme: ThemeData(
           scaffoldBackgroundColor: AppColors.white,
+          // Flutter 3.38 changed the Android default page transition to
+          // PredictiveBack (fade-forwards). Keep the pre-upgrade transitions.
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+            },
+          ),
           // colorScheme: const ColorScheme.light().copyWith(
           //   primary: AppColors.orange,
           // ),

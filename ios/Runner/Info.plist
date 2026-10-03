@@ -46,7 +46,7 @@
 		<key>FirebaseAppDelegateProxyEnabled</key>
 		<true/>
 		<key>FlutterDeepLinkingEnabled</key>
-		<true/>
+		<false/>
 		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
 		<key>LSApplicationCategoryType</key>
@@ -77,6 +77,27 @@
 		<string>We need to access location to show you the nearest available court</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>We need Access of photos to add a profile picture from Poto Library. Your data will be used only for this purpose and stored securely in the app.</string>
+		<key>UIApplicationSceneManifest</key>
+		<dict>
+			<key>UIApplicationSupportsMultipleScenes</key>
+			<false/>
+			<key>UISceneConfigurations</key>
+			<dict>
+				<key>UIWindowSceneSessionRoleApplication</key>
+				<array>
+					<dict>
+						<key>UISceneClassName</key>
+						<string>UIWindowScene</string>
+						<key>UISceneConfigurationName</key>
+						<string>flutter</string>
+						<key>UISceneDelegateClassName</key>
+						<string>FlutterSceneDelegate</string>
+						<key>UISceneStoryboardFile</key>
+						<string>Main</string>
+					</dict>
+				</array>
+			</dict>
+		</dict>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIBackgroundModes</key>
